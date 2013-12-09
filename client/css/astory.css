@@ -193,4 +193,10 @@ img.navlogo {
     text-align: center;
     margin-top: 0;
     margin-bottom: 0;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.editorbarbutton img{
+    margin-left: 20px;
 }
