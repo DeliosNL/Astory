@@ -208,8 +208,15 @@ img.navlogo {
 }
 
 #assetmenu select{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    font-family: ProximaSemibold;
+    border-radius: 4px;
+    margin-top: 30px;
     background-color: white;
     width: 310px;
     height:40px;
+    border: 1px solid #d3d3d3;
     margin-left: 17px;
 }
