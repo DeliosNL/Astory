@@ -29,7 +29,6 @@ body {
 #navbar {
     background-color: #252525;
     min-height: 70px;
-    border: 1px solid transparent;
 }
 
 #navbar a{
