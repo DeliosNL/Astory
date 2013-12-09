@@ -46,15 +46,12 @@ img.navlogo {
 
 /* Rechter kant van de nav */
 .navlink, .navaccount{
-    min-height: 70px;
+    height: 70px;
     color: #e4e4e4;
     font-size: 14px;
-    float:right;
+    float: right;
     border-left: 1px solid #3c3d3d;
     display: inline-table;
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
 }
 
 /*Knoppen aan de rechter kant */
@@ -62,7 +59,7 @@ img.navlogo {
     font-family: ProximaSemibold;
     width: 120px;
     text-align: center;
-    line-height: 60px;
+    line-height: 70px;
 }
 
 .navlink:hover {
