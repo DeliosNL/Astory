@@ -3,16 +3,38 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-
     <title>Astory</title>
-
     <!-- Bootstrap core CSS -->
     <link href="css/astory.css" rel="stylesheet">
-
 </head>
 
 <body>
-<div ng-view></div> <!-- HIER KOMEN DE PARTIALS -->
+<div id="navbar">
+    <img class="navlogo" src="images/Logo.png" alt="logo"/>
+    <div class="navaccount">
+        <img src="images/johndoe.png" alt="johndoe"/>
+        <div id = "accountstorywrapper">
+            <p>John Doe</p>
+            <div class="navstorybutton">15 stories</div>
+        </div>
+        <div id="navdropdownbutton"><img src="images/arrowdown.png" alt="v"/></div>
+    </div>
+    <a href="#/stories"><div class="navlink">My stories</div></a>
+    <a href="#/library"><div class="navlink">Library</div></a>
+    <a href="#/Help"><div class="navlink">Help</div></a>
+</div>
+<div id="editorbar">
+    <div id="previewbutton">
+        <p>PREVIEW</p>
+        <img src="images/arrowright.png" alt=">"/>
+    </div>
+    <p class="savemessage">Automatically saved at 16:42</p>
+    <div class="editorbarbutton"><p>CURRENTLY IN</p></div>
+</div>
+
+<div ng-view>
+    <!-- HIER KOMEN DE PARTIALS, NIKS ANDERS IN ZETTEN  -->
+</div>
 
 <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
 <script src="./javascripts/lib/angular.min.js"></script>

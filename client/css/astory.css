@@ -1,0 +1,190 @@
+body {
+    padding: 0;
+    margin: 0;
+    min-width: 840px;
+}
+
+@font-face
+{
+    font-family: ProximaSemibold;
+    src: url('../fonts/Proxima/ProximaNova-Semibold.otf'),
+    url('../fonts/Proxima/ProximaNova-Semibold.otf'); /* IE9 */
+}
+
+@font-face
+{
+    font-family: Proxima;
+    src: url('../fonts/Proxima/ProximaNova-Regular.otf'),
+    url('../fonts/Proxima/ProximaNova-Regular.otf'); /* IE9 */
+}
+
+@font-face
+{
+    font-family: ProximaLight;
+    src: url('../fonts/Proxima/ProximaNova-Light.otf'),
+    url('../fonts/Proxima/ProximaNova-Light.otf'); /* IE9 */
+}
+
+/* Navbar */
+#navbar {
+    background-color: #252525;
+    position: relative;
+    min-height: 70px;
+    border: 1px solid transparent;
+}
+
+#navbar a{
+    color: #e4e4e4;
+    text-decoration: none;
+}
+
+
+img.navlogo {
+    margin-top: 5px;
+    margin-left: 25px;
+    height: 55px;
+    width: 150px;
+}
+
+/* Rechter kant van de nav */
+.navlink, .navaccount{
+    min-height: 70px;
+    color: #e4e4e4;
+    font-size: 14px;
+    float:right;
+    border-left: 1px solid #3c3d3d;
+}
+
+/*Knoppen aan de rechter kant */
+.navlink {
+    font-family: ProximaSemibold;
+    width: 120px;
+    text-align: center;
+    line-height: 60px;
+}
+
+.navlink:hover {
+    background-color: #e23e1f;
+}
+
+.navaccount {
+    min-width: 280px;
+}
+
+/*Profielplaatje */
+.navaccount img{
+    margin-top: 5px;
+    margin-left: 10px;
+    float:left;
+    height: 60px;
+    width: 60px;
+}
+
+#accountstorywrapper{
+    margin-left: 20px;
+    float:left
+}
+
+/*Accountnaam */
+.navaccount p{
+    font-family: Proxima;
+    font-weight: bold;
+    margin-top: 10px;
+    margin-bottom: 8px;
+}
+
+.navstorybutton, #navdropdownbutton {
+    font-family: Proxima;
+    text-align: center;
+    font-size: 12px;
+}
+
+/*Aantal stories button */
+.navstorybutton {
+    width: 80px;
+    height:20px;;
+    border-radius: 20px;
+    line-height: 20px;
+    background-color: #6a6a6a;
+}
+
+/*Navbar detail button */
+#navdropdownbutton img{
+    width: 8px;
+    height: 6px;
+    margin-left: 6px;
+    margin-top: 7px;
+}
+
+#navdropdownbutton {
+    float:right;
+    width:20px;
+    height:20px;
+    background-color: #545454;
+    margin-top: 20px;
+    margin-right: 20px;
+    line-height: 20px;
+}
+/* NAVBAR EINDIGT HIER */
+#editorbar, #previewbutton {
+    min-height: 60px;
+}
+
+#editorbar{
+    background-color: #f5f5f5;
+}
+
+#previewbutton {
+    text-align: center;
+    color:white;
+    background-color: #e23e1f;
+    float:right;
+    min-width: 130px;
+}
+
+#previewbutton p{
+    font-family: ProximaSemibold;
+    font-size: 15px;
+    float:left;
+    margin-right: 0;
+}
+
+#previewbutton img{
+    float:right;
+    width: 8px;
+    height: 10px;
+    margin-top: 25px;
+    margin-right: 15px;
+}
+
+
+#previewbutton p, #editorbar p.savemessage {
+    line-height: 60px;
+    margin-left: 25px;
+    margin-bottom: 0;
+    margin-top: 0;
+}
+
+#editorbar p.savemessage{
+    float:right;
+    font-family: ProximaLight;
+    margin-right: 25px;
+    font-size: 12px;
+    color: #8f8f8f;
+
+}
+
+.editorbarbutton {
+    font-family: ProximaLight;
+    font-size: 12px;
+    border-right: 1px solid #e6e6e6;
+    float:left;
+    min-width: 135px;
+}
+
+.editorbarbutton p{
+    line-height: 60px;
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 0;
+}
