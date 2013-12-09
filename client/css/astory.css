@@ -1,7 +1,7 @@
 body {
     padding: 0;
     margin: 0;
-    min-width: 840px;
+    min-width: 1000px;
 }
 
 @font-face
@@ -199,4 +199,20 @@ img.navlogo {
 
 .editorbarbutton img{
     margin-left: 20px;
+}
+/*EDITORBAR EINDIGT HIER */
+
+/*Assetmenu*/
+#assetmenu {
+    float:left;
+    width:345px;
+    min-width: 345px;
+    height: 100%;
+}
+
+#assetmenu select{
+    background-color: white;
+    width: 310px;
+    height:40px;
+    margin-left: 17px;
 }
