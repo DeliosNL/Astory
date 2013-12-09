@@ -28,7 +28,6 @@ body {
 /* Navbar */
 #navbar {
     background-color: #252525;
-    position: relative;
     min-height: 70px;
     border: 1px solid transparent;
 }
