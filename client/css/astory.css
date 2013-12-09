@@ -167,6 +167,10 @@ img.navlogo {
     margin-top: 0;
 }
 
+#previewbutton:hover {
+    background-color: #8f8f8f;
+}
+
 #editorbar p.savemessage{
     float:right;
     font-family: ProximaLight;
