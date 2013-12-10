@@ -316,6 +316,18 @@ p.assetmenudescription {
     max-height: 80px;
 }
 
+#editor {
+    width: calc(100% - 347px); /* - assetmenu width */
+    height: calc(100% - 60px - 70px - 125px); /* - top bars' height - scenemenu height */
+    float: left;
+}
+
+#scenemenu {
+    width: calc(100% - 347px); /* - assetmenu width */
+    height: 125px;
+    float: left;
+}
+
 /*
 light
 italic
