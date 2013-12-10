@@ -183,18 +183,11 @@ img.navlogo {
 }
 
 .editorbarbutton {
-    position: relative;
     font-family: ProximaLight;
     font-size: 12px;
     border-right: 1px solid #e6e6e6;
     float:left;
     min-width: 135px;
-    z-index: 2;
-}
-
-.editorbarbutton:hover {
-    background-color: white;
-    cursor: pointer;
 }
 
 .editorbarbutton p{
@@ -209,18 +202,6 @@ img.navlogo {
 .editorbarbutton img{
     margin-left: 20px;
 }
-
-.editorbardropdown {
-    min-width: 600px;
-    min-height: 315px;
-    position: absolute;
-    background-color: white;
-    border-right: 1px solid #e6e6e6;
-    border-left: 1px solid #e6e6e6;
-    border-bottom: 1px solid #e6e6e6;
-}
-
-
 /*EDITORBAR EINDIGT HIER */
 
 /*Assetmenu*/
@@ -263,13 +244,18 @@ p.assetmenudescription {
     border-bottom: 1px solid #f2f2f2;
 }
 
+.assetgroupswrapper {
+    overflow-y : auto;
+    overflow-x: hidden;
+    height: calc(100% - 135px);
+}
+
 .assetgroup {
     width: 300px;
     padding-right: 20px;
 }
 
 .assetgroupheader {
-    cursor: pointer;
     font-family: ProximaSemibold;
     font-size: 14px;
     text-transform : uppercase;
@@ -287,19 +273,6 @@ p.assetmenudescription {
 
 .assetgroupheader img{
     float:right;
-}
-
-.assetgroupheader img.hidden {
-    margin-right:2px;
-}
-
-.assetscontainer {
-}
-
-.assetgroupswrapper {
-    overflow-y : auto;
-    overflow-x: hidden;
-    height: calc(100% - 135px);
 }
 
 .assetwrapper {
@@ -321,6 +294,9 @@ p.assetmenudescription {
     color: #acadad;
     margin: 0;
     margin-top: 10px;
+}
+
+.assetscontainer {
 }
 
 .asset {
@@ -351,6 +327,7 @@ p.assetmenudescription {
     float: left;
     width: 100%;
     height: calc(100% - 125px);
+    background-color: #F4F3EC;
 }
 
 #scenemenu {
@@ -358,4 +335,40 @@ p.assetmenudescription {
     height: 125px;
     float: left;
 }
-/*EINDE ASSET BAR */
+
+.scene {
+    float: left;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 20px;
+}
+
+.scene:hover {
+    background-color: red;
+}
+
+.dots {
+    float: left;
+    position: relative;
+    top: 50px;
+    padding: 5px 10px 5px 10px;
+}
+
+.dots:hover {
+    background-color: green;
+}
+
+#plus {
+
+}
+
+/*
+light
+italic
+11
+*/
+/*
+regular
+13
+acadad
+*/
