@@ -9,19 +9,25 @@ aStory.controller('mainController', ['$scope', function ($location, $scope, $htt
 }]);
 
 aStory.controller('editorController', ['$scope', function ($scope) {
-    $scope.swapvisibility = function(visible){
-        if(visible){
+    $scope.swapvisibility = function (visible) {
+        if (visible) {
             return false
-        }else{
+        } else {
             return true;
         }
     };
 
-    $scope.setDropdownColor = function(id, visible){
-        if(visible){
-           document.getElementById(id).style.backgroundColor = "white";
-        } else {
-            document.getElementById(id).style.backgroundColor = "#f5f5f5";
+    $scope.setDropdownColor = function (id, currentlyvisible) {
+        if (currentlyvisible) { //Will be invisible soon
+            document.getElementById(id).style.backgroundColor = document.getElementById('editorbar').style.backgroundColor;
+        } else { //Will become visible soon
+            var editorbarbuttons =  document.getElementsByClassName('editorbarbutton');
+            for(var i = 0; i < editorbarbuttons.length; i++){
+                editorbarbuttons[i].style.backgroundColor = document.getElementById('editorbar').style.backgroundColor;
+            }
+            $scope.showscenarios = false;
+            $scope.showscenes = false;
+            document.getElementById(id).style.backgroundColor = "white";
         }
     };
 

@@ -45,11 +45,102 @@
     <p class="savemessage">Automatically saved at 16:42</p>
 
     <div class="editorbarbutton"><p>CURRENTLY IN</p></div>
-    <div class="editorbarbutton" id="scenariobutton" data-ng-click="showscenarios = swapvisibility(showscenarios); setDropdownColor('scenariobutton', showscenarios==true)">
-        <p><strong>Scenario 1:</strong> Slaying the dragon<img src="images/arrowdown2.png" alt="v"/></p>
-        <div class="editorbardropdown" data-ng-show="showscenarios">aaa</div>
+    <div class="editorbarbuttonwrapper">
+        <div class="editorbarbutton" id="scenariobutton"
+             data-ng-click="setDropdownColor('scenariobutton', showscenarios==true); showscenarios = swapvisibility(showscenarios);">
+            <p><strong>Scenario 1:</strong> Slaying the dragon<img src="images/arrowdown2.png" alt="v"/></p>
+        </div>
+
+        <div class="editorbardropdown" data-ng-show="showscenarios">
+            <button class="newscenariobutton">New scenario</button>
+            <div id="scenariolistheader">
+                <p>From</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Title</p>
+                <p class="right">To</p>
+            </div>
+            <div id="scenariolistcontainer">
+                <div id="scenarioswrapper">
+                    <div class="scenariocontainer">
+                        <div class="linkfromarea">
+                            <div class="linkfromblock">1</div>
+                            <div class="linkfromblock">2</div>
+                            <div class="linkfromblock">3</div>
+                            <div class="linkfromblock">4</div>
+                        </div>
+                        <p>Castel: The beginning of the journey</p>
+                        <div class="linktoarea">
+                            <div class="linktoblock">3</div>
+                            <div class="linktoblock">2</div>
+                            <div class="linktoblock">1</div>
+                            <div class="linktoblock">4</div>
+                        </div>
+                    </div>
+                    <p>edit</p>
+                    <div class="scenariocontainer">
+                        <div class="linkfromarea">
+                            <div class="linkfromblock">1</div>
+                            <div class="linkfromblock">2</div>
+                            <div class="linkfromblock">3</div>
+                            <div class="linkfromblock">4</div>
+                        </div>
+                        <p>Castel: The beginning of the journey</p>
+                        <div class="linktoarea">
+                            <div class="linktoblock">3</div>
+                            <div class="linktoblock">2</div>
+                            <div class="linktoblock">1</div>
+                            <div class="linktoblock">4</div>
+                        </div>
+                    </div>
+                    <p>edit</p>
+                    <div class="scenariocontainer">
+                        <div class="linkfromarea">
+                            <div class="linkfromblock">1</div>
+                            <div class="linkfromblock">2</div>
+                            <div class="linkfromblock">3</div>
+                            <div class="linkfromblock">4</div>
+                        </div>
+                        <p>Castel: The beginning of the journey</p>
+                        <div class="linktoarea">
+                            <div class="linktoblock">3</div>
+                            <div class="linktoblock">2</div>
+                            <div class="linktoblock">1</div>
+                            <div class="linktoblock">4</div>
+                        </div>
+                    </div>
+                    <p>edit</p>
+                    <div class="scenariocontainer">
+                        <div class="linkfromarea">
+                            <div class="linkfromblock">1</div>
+                            <div class="linkfromblock">2</div>
+                            <div class="linkfromblock">3</div>
+                            <div class="linkfromblock">4</div>
+                        </div>
+                        <p>Castel: The beginning of the journey</p>
+                        <div class="linktoarea">
+                            <div class="linktoblock">3</div>
+                            <div class="linktoblock">2</div>
+                            <div class="linktoblock">1</div>
+                            <div class="linktoblock">4</div>
+                        </div>
+                    </div>
+                    <p>edit</p>
+
+                </div>
+            </div>
+            <p class="helpmessage">Drag &amp; Drop to delete!</p>
+            <div class="trashcan"></div>
+        </div>
+
     </div>
-    <div class="editorbarbutton" id="scenebutton"><p><strong>Scene 1</strong><img src="images/arrowdown2.png" alt="v"/></p>
+    <div class="editorbarbuttonwrapper">
+        <div class="editorbarbutton" id="scenebutton"
+             data-ng-click="setDropdownColor('scenebutton', showscenes==true); showscenes = swapvisibility(showscenes);">
+            <p><strong>Scene 1</strong><img src="images/arrowdown2.png" alt="v"/></p>
+        </div>
+
+        <div class="editorbardropdown" data-ng-show="showscenes">aaa
+        </div>
+
     </div>
 </div>
 
@@ -88,20 +179,23 @@
     <div id="scenemenu">
         <div class="scene">
             <img src="images/johndoe.png" alt="scene 1"/>
+
             <p>Scéne 1</p>
         </div>
 
-        <div class = "dots"><img src="images/dots.png" alt="dots"/></div>
+        <div class="dots"><img src="images/dots.png" alt="dots"/></div>
 
         <div class="scene">
             <img src="images/johndoe.png" alt="scene 2"/>
+
             <p>Scéne 2</p>
         </div>
 
-        <div class = "dots"><img src="images/dots.png" alt="dots"/></div>
+        <div class="dots"><img src="images/dots.png" alt="dots"/></div>
 
         <div class="scene">
             <img src="images/johndoe.png" alt="scene 3"/>
+
             <p>Scéne 3</p>
         </div>
 
