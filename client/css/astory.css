@@ -183,11 +183,18 @@ img.navlogo {
 }
 
 .editorbarbutton {
+    position: relative;
     font-family: ProximaLight;
     font-size: 12px;
     border-right: 1px solid #e6e6e6;
     float:left;
     min-width: 135px;
+    z-index: 2;
+}
+
+.editorbarbutton:hover {
+    background-color: white;
+    cursor: pointer;
 }
 
 .editorbarbutton p{
@@ -202,6 +209,18 @@ img.navlogo {
 .editorbarbutton img{
     margin-left: 20px;
 }
+
+.editorbardropdown {
+    min-width: 600px;
+    min-height: 315px;
+    position: absolute;
+    background-color: white;
+    border-right: 1px solid #e6e6e6;
+    border-left: 1px solid #e6e6e6;
+    border-bottom: 1px solid #e6e6e6;
+}
+
+
 /*EDITORBAR EINDIGT HIER */
 
 /*Assetmenu*/
@@ -244,18 +263,13 @@ p.assetmenudescription {
     border-bottom: 1px solid #f2f2f2;
 }
 
-.assetgroupswrapper {
-    overflow-y : auto;
-    overflow-x: hidden;
-    height: calc(100% - 135px);
-}
-
 .assetgroup {
     width: 300px;
     padding-right: 20px;
 }
 
 .assetgroupheader {
+    cursor: pointer;
     font-family: ProximaSemibold;
     font-size: 14px;
     text-transform : uppercase;
@@ -273,6 +287,19 @@ p.assetmenudescription {
 
 .assetgroupheader img{
     float:right;
+}
+
+.assetgroupheader img.hidden {
+    margin-right:2px;
+}
+
+.assetscontainer {
+}
+
+.assetgroupswrapper {
+    overflow-y : auto;
+    overflow-x: hidden;
+    height: calc(100% - 135px);
 }
 
 .assetwrapper {
@@ -294,9 +321,6 @@ p.assetmenudescription {
     color: #acadad;
     margin: 0;
     margin-top: 10px;
-}
-
-.assetscontainer {
 }
 
 .asset {
@@ -334,14 +358,4 @@ p.assetmenudescription {
     height: 125px;
     float: left;
 }
-
-/*
-light
-italic
-11
-*/
-/*
-regular
-13
-acadad
-*/
+/*EINDE ASSET BAR */

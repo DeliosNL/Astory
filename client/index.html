@@ -45,26 +45,30 @@
     <p class="savemessage">Automatically saved at 16:42</p>
 
     <div class="editorbarbutton"><p>CURRENTLY IN</p></div>
-    <div class="editorbarbutton"><p><strong>Scenario 1:</strong> Slaying the dragon<img src="images/arrowdown2.png"
-                                                                                        alt="v"/></p></div>
-    <div class="editorbarbutton"><p><strong>Scene 1</strong><img src="images/arrowdown2.png" alt="v"/></p></div>
+    <div class="editorbarbutton" id="scenariobutton" data-ng-click="showscenarios = swapvisibility(showscenarios); setDropdownColor('scenariobutton', showscenarios==true)">
+        <p><strong>Scenario 1:</strong> Slaying the dragon<img src="images/arrowdown2.png" alt="v"/></p>
+        <div class="editorbardropdown" data-ng-show="showscenarios">aaa</div>
+    </div>
+    <div class="editorbarbutton" id="scenebutton"><p><strong>Scene 1</strong><img src="images/arrowdown2.png" alt="v"/></p>
+    </div>
 </div>
 
 <div id="assetmenu">
 
     <select>
         <option selected>SELECT ASSETGROUP</option>
-        <option>A</option>
-        <option>A</option>
-        <option>A</option>
+        <option data-ng-repeat="group in assetgroups">{{group.name}}</option>
     </select>
 
     <p class="assetmenudescription">Change assetgroup for other kinds of assets..</p>
 
     <div class="assetgroupswrapper">
         <div class="assetgroup" data-ng-repeat="group in assetgroups">
-            <div class="assetgroupheader"><p>{{group.name}}</p><img src="images/arrowdown3.png" alt="v"/></div>
-            <div class="assetscontainer">
+            <div class="assetgroupheader" data-ng-click="hidden = swapvisibility(hidden)"><p>{{group.name}}</p>
+                <img src="images/arrowdown3.png" alt="v" data-ng-show="!hidden"/>
+                <img src="images/arrowright3.png" class="hidden" alt="<" data-ng-show="hidden"/>
+            </div>
+            <div class="assetscontainer" ng-show="!hidden">
                 <div class="assetwrapper" data-ng-repeat="asset in group.assets">
                     <div class="asset"><img src="images/Assets/{{asset.image}}" alt="{asset.name}}"/></div>
                     <p>{{asset.description}}</p>
@@ -95,6 +99,7 @@
 </div>
 
 <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="./javascripts/lib/angular-animate.min.js"></script>
 <script src="./javascripts/lib/angular.min.js"></script>
 <script src="./javascripts/lib/angular-resource.min.js"></script>
 <script src="./javascripts/app.js"></script>

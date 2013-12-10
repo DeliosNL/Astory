@@ -9,6 +9,22 @@ aStory.controller('mainController', ['$scope', function ($location, $scope, $htt
 }]);
 
 aStory.controller('editorController', ['$scope', function ($scope) {
+    $scope.swapvisibility = function(visible){
+        if(visible){
+            return false
+        }else{
+            return true;
+        }
+    };
+
+    $scope.setDropdownColor = function(id, visible){
+        if(visible){
+           document.getElementById(id).style.backgroundColor = "white";
+        } else {
+            document.getElementById(id).style.backgroundColor = "#f5f5f5";
+        }
+    };
+
     $scope.assetgroups = [
         {
             name: "Most used assets",
