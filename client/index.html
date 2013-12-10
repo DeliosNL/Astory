@@ -12,26 +12,41 @@
 
 <div id="navbar">
     <img class="navlogo" src="images/Logo.png" alt="logo"/>
+
     <div class="navaccount">
         <img src="images/johndoe.png" alt="johndoe"/>
-        <div id = "accountstorywrapper">
+
+        <div id="accountstorywrapper">
             <p>John Doe</p>
+
             <div class="navstorybutton">15 stories</div>
         </div>
         <div id="navdropdownbutton"><img src="images/arrowdown.png" alt="v"/></div>
     </div>
-    <a href="#/stories"><div class="navlink">My stories</div></a>
-    <a href="#/library"><div class="navlink">Library</div></a>
-    <a href="#/Help"><div class="navlink">Help</div></a>
+    <a href="#/stories">
+        <div class="navlink">My stories</div>
+    </a>
+    <a href="#/library">
+        <div class="navlink">Library</div>
+    </a>
+    <a href="#/Help">
+        <div class="navlink">Help</div>
+    </a>
 </div>
+
 <div id="editorbar">
-    <a href="#/preview"><div id="previewbutton">
-        <p>PREVIEW</p>
-        <img src="images/arrowright.png" alt=">"/>
-    </div></a>
+    <a href="#/preview">
+        <div id="previewbutton">
+            <p>PREVIEW</p>
+            <img src="images/arrowright.png" alt=">"/>
+        </div>
+    </a>
+
     <p class="savemessage">Automatically saved at 16:42</p>
+
     <div class="editorbarbutton"><p>CURRENTLY IN</p></div>
-    <div class="editorbarbutton"><p><strong>Scenario 1:</strong> Slaying the dragon<img src="images/arrowdown2.png" alt="v"/></p></div>
+    <div class="editorbarbutton"><p><strong>Scenario 1:</strong> Slaying the dragon<img src="images/arrowdown2.png"
+                                                                                        alt="v"/></p></div>
     <div class="editorbarbutton"><p><strong>Scene 1</strong><img src="images/arrowdown2.png" alt="v"/></p></div>
 </div>
 
@@ -42,6 +57,39 @@
         <option>A</option>
         <option>A</option>
     </select>
+
+    <p class="assetmenudescription">Change assetgroup for other kinds of assets..</p>
+    <div class="assetgroupswrapper">
+        <div class="assetgroup">
+            <div class="assetgroupheader"><p>Most used assets</p><img src="images/arrowdown3.png" alt="v"/></div>
+            <div class="assetscontainer"></div>
+        </div>
+        <div class="assetgroup">
+            <div class="assetgroupheader"><p>Characters</p><img src="images/arrowdown3.png" alt="v"/></div>
+            <div class="assetscontainer">
+                <div class="assetwrapper">
+                    <div class="asset"><img src="images/Assets/Boom.png" alt="Boom"/></div>
+                    <p>Een mooie boom</p>
+                </div>
+                <div class="assetwrapper">
+                    <div class="asset"><img src="images/Assets/Hond.png" alt="Hond"/></div>
+                    <p>Coole hond</p>
+                </div>
+                <div class="assetwrapper-right">
+                    <div class="asset"><img src="images/Assets/Rendier.png" alt="Rendier"/></div>
+                    <p>Rendier</p>
+                </div>
+                <div class="assetwrapper">
+                    <div class="asset"><img src="images/Assets/Sneeuwpop.png" alt="Sneeuwpop"/></div>
+                    <p>Sneeuwpop is baas</p>
+                </div>
+                <div class="assetwrapper">
+                    <div class="asset"><img src="images/Assets/Achtergrond1A.png" alt="Achtergrond"/></div>
+                    <p>Mooie achtergrond alles</p>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div ng-view>
@@ -51,9 +99,9 @@
 <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
 <script src="./javascripts/lib/angular.min.js"></script>
 <script src="./javascripts/lib/angular-resource.min.js"></script>
-<script src = "./javascripts/app.js"></script>
-<script src = "./javascripts/controllers.js"></script>
-<script src = "./javascripts/services.js"></script>
-<script src = "./javascripts/directives.js"></script>
+<script src="./javascripts/app.js"></script>
+<script src="./javascripts/controllers.js"></script>
+<script src="./javascripts/services.js"></script>
+<script src="./javascripts/directives.js"></script>
 </body>
 </html>
