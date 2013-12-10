@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-ng-app="myApp" ng-controller="mainController">
+<html lang="en" data-ng-app="aStory" data-ng-controller="editorController">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -51,6 +51,7 @@
 </div>
 
 <div id="assetmenu">
+
     <select>
         <option selected>SELECT ASSETGROUP</option>
         <option>A</option>
@@ -59,37 +60,19 @@
     </select>
 
     <p class="assetmenudescription">Change assetgroup for other kinds of assets..</p>
+
     <div class="assetgroupswrapper">
-        <div class="assetgroup">
-            <div class="assetgroupheader"><p>Most used assets</p><img src="images/arrowdown3.png" alt="v"/></div>
-            <div class="assetscontainer"></div>
-        </div>
-        <div class="assetgroup">
-            <div class="assetgroupheader"><p>Characters</p><img src="images/arrowdown3.png" alt="v"/></div>
+        <div class="assetgroup" data-ng-repeat="group in assetgroups">
+            <div class="assetgroupheader"><p>{{group.name}}</p><img src="images/arrowdown3.png" alt="v"/></div>
             <div class="assetscontainer">
-                <div class="assetwrapper">
-                    <div class="asset"><img src="images/Assets/Boom.png" alt="Boom"/></div>
-                    <p>Een mooie boom</p>
-                </div>
-                <div class="assetwrapper">
-                    <div class="asset"><img src="images/Assets/Hond.png" alt="Hond"/></div>
-                    <p>Coole hond</p>
-                </div>
-                <div class="assetwrapper-right">
-                    <div class="asset"><img src="images/Assets/Rendier.png" alt="Rendier"/></div>
-                    <p>Rendier</p>
-                </div>
-                <div class="assetwrapper">
-                    <div class="asset"><img src="images/Assets/Sneeuwpop.png" alt="Sneeuwpop"/></div>
-                    <p>Sneeuwpop is baas</p>
-                </div>
-                <div class="assetwrapper">
-                    <div class="asset"><img src="images/Assets/Achtergrond1A.png" alt="Achtergrond"/></div>
-                    <p>Mooie achtergrond alles</p>
+                <div class="assetwrapper" data-ng-repeat="asset in group.assets">
+                    <div class="asset"><img src="images/Assets/{{asset.image}}" alt="{asset.name}}"/></div>
+                    <p>{{asset.description}}</p>
                 </div>
             </div>
         </div>
     </div>
+
 </div>
 
 <div id="editor">
@@ -99,6 +82,7 @@
 <div id="scenemenu">
     <div class="scene">
         <img src="images/johndoe.png" alt="scene 1"/>
+
         <p>Scéne 1</p>
     </div>
 </div>
