@@ -22,10 +22,12 @@ aStory.controller('editorController', ['$scope', function ($scope) {
             document.getElementById('navaccount').style.backgroundColor = "#FFFFFF";
             document.getElementById('navstorybutton').style.backgroundColor = "#dedede";
             document.getElementById('Accountname').style.color = "#545454";
+            document.getElementById('navdropdownbutton').style.backgroundColor = "#9f9f9f";
         } else {
             document.getElementById('navaccount').style.backgroundColor = document.getElementById('navbar').style.backgroundColor;
             document.getElementById('navstorybutton').style.backgroundColor = "#343434";
             document.getElementById('Accountname').style.color = "#e4e4e4";
+            document.getElementById('navdropdownbutton').style.backgroundColor = "#3f3f3f";
         }
     }
 
