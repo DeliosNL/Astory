@@ -5,7 +5,7 @@ html {
 body {
     padding: 0;
     margin: 0;
-    min-width: 1000px;
+    min-width: 1060px;
     height: 100%;
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -594,7 +594,7 @@ p.assetmenudescription {
     float: left;
     width: 100%;
     height: calc(100% - 125px);
-    background-color: #F4F3EC;
+    background-image: url('../images/noise.png');
 }
 
 /* Scènebalk */

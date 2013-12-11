@@ -38,7 +38,7 @@ aStory.controller('editorController', ['$scope', function ($scope) {
                 editorbarbuttons[i].style.backgroundColor = document.getElementById('editorbar').style.backgroundColor;
             }
             $scope.showscenarios = false;
-            document.getElementById(id).style.backgroundColor = "white";
+            document.getElementById(id).style.backgroundColor = "#ffffff";
         }
     };
 
