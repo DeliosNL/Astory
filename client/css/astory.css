@@ -517,7 +517,7 @@ p.assetmenudescription {
 
 #editorarea {
     float: left;
-    width: calc(100% - 355px); /* - assetmenu width */
+    width: calc(100% - 357px); /* - assetmenu width */
     height: calc(100% - 60px - 70px); /* - top bars' height */
 }
 
@@ -562,6 +562,16 @@ p.assetmenudescription {
     float: left;
     margin-top: 28px;
     padding: 10px;
+}
+
+#scenetrash {
+    background: url(../images/trashbin2.png) no-repeat 95%, 0%;
+    background-position: center;
+    background-color: #f5f5f5;
+    float: right;
+    height: 100%;
+    width: 125px;
+    border-left: solid 2px #F4F3EC;
 }
 
 /* EINDE SCÈNEBALK */
