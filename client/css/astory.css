@@ -7,6 +7,11 @@ body {
     margin: 0;
     min-width: 1000px;
     height: 100%;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: default;
 }
 
 @font-face
@@ -396,7 +401,7 @@ button.newscenariobutton {
     padding-right: 8px;
 }
 
-#assetmenu select{
+#assetmenu select {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
