@@ -13,15 +13,24 @@
 <div id="navbar">
     <img class="navlogo" src="images/Logo.png" alt="logo"/>
 
-    <div class="navaccount">
+    <div id="navaccount">
         <img src="images/johndoe.png" alt="johndoe"/>
 
         <div id="accountstorywrapper">
-            <p>John Doe</p>
+            <p id="Accountname">John Doe</p>
 
-            <div class="navstorybutton">15 stories</div>
+            <div id="navstorybutton">15 stories</div>
         </div>
-        <div id="navdropdownbutton"><img src="images/arrowdown.png" alt="v"/></div>
+        <div id="navdropdownbutton" data-ng-click="showaccountdropdown = swapvisibility(showaccountdropdown); setAccountDropdownColor(showaccountdropdown);">
+            <img src="images/arrowdown.png" data-ng-show="!showaccountdropdown" alt="v"/>
+            <img src="images/arrowup.png" data-ng-show="showaccountdropdown" alt="v"/>
+        </div>
+        <div id="accountdropdown" data-ng-show="showaccountdropdown">
+            <div id="accountdropdownbuttonwrapper">
+                <div class="accountdropdownbuttonprofile"><p>My profile settings</p></div>
+                <div class="accountdropdownbuttonlogout"><p>Logout</p></div>
+            </div>
+        </div>
     </div>
     <a href="#/stories">
         <div class="navlink">My stories</div>
@@ -44,7 +53,12 @@
 
     <p class="savemessage">Automatically saved at 16:42</p>
 
-    <div class="editorbarbutton"><p>CURRENTLY IN</p></div>
+    <div class="editorbaritem"><p>CURRENTLY IN</p></div>
+    <div class="editorbarbuttonwrapper">
+        <div class="editorbarbutton">
+            <p><strong>Story:</strong> The ultimate journey<img class = "settings" src="images/settingsbutton.png" alt="settings"/></p>
+        </div>
+    </div>
     <div class="editorbarbuttonwrapper">
         <div class="editorbarbutton" id="scenariobutton"
              data-ng-click="setDropdownColor('scenariobutton', showscenarios==true); showscenarios = swapvisibility(showscenarios);">
@@ -147,15 +161,8 @@
         </div>
 
     </div>
-    <div class="editorbarbuttonwrapper">
-        <div class="editorbarbutton" id="scenebutton"
-             data-ng-click="setDropdownColor('scenebutton', showscenes==true); showscenes = swapvisibility(showscenes);">
-            <p><strong>Scene 1</strong><img src="images/arrowdown2.png" alt="v"/></p>
-        </div>
-
-        <div class="editorbardropdown" data-ng-show="showscenes">aaa
-        </div>
-
+    <div class="editorbaritem">
+        <p><strong>Scene 1</strong></p>
     </div>
 </div>
 

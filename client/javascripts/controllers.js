@@ -11,13 +11,25 @@ aStory.controller('mainController', ['$scope', function ($location, $scope, $htt
 aStory.controller('editorController', ['$scope', function ($scope) {
     $scope.swapvisibility = function (visible) {
         if (visible) {
-            return false
+            return false;
         } else {
             return true;
         }
     };
 
-    $scope.setDropdownColor = function (id, currentlyvisible) {
+    $scope.setAccountDropdownColor = function(currentlyvisible){
+        if(currentlyvisible) {
+            document.getElementById('navaccount').style.backgroundColor = "#FFFFFF";
+            document.getElementById('navstorybutton').style.backgroundColor = "#dedede";
+            document.getElementById('Accountname').style.color = "#545454";
+        } else {
+            document.getElementById('navaccount').style.backgroundColor = document.getElementById('navbar').style.backgroundColor;
+            document.getElementById('navstorybutton').style.backgroundColor = "#343434";
+            document.getElementById('Accountname').style.color = "#e4e4e4";
+        }
+    }
+
+    $scope.setEditorbarDropdownColor = function (id, currentlyvisible) {
         if (currentlyvisible) { //Will be invisible soon
             document.getElementById(id).style.backgroundColor = document.getElementById('editorbar').style.backgroundColor;
         } else { //Will become visible soon
@@ -26,7 +38,6 @@ aStory.controller('editorController', ['$scope', function ($scope) {
                 editorbarbuttons[i].style.backgroundColor = document.getElementById('editorbar').style.backgroundColor;
             }
             $scope.showscenarios = false;
-            $scope.showscenes = false;
             document.getElementById(id).style.backgroundColor = "white";
         }
     };

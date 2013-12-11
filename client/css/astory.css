@@ -55,7 +55,7 @@ img.navlogo {
 }
 
 /* Rechter kant van de nav */
-.navlink, .navaccount{
+.navlink, #navaccount{
     height: 70px;
     color: #e4e4e4;
     font-size: 14px;
@@ -76,12 +76,16 @@ img.navlogo {
     background-color: #e23e1f;
 }
 
-.navaccount {
+#navaccount, #accountdropdown {
     min-width: 280px;
 }
 
+#navaccount {
+    position: relative;
+}
+
 /*Profielplaatje */
-.navaccount img{
+#navaccount img{
     margin-top: 5px;
     margin-left: 10px;
     float:left;
@@ -95,26 +99,27 @@ img.navlogo {
 }
 
 /*Accountnaam */
-.navaccount p{
+#navaccount p{
     font-family: Proxima;
     font-weight: bold;
     margin-top: 10px;
     margin-bottom: 8px;
 }
 
-.navstorybutton, #navdropdownbutton {
+#navstorybutton, #navdropdownbutton {
     font-family: Proxima;
     text-align: center;
     font-size: 12px;
 }
 
 /*Aantal stories button */
-.navstorybutton {
+#navstorybutton {
     width: 80px;
     height:20px;;
     border-radius: 20px;
     line-height: 20px;
-    background-color: #6a6a6a;
+    background-color: #343434;
+    color: #7d7d7d;
 }
 
 /*Navbar detail button */
@@ -125,15 +130,69 @@ img.navlogo {
     margin-top: 7px;
 }
 
+#navdropdownbutton:hover {
+    background-color: #e23e1f;
+    cursor: pointer;
+}
+
 #navdropdownbutton {
     float:right;
     width:20px;
     height:20px;
-    background-color: #545454;
+    background-color: #3f3f3f;
     margin-top: 20px;
     margin-right: 20px;
     line-height: 20px;
 }
+
+#accountdropdown {
+    margin-top: 70px;
+    position:absolute;
+    background-color: white;
+    height: 100px;
+}
+
+#accountdropdown li.settingsbutton {
+    list-style-image: url('../images/profileicon.png');
+    background-color: #e8e8e8;
+    height: 40px;
+}
+
+#accountdropdownbuttonwrapper {
+    position: absolute;
+    bottom: 0;
+    width: calc(100% - 16px);
+    margin-left: 8px;
+}
+
+.accountdropdownbuttonprofile p, .accountdropdownbuttonlogout p{
+    display: inline;
+    color: #545454;
+    font-family: ProximaLight;
+    line-height: 40px;
+    margin-left: 30px;
+}
+
+.accountdropdownbuttonprofile, .accountdropdownbuttonlogout {
+    height: 40px;
+    background-repeat: no-repeat;
+    background-position: 2%;
+    border-top: 1px solid #e8e8e8;
+}
+
+.accountdropdownbuttonprofile:hover, .accountdropdownbuttonlogout:hover {
+    background-color: #e8e8e8;
+    cursor: pointer;
+}
+
+.accountdropdownbuttonprofile{
+    background-image: url('../images/profileicon.png');
+}
+
+.accountdropdownbuttonlogout{
+    background-image: url('../images/logouticon.png');
+}
+
 /* NAVBAR EINDIGT HIER */
 #editorbar, #previewbutton {
     min-height: 60px;
@@ -192,7 +251,7 @@ img.navlogo {
     float:left;
 }
 
-.editorbarbutton {
+.editorbarbutton, .editorbaritem {
     position: relative;
     font-family: ProximaLight;
     font-size: 12px;
@@ -207,7 +266,7 @@ img.navlogo {
     cursor: pointer;
 }
 
-.editorbarbutton p{
+.editorbarbutton p, .editorbaritem p{
     line-height: 60px;
     text-align: center;
     margin-top: 0;
@@ -216,8 +275,13 @@ img.navlogo {
     margin-right: 20px;
 }
 
-.editorbarbutton img{
+.editorbarbutton img, .editorbarbutton img.settings{
     margin-left: 20px;
+}
+
+.editorbarbutton img.settings {
+    position: relative;
+    top:5px;
 }
 
 .editorbardropdown {
