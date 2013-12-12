@@ -17,6 +17,10 @@ aStory.config(['$httpProvider', '$locationProvider', '$routeProvider', function 
             templateUrl: 'partials/storyoverview.html',
             controller: 'overviewController'
         })
+        .when('/login', {
+            templateUrl: 'partials/login.html',
+            controller: 'loginController'
+        })
         .otherwise({
             redirectTo: '/'
         });
