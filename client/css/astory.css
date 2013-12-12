@@ -469,7 +469,7 @@ button.newscenariobutton {
     float:left;
     width:330px;
     min-width: 330px;
-    height: calc(100% - 130px);
+    height: 100%;
     padding-left: 17px;
     padding-right: 8px;
 }
@@ -589,7 +589,7 @@ p.assetmenudescription {
 #editorarea {
     float: left;
     width: calc(100% - 357px); /* - assetmenu width */
-    height: calc(100% - 60px - 70px); /* - top bars' height */
+    height: 100%; /* - top bars' height */
 }
 
 #editor {
