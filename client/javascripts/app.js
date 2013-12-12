@@ -11,7 +11,8 @@ var aStory = angular.module('aStory', [ 'ngResource']);
 
         $routeProvider
             .when('/', {
-                templateUrl: 'partials/home.html'
+                templateUrl: 'partials/editor.html',
+                controller: 'editorController'
             });
 
     }]);

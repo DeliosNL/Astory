@@ -1,0 +1,259 @@
+<div id="editorbar">
+    <a href="#/preview">
+        <div id="previewbutton">
+            <p>PREVIEW</p>
+            <img src="images/arrowright.png" alt=">"/>
+        </div>
+    </a>
+
+    <p class="savemessage">Automatically saved at 16:42</p>
+
+    <div class="editorbaritem"><p>CURRENTLY IN</p></div>
+    <div class="editorbarbuttonwrapper">
+        <div class="editorbarbutton">
+            <p><strong>Story:</strong> The ultimate journey<img class="settings" src="images/settingsbutton.png"
+                                                                alt="settings"/></p>
+        </div>
+    </div>
+    <div class="editorbarbuttonwrapper">
+        <div class="editorbarbutton" id="scenariobutton"
+             data-ng-click="setEditorbarDropdownColor('scenariobutton', showscenarios==true); showscenarios = swapvisibility(showscenarios);">
+            <p><strong>Scenario 1:</strong> Slaying the dragon<img src="images/arrowdown2.png" alt="v"/></p>
+        </div>
+
+        <div class="editorbardropdown" data-ng-show="showscenarios">
+            <button class="newscenariobutton">New scenario</button>
+            <div id="scenariolistheader">
+                <p>From</p>
+
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Title</p>
+
+                <p class="right">To</p>
+            </div>
+            <div id="scenariolistcontainer">
+                <div id="scenarioswrapper">
+                    <div class="scenariocontainer">
+                        <div class="linkfromarea">
+                            <div class="linkfromblock">1</div>
+                            <div class="linkfromblock">2</div>
+                            <div class="linkfromblock">3</div>
+                            <div class="linkfromblock">4</div>
+                        </div>
+                        <p>Castel: The beginning of the journey</p>
+
+                        <div class="linktoarea">
+                            <div class="linktoblock">3</div>
+                            <div class="linktoblock">2</div>
+                            <div class="linktoblock">1</div>
+                            <div class="linktoblock">4</div>
+                        </div>
+                    </div>
+                    <p>edit</p>
+
+                    <div class="scenariocontainer">
+                        <div class="linkfromarea">
+                            <div class="linkfromblock">1</div>
+                            <div class="linkfromblock">2</div>
+                            <div class="linkfromblock">3</div>
+                            <div class="linkfromblock">4</div>
+                        </div>
+                        <p>Castel: The beginning of the journey</p>
+
+                        <div class="linktoarea">
+                            <div class="linktoblock">3</div>
+                            <div class="linktoblock">2</div>
+                            <div class="linktoblock">1</div>
+                            <div class="linktoblock">4</div>
+                        </div>
+                    </div>
+                    <p>edit</p>
+
+                    <div class="scenariocontainer">
+                        <div class="linkfromarea">
+                            <div class="linkfromblock">1</div>
+                            <div class="linkfromblock">2</div>
+                            <div class="linkfromblock">3</div>
+                            <div class="linkfromblock">4</div>
+                        </div>
+                        <p>Castel: The beginning of the journey</p>
+
+                        <div class="linktoarea">
+                            <div class="linktoblock">3</div>
+                            <div class="linktoblock">2</div>
+                            <div class="linktoblock">1</div>
+                            <div class="linktoblock">4</div>
+                        </div>
+                    </div>
+                    <p>edit</p>
+
+                    <div class="scenariocontainer">
+                        <div class="linkfromarea">
+                            <div class="linkfromblock">1</div>
+                            <div class="linkfromblock">2</div>
+                            <div class="linkfromblock">3</div>
+                            <div class="linkfromblock">4</div>
+                        </div>
+                        <p>Castel: The beginning of the journey</p>
+
+                        <div class="linktoarea">
+                            <div class="linktoblock">3</div>
+                            <div class="linktoblock">2</div>
+                            <div class="linktoblock">1</div>
+                            <div class="linktoblock">4</div>
+                        </div>
+                    </div>
+                    <p>edit</p>
+
+                    <div class="scenariocontainer">
+                        <div class="linkfromarea">
+                            <div class="linkfromblock">1</div>
+                            <div class="linkfromblock">2</div>
+                            <div class="linkfromblock">3</div>
+                            <div class="linkfromblock">4</div>
+                        </div>
+                        <p>Castel: The beginning of the journey</p>
+
+                        <div class="linktoarea">
+                            <div class="linktoblock">3</div>
+                            <div class="linktoblock">2</div>
+                            <div class="linktoblock">1</div>
+                            <div class="linktoblock">4</div>
+                        </div>
+                    </div>
+                    <p>edit</p>
+                </div>
+            </div>
+            <p class="helpmessage">Drag &amp; Drop to delete!</p>
+
+            <div class="trashcan"></div>
+        </div>
+
+    </div>
+    <div class="editorbaritem">
+        <p><strong>Scene 1</strong></p>
+    </div>
+</div>
+
+<div id="assetmenu">
+
+    <select>
+        <option selected>SELECT ASSETGROUP</option>
+        <option data-ng-repeat="group in assetgroups">{{group.name}}</option>
+    </select>
+
+    <p class="assetmenudescription">Change assetgroup for other kinds of assets...</p>
+
+    <div class="assetgroupswrapper">
+        <div class="assetgroup" data-ng-repeat="group in assetgroups">
+            <div class="assetgroupheader" data-ng-click="hidden = swapvisibility(hidden)"><p>{{group.name}}</p>
+                <img src="images/arrowdown3.png" alt="v" data-ng-show="!hidden"/>
+                <img src="images/arrowright3.png" class="hidden" alt="<" data-ng-show="hidden"/>
+            </div>
+            <div class="assetscontainer" ng-show="!hidden">
+                <div class="assetwrapper" data-ng-repeat="asset in group.assets">
+                    <div class="asset"><img src="images/Assets/{{asset.image}}" alt="{asset.name}}"/></div>
+                    <p>{{asset.description}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div id="editorarea">
+    <div id="editor">
+
+    </div>
+    <div id="scenewrapper">
+        <div id="scenemenu">
+            <div class="scene">
+                <img src="images/sceneexample.png" alt="scene 1"/>
+
+                <p>Scéne 1</p>
+            </div>
+
+            <div class="dots"><img src="images/dots.png" alt="dots"/></div>
+
+            <div class="scene">
+                <img src="images/sceneexample.png" alt="scene 2"/>
+
+                <p>Scéne 2</p>
+            </div>
+
+            <div class="dots"><img src="images/dots.png" alt="dots"/></div>
+
+            <div class="scene">
+                <img src="images/sceneexample.png" alt="scene 3"/>
+
+                <p>Scéne 3</p>
+            </div>
+
+            <div class="dots"><img src="images/dots.png" alt="dots"/></div>
+
+            <div class="scene">
+                <img src="images/sceneexample.png" alt="scene 3"/>
+
+                <p>Scéne 3</p>
+            </div>
+
+            <div class="dots"><img src="images/dots.png" alt="dots"/></div>
+
+            <div class="scene">
+                <img src="images/sceneexample.png" alt="scene 3"/>
+
+                <p>Scéne 3</p>
+            </div>
+
+            <div class="dots"><img src="images/dots.png" alt="dots"/></div>
+
+            <div class="scene">
+                <img src="images/sceneexample.png" alt="scene 3"/>
+
+                <p>Scéne 3</p>
+            </div>
+
+            <div class="dots"><img src="images/dots.png" alt="dots"/></div>
+
+            <div class="scene">
+                <img src="images/sceneexample.png" alt="scene 3"/>
+
+                <p>Scéne 3</p>
+            </div>
+
+            <div class="dots"><img src="images/dots.png" alt="dots"/></div>
+
+            <div class="scene">
+                <img src="images/sceneexample.png" alt="scene 3"/>
+
+                <p>Scéne 3</p>
+            </div>
+
+            <div class="dots"><img src="images/dots.png" alt="dots"/></div>
+
+            <div class="scene">
+                <img src="images/sceneexample.png" alt="scene 3"/>
+
+                <p>Scéne 3</p>
+            </div>
+
+            <div class="dots"><img src="images/dots.png" alt="dots"/></div>
+
+            <div class="scene">
+                <img src="images/sceneexample.png" alt="scene 3"/>
+
+                <p>Scéne 3</p>
+            </div>
+
+            <div class="dots"><img src="images/dots.png" alt="dots"/></div>
+
+            <div class="scene">
+                <img src="images/sceneexample.png" alt="scene 3"/>
+
+                <p>Scéne 3</p>
+            </div>
+
+            <div id="plus"><img src="images/plusbutton.png" alt="dots"/></div>
+        </div>
+    </div>
+    <div id="scenetrash"></div>
+</div>

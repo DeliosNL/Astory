@@ -1,5 +1,11 @@
-aStory.directive('fileUploader', function() {
-
-});/**
- * Created by Delios on 12/2/13.
- */
+aStory.directive('storypopup', function() {
+    "use strict";
+    return {
+        restrict: 'E',
+        transclude: true,
+        scope: {},
+        templateUrl: '../partials/storypopup.html',
+        link: function (scope, element) {
+        }
+    };
+});
