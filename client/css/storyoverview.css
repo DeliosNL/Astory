@@ -1,0 +1,158 @@
+html {
+    height: 100%;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+    min-width: 1060px;
+    height: 100%;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: default;
+    background-image: url('../images/noise.png');
+}
+
+@font-face
+{
+    font-family: ProximaSemibold;
+    src: url('../fonts/Proxima/ProximaNova-Semibold.otf'),
+    url('../fonts/Proxima/ProximaNova-Semibold.otf'); /* IE9 */
+}
+
+@font-face
+{
+    font-family: Proxima;
+    src: url('../fonts/Proxima/ProximaNova-Regular.otf'),
+    url('../fonts/Proxima/ProximaNova-Regular.otf'); /* IE9 */
+}
+
+@font-face
+{
+    font-family: ProximaLight;
+    src: url('../fonts/Proxima/ProximaNova-Light.otf'),
+    url('../fonts/Proxima/ProximaNova-Light.otf'); /* IE9 */
+}
+
+@font-face
+{
+    font-family: ProximaBold;
+    src: url('../fonts/Proxima/ProximaNova-Bold.otf'),
+    url('../fonts/Proxima/ProximaNova-Bold.otf'); /* IE9 */
+}
+
+#titlewrapper {
+    width: 100%;
+    height: 40px;
+    border-bottom: 1px solid #e2e1e6;
+    background-color: white;
+}
+
+#titlebar {
+    width: 100%;
+    height: 40px;
+    font-family: ProximaSemibold;
+    font-size: 14px;
+    color: #161818;
+    float: left;
+    margin-left: 15%;
+    width: 70%;
+}
+
+#titlename {
+    float: left;
+    position: relative;
+    left: 160px;
+}
+
+#titledate {
+    float: left;
+    position: relative;
+    left: 600px;
+}
+
+.story {
+    float: left;
+    background-color: white;
+    width: 70%;
+    margin-left: 15%;
+    margin-top: 20px;
+    border-radius: 3px;
+}
+
+.storyimage, .storyname, .storydate {
+    float: left;
+    text-align: center;
+}
+
+.storysettings, .editbutton, .viewbutton, .sharebutton {
+    text-align: center;
+    float: right;
+    display: inline-table;
+}
+
+.storyname, .storydate, .storysettings {
+    position: relative;
+    top: 40px;
+    font-family: ProximaSemibold;
+    font-size: 13px;
+    color: #161818;
+    height: 13px;
+}
+
+.storyname p, .storydate p, .storysettings p {
+    margin: 0px;
+}
+
+.editbutton, .viewbutton {
+    background-color: #e23e1f;
+    position: relative;
+    top: 30px;
+    margin-left: 10px;
+    margin-right: 10px;
+    padding: 5px;
+    font-family: ProximaBold;
+    font-size: 12px;
+    color: white;
+}
+
+.editbutton p, .viewbutton p {
+    margin: 0;
+}
+
+.storyimage {
+    margin: 5px 10px 0px 10px;
+}
+
+.storyname {
+    position: relative;
+    left: 10px;
+    width: 460px;
+    text-align: left;
+    overflow: hidden;
+}
+
+.storydate {
+    position: relative;
+    left: 20px;
+    text-align: left;
+}
+
+.storysettings {
+    margin-right: 10px;
+    font-size: 11px;
+}
+
+.editbutton {
+
+}
+
+.viewbutton {
+
+}
+
+.sharebutton {
+
+}
