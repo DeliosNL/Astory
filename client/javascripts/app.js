@@ -3,7 +3,7 @@
 /**
  * @see http://docs.angularjs.org/guide/concepts
  */
-var aStory = angular.module('aStory', [ 'ngResource']);
+var aStory = angular.module('aStory', [ 'ngResource', 'ui.bootstrap']);
 
 aStory.config(['$httpProvider', '$locationProvider', '$routeProvider', function ($httpProvider, $locationProvider, $routeProvider) {
 

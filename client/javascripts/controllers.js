@@ -31,7 +31,25 @@ aStory.controller('headerController',['$scope', function($scope){
     }
 }]);
 
-aStory.controller('editorController', ['$scope', function ($scope) {
+aStory.controller('storypopupController', ['$scope', '$modalInstance', function($scope, $modalInstance){
+    $scope.close = function(){
+        $modalInstance.close();
+    }
+
+}]);
+
+aStory.controller('editorController', ['$scope', '$modal', function ($scope, $modal) {
+    $scope.showpopup = false;
+
+    $scope.showStoryPopup = function (){
+        var modalInstance = $modal.open({
+            templateUrl: '../partials/storypopup.html',
+            controller: 'storypopupController',
+            resolve: {
+            }
+        });
+    };
+      // $scope.showpopup = true;
 
     $scope.setEditorbarDropdownColor = function (id, currentlyvisible) {
         if (currentlyvisible) { //Will be invisible soon

@@ -293,7 +293,7 @@ img.navlogo {
 
 .editorbarbutton img.settings {
     position: relative;
-    top:5px;
+    top: 0px;
 }
 
 .editorbardropdown {
@@ -490,7 +490,6 @@ button.newscenariobutton {
     background-color: white;
     width: 310px;
     height:40px;
-    line-height: 40px;
     border: 1px solid #d3d3d3;
     background: url(../images/arrowdown3.png) no-repeat 95%, 0%;
     text-indent: 8px;
@@ -664,6 +663,8 @@ p.assetmenudescription {
     width: 100%;
     height: 100%;
     position: absolute;
+    top: 0;
+    left: 0;
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 100;
 }
@@ -707,8 +708,9 @@ p.assetmenudescription {
     height: 500px;
     background-color: white;
     position: absolute;
-    left: calc(50% - 415px);
-    top: calc(50% - 250px);
+    left: 50%;
+    top: 50%;
+    margin-left: -415px;
 }
 
 #popupcontaineraccount, .popupheader{
