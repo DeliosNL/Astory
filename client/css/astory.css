@@ -87,6 +87,11 @@ img.navlogo {
     min-width: 280px;
 }
 
+#accountdropdown {
+    box-shadow: 1px 3px 1px 1px #d3d3d3;
+    -moz-box-shadow: 1px 1px 1px 1px #d3d3d3;
+}
+
 #navaccount {
     position: relative;
 }
@@ -205,7 +210,7 @@ img.navlogo {
     min-height: 60px;
 }
 
-#editorbar{
+#editorbar {
     background-color: #f5f5f5;
 }
 
@@ -244,7 +249,7 @@ img.navlogo {
     background-color: #8f8f8f;
 }
 
-#editorbar p.savemessage{
+#editorbar p.savemessage {
     float:right;
     font-family: ProximaLight;
     margin-right: 25px;
@@ -273,7 +278,7 @@ img.navlogo {
     cursor: pointer;
 }
 
-.editorbarbutton p, .editorbaritem p{
+.editorbarbutton p, .editorbaritem p {
     line-height: 60px;
     text-align: center;
     margin-top: 0;
@@ -282,7 +287,7 @@ img.navlogo {
     margin-right: 20px;
 }
 
-.editorbarbutton img, .editorbarbutton img.settings{
+.editorbarbutton img, .editorbarbutton img.settings {
     margin-left: 20px;
 }
 
@@ -344,7 +349,7 @@ p.helpmessage {
     font-size: 13px;
 }
 
-#scenariolistheader p{
+#scenariolistheader p {
 }
 
 #scenariolistheader p.right{
@@ -386,7 +391,7 @@ p.helpmessage {
     background-repeat: no-repeat;
 }
 
-.scenariocontainer p{
+.scenariocontainer p {
     font-family: ProximaLight;
     width: 262px;
     display: inline-block;
@@ -418,11 +423,11 @@ p.helpmessage {
     background-color: #8eb2f4;
 }
 
-.linkfromblock:nth-child(1){
+.linkfromblock:nth-child(1) {
     background-color: #427fed;
 }
 
-.linkfromblock:nth-child(2){
+.linkfromblock:nth-child(2) {
     background-color: #719ff2;
 }
 
