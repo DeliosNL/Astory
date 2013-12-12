@@ -8,11 +8,18 @@ aStory.controller('mainController', ['$scope', function ($location, $scope, $htt
 
 }]);
 
-aStory.controller('loginController', ['$scope', function($scope){
-
+aStory.controller('loginController', ['$scope', function ($scope) {
 }]);
 
-aStory.controller('headerController',['$scope', function($scope){
+aStory.controller('headerController', ['$scope', '$rootScope', '$location', function ($scope, $rootScope, $location) {
+    $rootScope.$on("$routeChangeStart", function (event, next, current) {
+        if ($location.path() == '/login') {
+            $scope.loginpage = true;
+        } else {
+            $scope.loginpage = false;
+        }
+    });
+
     $scope.swapvisibility = function (visible) {
         if (visible) {
             return false;
@@ -20,8 +27,8 @@ aStory.controller('headerController',['$scope', function($scope){
         return true;
     };
 
-    $scope.setAccountDropdownColor = function(currentlyvisible){
-        if(currentlyvisible) {
+    $scope.setAccountDropdownColor = function (currentlyvisible) {
+        if (currentlyvisible) {
             document.getElementById('navaccount').style.backgroundColor = "#FFFFFF";
             document.getElementById('navstorybutton').style.backgroundColor = "#dedede";
             document.getElementById('Accountname').style.color = "#545454";
@@ -35,14 +42,14 @@ aStory.controller('headerController',['$scope', function($scope){
     }
 }]);
 
-aStory.controller('storypopupController', ['$scope', '$modalInstance', function($scope, $modalInstance){
-    $scope.close = function(){
+aStory.controller('storypopupController', ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+    $scope.close = function () {
         $modalInstance.close();
     };
 }]);
 
 aStory.controller('editorController', ['$scope', '$modal', function ($scope, $modal) {
-    $scope.showStoryPopup = function (){
+    $scope.showStoryPopup = function () {
         var modalInstance = $modal.open({
             templateUrl: '../partials/storypopup.html',
             controller: 'storypopupController',
@@ -50,14 +57,14 @@ aStory.controller('editorController', ['$scope', '$modal', function ($scope, $mo
             }
         });
     };
-      // $scope.showpopup = true;
+    // $scope.showpopup = true;
 
     $scope.setEditorbarDropdownColor = function (id, currentlyvisible) {
         if (currentlyvisible) { //Will be invisible soon
             document.getElementById(id).style.backgroundColor = document.getElementById('editorbar').style.backgroundColor;
         } else { //Will become visible soon
-            var editorbarbuttons =  document.getElementsByClassName('editorbarbutton');
-            for(var i = 0; i < editorbarbuttons.length; i++){
+            var editorbarbuttons = document.getElementsByClassName('editorbarbutton');
+            for (var i = 0; i < editorbarbuttons.length; i++) {
                 editorbarbuttons[i].style.backgroundColor = document.getElementById('editorbar').style.backgroundColor;
             }
             $scope.showscenarios = false;

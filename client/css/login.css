@@ -1,0 +1,91 @@
+#loginbackgroundwrapper {
+    background-image: url('../images/noise.png');
+    height: calc(100% + 70px);
+    width: 100%;
+}
+
+#loginfieldwrapper {
+    position: absolute;
+    height: 440px;
+    width: 320px;
+    top: 50%;
+    left: 50%;
+    margin-top: -220px;
+    margin-left: -160px;
+}
+
+#loginfieldwrapper form{
+    margin-bottom: 0px;
+}
+
+#loginfieldwrapper input {
+    width: 95%;
+    height: 35px;
+    border: 2px solid #d3d3d3;
+    border-radius: 3px;
+    margin-bottom: 15px;
+    font-family: Proxima;
+}
+
+#loginfieldwrapper label {
+    margin-left:  5px;
+}
+
+#loginfieldwrapper img {
+    margin: 0 auto 30px auto;
+    display: block;
+    width: 121px;
+    height: 137px;
+}
+
+#loginbottomwrapper button {
+    width: 50%;
+    height: 100%;
+    float:left;
+    background-color: #e23e1f;
+    border: none;
+    border-radius: 5px;
+    margin-top: 0;
+    font-family: ProximaBold;
+    font-size: 15px;
+    color: white;
+}
+
+#loginbottomwrapper {
+    height: 50px;
+    position: relative;
+    line-height: 50px;
+    margin-top: 10px;
+}
+
+#loginbottomwrapper input[type=checkbox]{
+    width: 18px;
+    height: 18px;
+    border: 2px solid #d3d3d3;
+    margin: 0;
+    margin-top: 16px;
+    float: left;
+    margin-left: 10px;
+}
+
+#loginbottomwrapper p {
+    margin: 0;
+    padding: 0;
+    line-height: 50px;
+    margin-left: 10px;
+    display: inline;
+    font-family: ProximaLight;
+    font-size: 15px;
+    color: #555555;
+}
+
+#loginfieldwrapper p.createaccount {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    margin: 0;
+    font-family: ProximaLight;
+    font-size: 14px;
+    color: #e23e1f;
+}
