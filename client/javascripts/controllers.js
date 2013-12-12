@@ -1,5 +1,5 @@
 /*jslint node: true, plusplus: true, todo: true  */
-/*globals  */
+/*globals document */
 
 "use strict";
 
@@ -8,13 +8,12 @@ aStory.controller('mainController', ['$scope', function ($location, $scope, $htt
 
 }]);
 
-aStory.controller('editorController', ['$scope', function ($scope) {
+aStory.controller('headerController',['$scope', function($scope){
     $scope.swapvisibility = function (visible) {
         if (visible) {
             return false;
-        } else {
-            return true;
         }
+        return true;
     };
 
     $scope.setAccountDropdownColor = function(currentlyvisible){
@@ -30,6 +29,9 @@ aStory.controller('editorController', ['$scope', function ($scope) {
             document.getElementById('navdropdownbutton').style.backgroundColor = "#3f3f3f";
         }
     }
+}]);
+
+aStory.controller('editorController', ['$scope', function ($scope) {
 
     $scope.setEditorbarDropdownColor = function (id, currentlyvisible) {
         if (currentlyvisible) { //Will be invisible soon

@@ -14,6 +14,9 @@ angular.module('myApp.services', ['ngResource'])
         db.cars = $resource('/stories/:_id', {}, actions);
         return db;
     }])
+    .factory('storyPopupService', [function(){
+
+    }]);
 
 aStory.service('$fileUpload', ['$http', function($http) {
 
