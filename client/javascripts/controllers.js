@@ -66,6 +66,26 @@ aStory.controller('storypopupController', ['$scope', '$modalInstance', function 
     };
 }]);
 
+aStory.controller('overviewController', ['$scope', '$modal', function($scope, $modal) {
+    $scope.showCreateStoryPopup = function () {
+        var modalInstance = $modal.open({
+            templateUrl: '../partials/createstorypopup.html',
+            controller: 'storypopupController',
+            resolve: {
+            }
+        });
+    };
+
+    $scope.showStoryPopup = function () {
+        var modalInstance = $modal.open({
+            templateUrl: '../partials/storypopup.html',
+            controller: 'storypopupController',
+            resolve: {
+            }
+        });
+    };
+}]);
+
 aStory.controller('editorController', ['$scope', '$modal', function ($scope, $modal) {
     $scope.showStoryPopup = function () {
         var modalInstance = $modal.open({

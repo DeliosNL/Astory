@@ -1,0 +1,146 @@
+/* Story settings popup */
+
+.popupheader {
+    line-height: 55px;
+    border-bottom: 1px solid #dadada;
+}
+
+.popupheader p {
+    border-right: 1px solid #f5f5f5;
+    width: calc(100% - 86px);
+    margin: 0;
+    margin-left: 30px;
+    font-family: ProximaBold;
+    font-size: 17px;
+    color: #484848;
+    float:left;
+}
+
+.popupheader, .popupclosebutton {
+    height: 55px;
+    background-color: #eaeaea;
+}
+
+.popupclosebutton {
+    float:left;
+    width: 54px;
+    border-left: 1px solid #dadada;
+    background-image: url('../images/closebutton.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    border-top-right-radius: 5px;
+}
+
+.popupclosebutton:hover {
+    cursor: pointer;
+}
+
+#popupcontainerstory {
+    height: 500px;
+    background-color: white;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -415px;
+}
+
+#popupcontainerstory, .popupheader{
+    width: 830px;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+}
+
+#popupcontainerstory h1 {
+    font-family: ProximaSemibold;
+    font-size: 20px;
+    color: #484848;
+    margin: 0;
+}
+
+#storypopupwrapper {
+    width: 785px;
+    height: 415px;
+    margin-left: 20px;
+    margin-top: 25px;
+    position: relative;
+}
+
+#storypopupwrapper p.edit {
+    color: #7c7c7c;
+    display: inline-block;
+    margin-left: 20px;
+    font-family: Proxima;
+    font-size: 15px;
+}
+
+#storypopupwrapper p.sharedescription {
+    font-family: Proxima;
+    font-size: 16px;
+    color: #6e6e6e;
+    margin-top: 15px;
+    margin-bottom: 30px;
+}
+
+input.checkboxes {
+    background-color: white;
+    margin-bottom: 10px;
+}
+
+p.checkboxdescription {
+    font-family: Proxima;
+    font-size: 15px;
+    color: #484848;
+    display: inline;
+    margin-left: 15px;
+}
+
+p.deletestorybutton, p.cancelstorybutton {
+    text-decoration: underline;
+    margin: 0;
+    line-height: 40px;
+    font-family: Proxima;
+    font-size: 15px;
+    position: absolute;
+    bottom: 0;
+}
+
+p.deletestorybutton {
+    color: #FF0000;
+}
+
+p.cancelstorybutton {
+    color: #767676;
+    right: 180px;
+}
+
+p.deletestorybutton:hover, p.cancelstorybutton:hover, p.edit {
+    cursor: pointer;
+}
+
+button.savestorybutton {
+    width: 150px;
+    height: 40px;
+    background-color: #e23e1f;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    font-family: ProximaSemibold;
+    font-size: 12px;
+    position: absolute;
+    bottom: 13px;
+    right: -5px;
+}
+
+input.popupinput {
+    margin-top: 25px;
+    margin-bottom: 30px;
+    width: 640px;
+    height: 45px;
+    padding-left: 20px;
+    background-color: #f7f7f7;
+    border: 1px solid #ebebeb;
+    border-radius: 5px;
+    font-family: ProximaSemibold;
+    font-size: 15px;
+    color: #4b4b4b;
+}
