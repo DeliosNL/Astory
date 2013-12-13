@@ -1,0 +1,47 @@
+<div id="backgroundwrapper">
+    <div id="registerfieldwrapper">
+        <img src="../images/inloglogo.png" alt="Logo">
+
+        <form role="form">
+            <div class="form-group">
+                <label for="usernameinput">Username</label>
+                <input type="email" class="form-control" id="usernameinput">
+            </div>
+            <div class="form-group"">
+                <label for="passwordinput" class="passwordlabel">Password</label>
+                <input type="password" class="form-control" id="passwordinput">
+            </div>
+            <div class="form-group">
+                <label for="emailinput">E-mail address</label>
+                <input type="text" class="form-control" id="emailinput">
+            </div>
+            <div class="form-group">
+                <label>Date of birth</label>
+                <div class="selectwrapperday">
+                    <select class="day">
+                        <option value="" selected disabled>Day</option>
+                        <option data-ng-repeat="day in days" value="day">{{day}}</option>
+                    </select>
+                </div>
+                <div class="selectwrappermonth">
+                    <select class="month">
+                        <option value="" selected disabled>Month</option>
+                        <option data-ng-repeat="i in [1,2,3,4,5,6,7,8,9,10,11,12]" value="i">{{months[i - 1]}}</option>
+                    </select>
+                </div>
+                <div class="selectwrapperyear">
+                    <select class="year">
+                        <option value="" selected disabled>Year</option>
+                        <option data-ng-repeat="year in years" value="year">{{year}}</option>
+                    </select>
+                </div>
+            </div>
+            <input type="checkbox"><p>Keep me updated on new features and changes</p>
+            <div id ="registerbottomwrapper">
+                <button>Register</button>
+            </div>
+            <a href="#/login"><p class="login">Log in to an existing account</p></a>
+        </form>
+
+    </div>
+</div>

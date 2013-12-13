@@ -1,0 +1,192 @@
+#backgroundwrapper {
+    background-image: url('../images/noise.png');
+    height: calc(100% + 70px);
+    width: 100%;
+}
+
+#loginfieldwrapper, #registerfieldwrapper {
+    width: 320px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -160px;
+}
+
+#loginfieldwrapper {
+    height: 440px;
+    margin-top: -220px;
+}
+
+#registerfieldwrapper {
+    height: 620px;
+    margin-top: -315px;
+}
+
+#loginfieldwrapper form, #registerfieldwrapper form{
+    margin-bottom: 0px;
+}
+
+#loginfieldwrapper input, #registerfieldwrapper input {
+    width: 306px;
+    padding-right: 0;
+    padding-left: 10px;
+    height: 35px;
+    border: 2px solid #d3d3d3;
+    border-radius: 3px;
+    margin-bottom: 15px;
+    font-family: Proxima;
+}
+
+#loginfieldwrapper label, #registerfieldwrapper label {
+    font-family: ProximaLight;
+    font-size: 14px;
+    color: #747474;
+    margin-left:  5px;
+}
+
+#registerfieldwrapper label {
+    margin-bottom: 0;
+}
+
+#registerfieldwrapper label.passwordlabel:after{
+    position: absolute;
+    right: 0;
+    color: #9f9f9f;
+    content: "Has to be at least 6 characters";
+}
+
+#loginfieldwrapper img , #registerfieldwrapper img{
+    margin: 0 auto 30px auto;
+    display: block;
+    width: 121px;
+    height: 137px;
+}
+
+#loginbottomwrapper button, #registerfieldwrapper button {
+    width: 50%;
+    height: 100%;
+    float:left;
+    background-color: #e23e1f;
+    border: none;
+    border-radius: 5px;
+    margin-top: 0;
+    font-family: ProximaBold;
+    font-size: 15px;
+    color: white;
+}
+
+#loginbottomwrapper, #registerbottomwrapper {
+    height: 50px;
+    position: relative;
+    line-height: 50px;
+}
+
+#loginbottomwrapper {
+    margin-top: 10px;
+}
+
+#registerbottomwrapper {
+    margin-top: 0;
+}
+
+#loginbottomwrapper input[type=checkbox], #registerfieldwrapper input[type=checkbox]{
+    width: 18px;
+    height: 18px;
+    border: 2px solid #d3d3d3;
+    margin: 0;
+    margin-top: 16px;
+    float: left;
+}
+
+#loginbottomwrapper input[type=checkbox]{
+    margin-left: 10px;
+}
+
+#registerfieldwrapper input[type=checkbox]{
+    margin-left: 2px;
+}
+
+#loginbottomwrapper p, #registerfieldwrapper p {
+    margin: 0;
+    padding: 0;
+    line-height: 50px;
+    margin-left: 10px;
+    display: inline;
+    font-family: ProximaLight;
+    color: #555555;
+}
+
+#loginbottomwrapper p {
+    font-size: 15px;
+}
+
+#registerfieldwrapper p {
+    font-size: 14px;
+    margin-left: 4px;
+    line-height: 51px;
+}
+
+#loginfieldwrapper p.createaccount, #registerfieldwrapper p.login {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    margin: 0;
+    font-family: ProximaLight;
+    font-size: 14px;
+    color: #e23e1f;
+}
+
+.selectwrapperday, .selectwrappermonth, .selectwrapperyear {
+    background-color: white;
+    border-radius: 4px;
+    float: left;
+}
+
+#registerfieldwrapper select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    font-family: ProximaLight;
+    display: inline;
+    font-size: 13px;
+    border-radius: 4px;
+    border: 2px solid #d3d3d3;
+    background: url(../images/dropdownbutton.png) no-repeat 90%, 0%;
+    text-overflow: '';
+    text-indent : 3px;
+    margin: 0;
+    padding: 0;
+    height: 35px;
+}
+
+#registerfieldwrapper select option {
+    color: black;
+}
+#registerfieldwrapper select option:first-child { color: #9f9f9f; }
+#registerfieldwrapper select.empty { color: #9f9f9f; }
+#registerfieldwrapper select option[disabled]:first-child { display: none; }
+
+/* 320px - 265 = 55*/
+#registerfieldwrapper select.day, .selectwrapperday {
+    width: 75px;
+}
+
+#registerfieldwrapper select.month, .selectwrappermonth {
+    width: 100px;
+}
+
+.selectwrappermonth {
+    margin-left: 28px;
+}
+
+#registerfieldwrapper select.year, .selectwrapperyear {
+    width: 90px;
+}
+
+.selectwrapperyear {
+    margin-left: 27px;
+}
+
+/* Hidden placeholder */
+#registerfieldwrapper select option[disabled]:first-child { display: none; }

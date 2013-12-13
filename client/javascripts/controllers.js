@@ -4,16 +4,34 @@
 "use strict";
 
 aStory.controller('mainController', ['$scope', function ($location, $scope, $http) {
+    //TODO: invullen
+}]);
 
+aStory.controller('registerController', ['$scope', function($scope){
+    $scope.days = [];
+    for(var i = 0; i <= 31; i++){
+        $scope.days.push(i);
+    }
 
+    $scope.months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+    $scope.years = [];
+    for(var i = new Date().getFullYear(); i >= 1900; i--){
+        $scope.years.push(i);
+    }
+
+    $("select:has(option[value=]:first-child)").on('change', function() {
+        $(this).toggleClass("empty", $.inArray($(this).val(), ['', null]) >= 0);
+    }).trigger('change');
 }]);
 
 aStory.controller('loginController', ['$scope', function ($scope) {
+    //TODO: invullen
 }]);
 
 aStory.controller('headerController', ['$scope', '$rootScope', '$location', function ($scope, $rootScope, $location) {
     $rootScope.$on("$routeChangeStart", function (event, next, current) {
-        if ($location.path() == '/login') {
+        if ($location.path() === '/login' || $location.path() === '/register') {
             $scope.loginpage = true;
         } else {
             $scope.loginpage = false;
