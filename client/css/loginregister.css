@@ -1,5 +1,4 @@
 #backgroundwrapper {
-    background-image: url('../images/noise.png');
     height: calc(100% + 70px);
     width: 100%;
 }
@@ -140,7 +139,10 @@
 .selectwrapperday, .selectwrappermonth, .selectwrapperyear {
     background-color: white;
     border-radius: 4px;
-    float: left;
+    display: inline-block;
+    border: 2px solid #d3d3d3;
+    height: 30px;
+    padding: 0;
 }
 
 #registerfieldwrapper select {
@@ -150,14 +152,13 @@
     font-family: ProximaLight;
     display: inline;
     font-size: 13px;
-    border-radius: 4px;
-    border: 2px solid #d3d3d3;
+    border: 0;
     background: url(../images/dropdownbutton.png) no-repeat 90%, 0%;
     text-overflow: '';
-    text-indent : 3px;
     margin: 0;
-    padding: 0;
-    height: 35px;
+    padding-top: 4px;
+    text-indent : 3px;
+    background-color: white;
 }
 
 #registerfieldwrapper select option {
@@ -167,7 +168,9 @@
 #registerfieldwrapper select.empty { color: #9f9f9f; }
 #registerfieldwrapper select option[disabled]:first-child { display: none; }
 
-/* 320px - 265 = 55*/
+/* 320px - 75 - 100 - 90 - 12 =
+
+79 + 125 + 104 = */
 #registerfieldwrapper select.day, .selectwrapperday {
     width: 75px;
 }
@@ -177,7 +180,7 @@
 }
 
 .selectwrappermonth {
-    margin-left: 28px;
+    margin-left: 16px;
 }
 
 #registerfieldwrapper select.year, .selectwrapperyear {
@@ -185,7 +188,7 @@
 }
 
 .selectwrapperyear {
-    margin-left: 27px;
+    margin-left: 16px;
 }
 
 /* Hidden placeholder */

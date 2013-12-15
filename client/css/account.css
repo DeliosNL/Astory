@@ -1,0 +1,95 @@
+
+#accountpagetopwrapper {
+    position: relative;
+    height: 175px;
+}
+
+h1.accountpagetitle {
+    font-family: ProximaSemibold;
+    text-transform: uppercase;
+    font-size: 24px;
+    color: #5c5c5c;
+    margin: 0;
+    position: absolute;
+    bottom: 0;
+}
+
+h1.accountpagetitle, #accountbackgroundwrapper img.profilethumbnail{
+    margin-left: 310px;
+}
+
+#accountbackgroundwrapper {
+    position: relative;
+    background-color: white;
+    width: 100%;
+    height: 240px;
+}
+
+#accountbackgroundwrapper img.profilethumbnail {
+    width: 60px;
+    height: 60px;
+}
+
+#accountbackgroundwrapper img.profilethumbnail, #accountinfocontainer {
+    margin-top: 12px;
+}
+
+#accountinfocontainer {
+    position: absolute;
+    top: 0;
+    left: 380px;
+    width: 660px;
+}
+
+.accountinfocategorywrapper {
+    width: 300px;
+    max-width: 300px;
+    margin-bottom: 15px;
+    margin-right: 26px; /*Inline-block zorgt somehow automatisch voor 4pixels extra, dus 30-4=26 */
+    border: 0;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.accountinfocategoryheaderwrapper {
+    height: 16px;
+    padding-bottom: 2px;
+    border-bottom: 1px solid #d3d3d3;
+}
+
+.accountinfocategorywrapper h1 {
+    display: inline;
+    font-size: 14px;
+    line-height: 16px;
+    font-family: ProximaSemibold;
+    color: #5c5c5c;
+    margin: 0;
+    padding: 0;
+    text-transform: uppercase;
+}
+
+.categoryheaderedittext {
+    display: inline;
+    float: right;
+    font-family: ProximaLight;
+    color: #e23e1f;
+    cursor: pointer;
+}
+
+.accountinfofieldwrapper {
+    width: 100%;
+    position: relative;
+}
+
+#accountinfocontainer p.fieldtext, #accountinfocontainer p.fieldvalue {
+    font-size: 14px;
+    font-family: ProximaLight;
+    color: #5c5c5c;
+    display: inline;
+}
+
+#accountinfocontainer p.fieldvalue{
+    text-align: right;
+    position: absolute;
+    right: 0;
+}

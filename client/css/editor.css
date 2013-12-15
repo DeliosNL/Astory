@@ -270,6 +270,7 @@ button.newscenariobutton {
     height: calc(100% - 60px);
     padding-left: 17px;
     padding-right: 8px;
+    background-color: white;
 }
 
 #assetmenu select {
@@ -282,6 +283,7 @@ button.newscenariobutton {
     border-radius: 4px;
     margin-top: 30px;
     background-color: white;
+    text-overflow: '';
     width: 310px;
     border: 1px solid #d3d3d3;
     background: url(../images/arrowdown3.png) no-repeat 95%, 0%;
@@ -392,7 +394,6 @@ p.assetmenudescription {
     float: left;
     width: 100%;
     height: calc(100% - 125px);
-    background-image: url('../images/noise.png');
 }
 
 /* Scènebalk */
@@ -401,6 +402,7 @@ p.assetmenudescription {
     width: calc(100% - 126px); /* - trash can width */
     float: left;
     overflow: auto;
+    background-color: white;
 }
 
 #scenemenu {

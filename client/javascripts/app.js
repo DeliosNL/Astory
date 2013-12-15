@@ -25,6 +25,10 @@ aStory.config(['$httpProvider', '$locationProvider', '$routeProvider', function 
             templateUrl: 'partials/register.html',
             controller: 'registerController'
         })
+        .when('/account', {
+            templateUrl: 'partials/account.html',
+            controller: 'accountController'
+        })
         .otherwise({
             redirectTo: '/'
         });

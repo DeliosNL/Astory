@@ -10,6 +10,7 @@
     <link href="css/editor.css" rel="stylesheet"/>
     <link href="css/login.css" rel="stylesheet"/>
     <link href="css/popup.css" rel="stylesheet"/>
+    <link href="css/account.css" rel="stylesheet">
     <link href="css/loginregister.css" rel="stylesheet"/>
 </head>
 
@@ -33,7 +34,7 @@
         </div>
         <div id="accountdropdown" data-ng-show="showaccountdropdown">
             <div id="accountdropdownbuttonwrapper">
-                <div class="accountdropdownbuttonprofile"><p>My profile settings</p></div>
+                <a href="#/account" data-ng-click="showaccountdropdown = false; setAccountDropdownColor(showaccountdropdown);"><div class="accountdropdownbuttonprofile"><p>My profile settings</p></div></a>
                 <a href="#/login"><div class="accountdropdownbuttonlogout"><p>Logout</p></div></a>
             </div>
         </div>
