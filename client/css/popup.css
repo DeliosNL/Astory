@@ -35,8 +35,7 @@
     cursor: pointer;
 }
 
-#popupcontainerstory {
-    height: 500px;
+#popupcontainer {
     background-color: white;
     position: absolute;
     left: 50%;
@@ -44,28 +43,28 @@
     margin-left: -415px;
 }
 
-#popupcontainerstory, .popupheader{
+#popupcontainer, .popupheader{
     width: 830px;
     border-top-right-radius: 5px;
     border-top-left-radius: 5px;
 }
 
-#popupcontainerstory h1 {
+#popupcontainer h1 {
     font-family: ProximaSemibold;
     font-size: 20px;
     color: #484848;
     margin: 0;
 }
 
-#storypopupwrapper {
+#popupwrapper {
     width: 785px;
-    height: 415px;
+    padding-bottom: 40px;
     margin-left: 20px;
     margin-top: 25px;
     position: relative;
 }
 
-#storypopupwrapper p.edit {
+#popupwrapper p.edit {
     color: #7c7c7c;
     display: inline-block;
     margin-left: 20px;
@@ -73,7 +72,7 @@
     font-size: 15px;
 }
 
-#storypopupwrapper p.sharedescription {
+#popupwrapper p.sharedescription {
     font-family: Proxima;
     font-size: 16px;
     color: #6e6e6e;
@@ -94,7 +93,7 @@ p.checkboxdescription {
     margin-left: 15px;
 }
 
-p.deletestorybutton, p.cancelstorybutton {
+p.bottomleftredtext, p.cancelstorybutton {
     text-decoration: underline;
     margin: 0;
     line-height: 40px;
@@ -104,7 +103,7 @@ p.deletestorybutton, p.cancelstorybutton {
     bottom: 0;
 }
 
-p.deletestorybutton {
+p.bottomleftredtext {
     color: #FF0000;
 }
 
@@ -113,11 +112,11 @@ p.cancelstorybutton {
     right: 180px;
 }
 
-p.deletestorybutton:hover, p.cancelstorybutton:hover, p.edit {
+p.bottomleftredtext:hover, p.cancelstorybutton:hover, p.edit {
     cursor: pointer;
 }
 
-button.savestorybutton {
+button.bottomrightbutton {
     width: 150px;
     height: 40px;
     background-color: #e23e1f;
@@ -132,7 +131,7 @@ button.savestorybutton {
 }
 
 input.popupinput {
-    margin-top: 25px;
+    margin-top: 20px;
     margin-bottom: 30px;
     width: 640px;
     height: 45px;

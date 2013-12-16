@@ -1,7 +1,7 @@
 module.exports = {
     development: {
         db: 'mongodb://localhost/astory',
-        port: 4000
+        port: 8500
     }, test: {
 
     }, production: {

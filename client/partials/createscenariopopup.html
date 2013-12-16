@@ -1,0 +1,12 @@
+<div id="popupcontainer" class="createscenario">
+    <div class="popupheader">
+        <p>New scenario</p>
+        <div class="popupclosebutton" data-ng-click="close()"></div>
+    </div>
+    <div id="popupwrapper">
+        <h1>Name your scenario</h1>
+        <input class="popupinput" type="text" placeholder="Enter a scenario name" data-ng-model="newscenarioname">
+        <p class="bottomleftredtext" data-ng-click="close()">Cancel</p>
+        <button class="bottomrightbutton" data-ng-click="addScenario(newscenarioname);">Make</button>
+    </div>
+</div>
