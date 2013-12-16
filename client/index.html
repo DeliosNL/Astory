@@ -12,6 +12,9 @@
     <link href="css/popup.css" rel="stylesheet"/>
     <link href="css/account.css" rel="stylesheet">
     <link href="css/loginregister.css" rel="stylesheet"/>
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="./javascripts/lib/angular-animate.min.js"></script>
+    <script src="./javascripts/lib/angular.min.js"></script>
 </head>
 
 <body>
@@ -30,9 +33,9 @@
         <div id="navdropdownbutton"
              data-ng-click="showaccountdropdown = swapvisibility(showaccountdropdown); setAccountDropdownColor(showaccountdropdown);">
             <img src="images/arrowdown.png" data-ng-show="!showaccountdropdown" alt="v"/>
-            <img src="images/arrowup.png" data-ng-show="showaccountdropdown" alt="v"/>
+            <img ng-cloak src="images/arrowup.png" data-ng-show="showaccountdropdown" alt="v"/>
         </div>
-        <div id="accountdropdown" data-ng-show="showaccountdropdown">
+        <div ng-cloak id="accountdropdown" data-ng-show="showaccountdropdown">
             <div id="accountdropdownbuttonwrapper">
                 <a href="#/account" data-ng-click="showaccountdropdown = false; setAccountDropdownColor(showaccountdropdown);"><div class="accountdropdownbuttonprofile"><p>My profile settings</p></div></a>
                 <a href="#/login"><div class="accountdropdownbuttonlogout"><p>Logout</p></div></a>
@@ -53,10 +56,6 @@
 <div ng-view style="height: calc(100% - 70px)">
     <!-- HIER KOMEN DE PARTIALS, NIKS ANDERS IN ZETTEN  -->
 </div>
-
-<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-<script src="./javascripts/lib/angular-animate.min.js"></script>
-<script src="./javascripts/lib/angular.min.js"></script>
 <script src="./javascripts/lib/angular-resource.min.js"></script>
 <script src="./javascripts/lib/ui-bootstrap-custom-0.7.0.min.js"></script>
 <script src="./javascripts/lib/ui-bootstrap-custom-tpls-0.7.0.min.js"></script>

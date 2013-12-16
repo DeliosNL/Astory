@@ -76,7 +76,7 @@
         <div class="assetgroup" data-ng-repeat="group in assetgroups">
             <div class="assetgroupheader" data-ng-click="hidden = swapvisibility(hidden)"><p>{{group.name}}</p>
                 <img src="images/arrowdown3.png" alt="v" data-ng-show="!hidden"/>
-                <img src="images/arrowright3.png" class="hidden" alt="<" data-ng-show="hidden"/>
+                <img ng-cloak src="images/arrowright3.png" class="hidden" alt="<" data-ng-show="hidden"/>
             </div>
             <div class="assetscontainer" ng-show="!hidden">
                 <div class="assetwrapper" data-ng-repeat="asset in group.assets">
