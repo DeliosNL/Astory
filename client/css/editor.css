@@ -161,6 +161,7 @@ p.helpmessage {
 
 #scenarioswrapper {
     height: 215px;
+    width: 430px;
     margin-left: 15px;
     direction: ltr;
 }
