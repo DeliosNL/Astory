@@ -197,4 +197,40 @@ aStory.controller('editorController', ['$scope', '$modal', function ($scope, $mo
             ]
         }
     ];
+
+    $scope.scenes = [
+        {
+            "image": "sceneexample.png"
+        },
+        {
+            "image": "sceneexample.png"
+        },
+        {
+            "image": "sceneexample.png"
+        },
+        {
+            "image": "sceneexample.png"
+        },
+        {
+            "image": "sceneexample.png"
+        },
+        {
+            "image": "sceneexample.png"
+        },
+        {
+            "image": "sceneexample.png"
+        },
+        {
+            "image": "sceneexample.png"
+        },
+        {
+            "image": "sceneexample.png"
+        },
+        {
+            "image": "sceneexample.png"
+        },
+        {
+            "image": "sceneexample.png"
+        }
+    ]
 }]);

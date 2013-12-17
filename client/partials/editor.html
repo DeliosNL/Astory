@@ -79,7 +79,7 @@
             </div>
             <div class="assetscontainer" ng-show="!hidden">
                 <div class="assetwrapper" data-ng-repeat="asset in group.assets">
-                    <div class="asset"><img src="images/Assets/{{asset.image}}" alt="{asset.name}}"/></div>
+                    <div class="asset"><img src="images/Assets/{{asset.image}}" alt="{{asset.name}}"/></div>
                     <p>{{asset.description}}</p>
                 </div>
             </div>
@@ -92,95 +92,19 @@
     <div id="editor">
 
     </div>
-    <div id="scenewrapper">
-        <div id="scenemenu">
-            <div class="scene">
-                <img src="images/sceneexample.png" alt="scene 1"/>
 
-                <p>Scéne 1</p>
+    <div id="scenemenu">
+        <div id="sceneitem" data-ng-repeat="scene in scenes">
+            <div id="scene">
+                <img src="images/{{scene.image}}" alt="scene {{$index + 1}}"/>
+                <p>Scéne {{$index + 1}}</p>
             </div>
-
-            <div class="dots"><img src="images/dots.png" alt="dots"/></div>
-
-            <div class="scene">
-                <img src="images/sceneexample.png" alt="scene 2"/>
-
-                <p>Scéne 2</p>
+            <div id="dots" data-ng-hide="$last">
+                <img src="images/dots.png" alt="dots"/>
             </div>
-
-            <div class="dots"><img src="images/dots.png" alt="dots"/></div>
-
-            <div class="scene">
-                <img src="images/sceneexample.png" alt="scene 3"/>
-
-                <p>Scéne 3</p>
-            </div>
-
-            <div class="dots"><img src="images/dots.png" alt="dots"/></div>
-
-            <div class="scene">
-                <img src="images/sceneexample.png" alt="scene 3"/>
-
-                <p>Scéne 3</p>
-            </div>
-
-            <div class="dots"><img src="images/dots.png" alt="dots"/></div>
-
-            <div class="scene">
-                <img src="images/sceneexample.png" alt="scene 3"/>
-
-                <p>Scéne 3</p>
-            </div>
-
-            <div class="dots"><img src="images/dots.png" alt="dots"/></div>
-
-            <div class="scene">
-                <img src="images/sceneexample.png" alt="scene 3"/>
-
-                <p>Scéne 3</p>
-            </div>
-
-            <div class="dots"><img src="images/dots.png" alt="dots"/></div>
-
-            <div class="scene">
-                <img src="images/sceneexample.png" alt="scene 3"/>
-
-                <p>Scéne 3</p>
-            </div>
-
-            <div class="dots"><img src="images/dots.png" alt="dots"/></div>
-
-            <div class="scene">
-                <img src="images/sceneexample.png" alt="scene 3"/>
-
-                <p>Scéne 3</p>
-            </div>
-
-            <div class="dots"><img src="images/dots.png" alt="dots"/></div>
-
-            <div class="scene">
-                <img src="images/sceneexample.png" alt="scene 3"/>
-
-                <p>Scéne 3</p>
-            </div>
-
-            <div class="dots"><img src="images/dots.png" alt="dots"/></div>
-
-            <div class="scene">
-                <img src="images/sceneexample.png" alt="scene 3"/>
-
-                <p>Scéne 3</p>
-            </div>
-
-            <div class="dots"><img src="images/dots.png" alt="dots"/></div>
-
-            <div class="scene">
-                <img src="images/sceneexample.png" alt="scene 3"/>
-
-                <p>Scéne 3</p>
-            </div>
-
-            <div id="plus"><img src="images/plusbutton.png" alt="dots"/></div>
+        </div>
+        <div id="plus">
+            <img src="images/plusbutton.png" alt="plus"/>
         </div>
     </div>
     <div id="scenetrash"></div>
