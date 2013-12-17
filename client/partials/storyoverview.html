@@ -13,38 +13,11 @@
     </div>
 </div>
 
-<div class="story">
-    <div class="storyimage"><img src="images/sceneexample.png" alt="story 1"/></div>
-    <div class="storyname"><p>DAPPER EN STOER</p></div>
-    <div class="storydate"><p>09/12/2013</p></div>
+<div class="story" data-ng-repeat="story in stories">
+    <div class="storyimage"><img src="images/{{story.image}}" alt="{{story.name}}"/></div>
+    <div class="storyname"><p>{{story.name}}</p></div>
+    <div class="storydate"><p>{{story.date}}</p></div>
     <a href="#/preview"><div class="viewbutton"><p>VIEW</p></div></a>
     <a href="#/editor"><div class="editbutton"><p>EDIT</p></div></a>
-    <div class="storysettings" data-ng-click="showStoryPopup();"><p>SETTINGS</p></div>
-</div>
-
-<div class="story">
-    <div class="storyimage"><img src="images/sceneexample.png" alt="story 1"/></div>
-    <div class="storyname"><p>DAPPER EN STOER heeeuj jjuejuejeuee hueh uh uehuheu hhheeeueujj</p></div>
-    <div class="storydate"><p>09/12/2013</p></div>
-    <a href="#/preview"><div class="viewbutton"><p>VIEW</p></div></a>
-    <a href="#/editor"><div class="editbutton"><p>EDIT</p></div></a>
-    <div class="storysettings" data-ng-click="showStoryPopup();"><p>SETTINGS</p></div>
-</div>
-
-<div class="story">
-    <div class="storyimage"><img src="images/sceneexample.png" alt="story 1"/></div>
-    <div class="storyname"><p>12345123451234512345123451234512345123451234512345123451234512345123451234512345123451234512345</p></div>
-    <div class="storydate"><p>09/12/2013</p></div>
-    <a href="#/preview"><div class="viewbutton"><p>VIEW</p></div></a>
-    <a href="#/editor"><div class="editbutton"><p>EDIT</p></div></a>
-    <div class="storysettings" data-ng-click="showStoryPopup();"><p>SETTINGS</p></div>
-</div>
-
-<div class="story">
-    <div class="storyimage"><img src="images/sceneexample.png" alt="story 1"/></div>
-    <div class="storyname"><p>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</p></div>
-    <div class="storydate"><p>09/12/2013</p></div>
-    <a href="#/preview"><div class="viewbutton"><p>VIEW</p></div></a>
-    <a href="#/editor"><div class="editbutton"><p>EDIT</p></div></a>
-    <div class="storysettings" data-ng-click="showStoryPopup();"><p>SETTINGS</p></div>
+    <div class="storysettings" data-ng-click="showStoryPopup($index);"><p>SETTINGS</p></div>
 </div>

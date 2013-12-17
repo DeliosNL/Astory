@@ -10,7 +10,7 @@
 
     <div class="editorbaritem"><p>CURRENTLY IN</p></div>
     <div class="editorbarbuttonwrapper">
-        <div class="editorbarbutton" data-ng-click="showStoryPopup();">
+        <div class="editorbarbutton" data-ng-click="showStoryPopup(0);">
             <p><strong>Story:</strong> The ultimate journey<img class="settings" src="images/settingsbutton.png"
                                                                 alt="settings"/></p>
         </div>
@@ -93,24 +93,21 @@
     <canvas id="editor">
         No HTML 5 support found! Please update your browser.
     </canvas>
-    <div id="scenewrapper">
+    <div id="scenemenuwrapper">
         <div id="scenemenu">
-            <div class="scene">
-                <img src="images/sceneexample.png" alt="scene 1"/>
-
-    <div id="scenemenu">
-        <div id="sceneitem" data-ng-repeat="scene in scenes">
-            <div id="scene">
-                <img src="images/{{scene.image}}" alt="scene {{$index + 1}}"/>
-                <p>Scéne {{$index + 1}}</p>
-            </div>
-            <div id="dots" data-ng-hide="$last">
-                <img src="images/dots.png" alt="dots"/>
+            <div id="sceneitem" data-ng-repeat="scene in scenes">
+                <div id="scene">
+                    <img src="images/{{scene.image}}" alt="scene {{$index + 1}}"/>
+                    <p>Scéne {{$index + 1}}</p>
+                </div>
+                <div id="dots" data-ng-hide="$last">
+                    <img src="images/dots.png" alt="dots"/>
+                </div>
             </div>
         </div>
         <div id="plus">
             <img src="images/plusbutton.png" alt="plus"/>
         </div>
+        <div id="scenetrash"></div>
     </div>
-    <div id="scenetrash"></div>
 </div>

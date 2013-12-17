@@ -60,33 +60,74 @@ aStory.controller('headerController', ['$scope', '$rootScope', '$location', func
     }
 }]);
 
-aStory.controller('storypopupController', ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+
+aStory.controller('createstorypopupController', ['$scope', '$modalInstance', 'stories', function ($scope, $modalInstance, stories) {
     $scope.close = function () {
         $modalInstance.close();
     };
+
+    $scope.addStory = function(name){
+        stories.push({
+            "image": "sceneexample.png",
+            "name": name,
+            "date": new Date().toDateString()
+        });
+        $modalInstance.close();
+    };
+
 }]);
 
-aStory.controller('overviewController', ['$scope', '$modal', function ($scope, $modal) {
+aStory.controller('storypopupController', ['$scope', '$modalInstance', 'story', function ($scope, $modalInstance, story) {
+    $scope.storyname = story.name;
+
+    $scope.close = function () {
+        $modalInstance.close();
+    };
+
+    $scope.saveStory = function(storyname){
+        story.name = storyname;
+        $modalInstance.close();
+    };
+
+}]);
+
+aStory.controller('overviewController', ['$scope', '$modal', function($scope, $modal) {
+    $scope.stories = [
+        {
+            "image": "sceneexample.png",
+            "name": "The Journey ofzo",
+            "date": new Date().toDateString()
+        }
+    ]
+
     $scope.showCreateStoryPopup = function () {
         var modalInstance = $modal.open({
             templateUrl: '../partials/createstorypopup.html',
-            controller: 'storypopupController',
+            controller: 'createstorypopupController',
             resolve: {
+                stories: function () {
+                    return $scope.stories;
+                }
             }
         });
     };
 
-    $scope.showStoryPopup = function () {
+    $scope.showStoryPopup = function (index) {
+        var story = $scope.stories[index];
         var modalInstance = $modal.open({
             templateUrl: '../partials/storypopup.html',
             controller: 'storypopupController',
             resolve: {
+                story: function () {
+                    return story;
+                }
             }
         });
     };
+
 }]);
 
-aStory.controller('scenariopopupController', ['$scope', '$modalInstance', 'scenarios', function ($scope, $modalInstance, scenarios) {
+aStory.controller('scenariopopupController', ['$scope', '$modalInstance', 'scenarios', function($scope, $modalInstance, scenarios) {
     $scope.close = function () {
         $modalInstance.close();
     };
@@ -220,24 +261,6 @@ aStory.controller('editorController', ['$scope', '$modal', function ($scope, $mo
     ];
 
     $scope.scenes = [
-        {
-            "image": "sceneexample.png"
-        },
-        {
-            "image": "sceneexample.png"
-        },
-        {
-            "image": "sceneexample.png"
-        },
-        {
-            "image": "sceneexample.png"
-        },
-        {
-            "image": "sceneexample.png"
-        },
-        {
-            "image": "sceneexample.png"
-        },
         {
             "image": "sceneexample.png"
         },

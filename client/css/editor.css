@@ -413,18 +413,29 @@ p.assetmenudescription {
 
 /* Scènebalk */
 
+
+#scenemenuwrapper {
+    width: 100%;
+    height: 125px;
+    background-color: white;
+    float: left;
+}
+
 #scenemenu {
-    width: calc(100% - 125px); /* 125px is trash can */
+    /* width: calc(100% - 125px);  125px is trash can */
+    max-width: calc(100% - 125px - 60px); /* - trash can, - plus button */
     float: left;
     height: 125px;
     background-color: white;
-    overflow: auto;
     white-space: nowrap;
+    overflow-x: scroll;
+    overflow-y: hidden;
 }
 
 #sceneitem {
-    float: left;
-    padding: 10px 5px 8px 5px;
+    width: 143px;
+    height: 110px;
+    padding: 15px 5px 0px 5px;
     display: inline-block;
 }
 
@@ -440,20 +451,20 @@ p.assetmenudescription {
 }
 
 #dots {
-    float: left;
     position: relative;
     top: 25px;
     padding-left: 10px;
+    float: left;
 }
 
 #plus {
     width: 40px;
     height: 40px;
-    float: left;
     padding-top: 28px;
     padding: 10px;
     position: relative;
-    top: 17px;
+    top: 34px;
+    float: left;
 }
 
 #scenetrash {
@@ -463,7 +474,7 @@ p.assetmenudescription {
     height: 125px;
     width: 124px;
     border-left: solid 1px #d3d3d3;
-    float: left;
+    float: right;
 }
 
 /* EINDE SCÈNEBALK */

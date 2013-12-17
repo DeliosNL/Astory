@@ -1,12 +1,12 @@
 <div id="popupcontainer">
     <div class="popupheader">
-        <p>Settings Dapper & Stoer</p>
+        <p>Settings - {{storyname}}</p>
 
         <div class="popupclosebutton" data-ng-click="close()"></div>
     </div>
     <div id="popupwrapper">
         <h1>Name your story</h1>
-        <input class="popupinput" type="text" placeholder="Enter a story name">
+        <input class="popupinput" type="text" placeholder="Enter a story name" data-ng-model="storyname">
 
         <p class="edit">Edit</p>
 
@@ -30,6 +30,6 @@
         <p class="bottomleftredtext" data-ng-click="close()">Delete this story</p>
 
         <p class="cancelstorybutton" data-ng-click="close()">Cancel</p>
-        <button class="bottomrightbutton" data-ng-click="close()">Save settings</button>
+        <button class="bottomrightbutton" data-ng-click="saveStory(storyname)">Save settings</button>
     </div>
 </div>
