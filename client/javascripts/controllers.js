@@ -86,7 +86,28 @@ aStory.controller('overviewController', ['$scope', '$modal', function($scope, $m
     };
 }]);
 
+aStory.controller('scenariopopupController', ['$scope', '$modalInstance', 'scenarios', function($scope, $modalInstance, scenarios){
+    $scope.close = function () {
+        $modalInstance.close();
+    };
+
+    $scope.addScenario = function(name){
+        scenarios.push({
+            title: name,
+            linkfrom: [],
+            linkto: [],
+            scenes: []
+        });
+        $modalInstance.close();
+    };
+
+}]);
+
 aStory.controller('editorController', ['$scope', '$modal', function ($scope, $modal) {
+    $scope.testfunction = function(){
+        alert("lel");
+    }
+
     $scope.showStoryPopup = function () {
         var modalInstance = $modal.open({
             templateUrl: '../partials/storypopup.html',
@@ -233,4 +254,34 @@ aStory.controller('editorController', ['$scope', '$modal', function ($scope, $mo
             "image": "sceneexample.png"
         }
     ]
+
+    $scope.showScenarioPopup = function (){
+        var scenariopopup = $modal.open({
+            templateUrl: '../partials/createscenariopopup.html',
+            controller: 'scenariopopupController',
+            resolve: {
+                scenarios: function () {
+                    return $scope.scenarios;
+                }
+            }
+        });
+    };
+
+    $scope.scenarios = [
+        {
+            title: "Castel: The beginning of the journey",
+            linkfrom: [],
+            linkto: [],
+            scenes: []
+        },
+        {
+            title: "The Journey: Part 2",
+            linkfrom: [],
+            linkto: [],
+            scenes: []
+        },
+
+
+    ];
+
 }]);

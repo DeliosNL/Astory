@@ -89,6 +89,7 @@ img.navlogo {
 }
 
 #accountdropdown {
+    z-index: 100;
     box-shadow: 1px 3px 1px 1px #d3d3d3;
     -moz-box-shadow: 1px 1px 1px 1px #d3d3d3;
 }
