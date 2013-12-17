@@ -406,6 +406,9 @@ p.assetmenudescription {
     float: left;
     width: 100%;
     height: calc(100% - 125px);
+    background-image: url('../images/Assets/Achtergrond1A.png');
+    background-size: 100%;
+    background-repeat: no-repeat;
 }
 
 /* Scènebalk */
