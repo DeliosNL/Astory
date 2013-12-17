@@ -45,6 +45,7 @@ body {
 
 /* Navbar */
 #navbar {
+    float: left;
     background-color: #252525;
     min-height: 70px;
     width: 100%;
