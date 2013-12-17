@@ -47,6 +47,7 @@ body {
 #navbar {
     background-color: #252525;
     min-height: 70px;
+    width: 100%;
 }
 
 #navbar a{
