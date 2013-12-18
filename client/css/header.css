@@ -43,6 +43,13 @@ body {
     url('../fonts/Proxima/ProximaNova-Bold.otf'); /* IE9 */
 }
 
+#ng-view {
+    height: calc(100% - 70px);
+    position: absolute;
+    top: 70px;
+    width: 100%;
+}
+
 /* Navbar */
 #navbar {
     float: left;

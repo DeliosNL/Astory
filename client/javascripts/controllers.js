@@ -31,7 +31,7 @@ aStory.controller('loginController', ['$scope', function ($scope) {
 
 aStory.controller('headerController', ['$scope', '$rootScope', '$location', function ($scope, $rootScope, $location) {
     $rootScope.$on("$routeChangeStart", function (event, next, current) {
-        if ($location.path() === '/login' || $location.path() === '/register') {
+        if ($location.path() === '/login' || $location.path() === '/register' || $location.path() === '/preview') {
             $scope.loginpage = true;
         } else {
             $scope.loginpage = false;

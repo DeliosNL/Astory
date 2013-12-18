@@ -1,4 +1,3 @@
-/* NAVBAR EINDIGT HIER */
 #editorbar, #previewbutton {
     min-height: 60px;
 }
@@ -16,14 +15,14 @@
     min-width: 130px;
 }
 
-#previewbutton p{
+#previewbutton p {
     font-family: ProximaSemibold;
     font-size: 15px;
     float:left;
     margin-right: 0;
 }
 
-#previewbutton img{
+#previewbutton img {
     float:right;
     width: 8px;
     height: 10px;

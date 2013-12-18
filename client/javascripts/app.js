@@ -13,6 +13,10 @@ aStory.config(['$httpProvider', '$locationProvider', '$routeProvider', function 
             templateUrl: 'partials/editor.html',
             controller: 'editorController'
         })
+        .when('/editor', {
+            templateUrl: 'partials/editor.html',
+            controller: 'editorController'
+        })
         .when('/stories', {
             templateUrl: 'partials/storyoverview.html',
             controller: 'overviewController'
@@ -28,6 +32,10 @@ aStory.config(['$httpProvider', '$locationProvider', '$routeProvider', function 
         .when('/account', {
             templateUrl: 'partials/account.html',
             controller: 'accountController'
+        })
+        .when('/preview', {
+            templateUrl: 'partials/preview.html',
+            controller: 'previewController'
         })
         .otherwise({
             redirectTo: '/'

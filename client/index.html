@@ -6,6 +6,7 @@
     <title>Astory</title>
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.css" rel="stylesheet"/>
+    <link href="css/preview.css" rel="stylesheet"/>
     <link href="css/header.css" rel = "stylesheet"/>
     <link href="css/editor.css" rel="stylesheet"/>
     <link href="css/login.css" rel="stylesheet"/>
@@ -53,9 +54,10 @@
     </a>
 </div>
 
-<div ng-view style="height: calc(100% - 70px); position: absolute; top: 70px; width: 100%;">
+<div id="ng-view" ng-view>
     <!-- HIER KOMEN DE PARTIALS, NIKS ANDERS IN ZETTEN  -->
 </div>
+
 <script src="./javascripts/lib/angular-resource.min.js"></script>
 <script src="./javascripts/lib/ui-bootstrap-custom-0.7.0.min.js"></script>
 <script src="./javascripts/lib/ui-bootstrap-custom-tpls-0.7.0.min.js"></script>
