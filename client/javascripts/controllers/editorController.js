@@ -1,16 +1,15 @@
-aStory.controller('editorController', ['$scope', '$modal', function ($scope, $modal) {
-    $scope.testfunction = function () {
-        alert("lel");
-    };
+aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$location', function ($scope, $modal, storiesService, $location) {
+    $scope.story = storiesService.currentstory;
+    if($scope.story == null){
+        alert("Geen story geselecteerd");
+        $location.path('/stories');
+    }
 
-    $scope.showStoryPopup = function () {
+    $scope.showStoryPopup = function (index) {
         var modalInstance = $modal.open({
             templateUrl: '../partials/storypopup.html',
             controller: 'storypopupController',
             resolve: {
-                story: function () {
-                    return $scope.story;
-                }
             }
         });
     };
@@ -28,10 +27,6 @@ aStory.controller('editorController', ['$scope', '$modal', function ($scope, $mo
             document.getElementById(id).style.backgroundColor = "#ffffff";
         }
     };
-
-    $scope.story = {
-        name: "Dapper en stoer"
-    }
 
     $scope.assetgroups = [
         {

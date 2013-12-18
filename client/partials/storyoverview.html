@@ -18,6 +18,6 @@
     <div class="storyname"><p>{{story.name}}</p></div>
     <div class="storydate"><p>{{story.date}}</p></div>
     <a href="#/preview"><div class="viewbutton"><p>VIEW</p></div></a>
-    <a href="#/editor"><div class="editbutton"><p>EDIT</p></div></a>
+    <div class="editbutton" data-ng-click="openStory($index);"><p>EDIT</p></div>
     <div class="storysettings" data-ng-click="showStoryPopup($index);"><p>SETTINGS</p></div>
 </div>

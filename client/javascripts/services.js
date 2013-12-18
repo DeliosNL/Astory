@@ -13,8 +13,21 @@ angular.module('myApp.services', ['ngResource'])
             db = {};
         db.cars = $resource('/stories/:_id', {}, actions);
         return db;
-    }])
+    }]);
 
-aStory.service('$fileUpload', ['$http', function($http) {
+aStory.service('storiesService', [function() {
+    var storieslocal = [
+        {
+            "image": "sceneexample.png",
+            "name": "The Journey ofzo",
+            "date": new Date().toDateString()
+        }
+    ];
 
+    var currentstorylocal = null;
+
+    return {
+        stories: storieslocal,
+        currentstory: currentstorylocal
+    };
 }]);

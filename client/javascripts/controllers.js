@@ -61,12 +61,14 @@ aStory.controller('headerController', ['$scope', '$rootScope', '$location', func
 }]);
 
 
-aStory.controller('createstorypopupController', ['$scope', '$modalInstance', 'stories', function ($scope, $modalInstance, stories) {
+aStory.controller('createstorypopupController', ['$scope', '$modalInstance', 'storiesService', function ($scope, $modalInstance, storiesService) {
+    var stories = storiesService.stories;
+
     $scope.close = function () {
         $modalInstance.close();
     };
 
-    $scope.addStory = function(name){
+    $scope.addStory = function(name) {
         stories.push({
             "image": "sceneexample.png",
             "name": name,
@@ -77,7 +79,9 @@ aStory.controller('createstorypopupController', ['$scope', '$modalInstance', 'st
 
 }]);
 
-aStory.controller('storypopupController', ['$scope', '$modalInstance', 'story', function ($scope, $modalInstance, story) {
+aStory.controller('storypopupController', ['$scope', '$modalInstance', 'storiesService', '$location', function ($scope, $modalInstance, storiesService, $location) {
+    var story = storiesService.currentstory;
+    var stories = storiesService.stories;
     $scope.storyname = story.name;
 
     $scope.close = function () {
@@ -89,41 +93,40 @@ aStory.controller('storypopupController', ['$scope', '$modalInstance', 'story', 
         $modalInstance.close();
     };
 
+    $scope.deleteStory = function () {
+        stories.splice(stories.indexOf(story), 1);
+        $scope.close();
+        $location.path('/stories');
+    }
+
 }]);
 
-aStory.controller('overviewController', ['$scope', '$modal', function($scope, $modal) {
-    $scope.stories = [
-        {
-            "image": "sceneexample.png",
-            "name": "The Journey ofzo",
-            "date": new Date().toDateString()
-        }
-    ]
+aStory.controller('overviewController', ['$scope', '$modal', 'storiesService', '$location', function($scope, $modal, storiesService, $location) {
+    $scope.stories = storiesService.stories;
 
     $scope.showCreateStoryPopup = function () {
         var modalInstance = $modal.open({
             templateUrl: '../partials/createstorypopup.html',
             controller: 'createstorypopupController',
             resolve: {
-                stories: function () {
-                    return $scope.stories;
-                }
             }
         });
     };
 
     $scope.showStoryPopup = function (index) {
-        var story = $scope.stories[index];
+        storiesService.currentstory = $scope.stories[index];
         var modalInstance = $modal.open({
             templateUrl: '../partials/storypopup.html',
             controller: 'storypopupController',
             resolve: {
-                story: function () {
-                    return story;
-                }
             }
         });
     };
+
+    $scope.openStory = function(index) {
+        storiesService.currentstory = storiesService.stories[index];
+        $location.path('/editor');
+    }
 
 }]);
 
