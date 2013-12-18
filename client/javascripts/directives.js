@@ -1,12 +1,10 @@
-aStory.directive('storypopup', function() {
+aStory.directive('assetimage', function () {
     "use strict";
     return {
-        restrict: 'E',
-        transclude: true,
-        scope: {},
-        replace: true,
-        templateUrl: '../partials/storypopup.html',
-        link: function (scope, element) {
+        link: function(scope, element, attrs) {
+            element.bind("load", function(e) {
+                element[0].addEventListener('dragstart', scope.dragAsset);
+            });
         }
     };
 });

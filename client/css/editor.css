@@ -412,8 +412,6 @@ p.assetmenudescription {
 }
 
 /* Scènebalk */
-
-
 #scenemenuwrapper {
     width: 100%;
     height: 125px;
@@ -475,6 +473,10 @@ p.assetmenudescription {
     width: 124px;
     border-left: solid 1px #d3d3d3;
     float: right;
+}
+
+.assetimage {
+
 }
 
 /* EINDE SCÈNEBALK */
