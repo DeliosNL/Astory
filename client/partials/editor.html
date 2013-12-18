@@ -11,8 +11,7 @@
     <div class="editorbaritem"><p>CURRENTLY IN</p></div>
     <div class="editorbarbuttonwrapper">
         <div class="editorbarbutton" data-ng-click="showStoryPopup(0);">
-            <p><strong>Story:</strong> The ultimate journey<img class="settings" src="images/settingsbutton.png"
-                                                                alt="settings"/></p>
+            <p><strong>Story:</strong> {{story.name}}<img class="settings" src="images/settingsbutton.png" alt="settings"/></p>
         </div>
     </div>
     <div class="editorbarbuttonwrapper">
@@ -80,7 +79,7 @@
             </div>
             <div class="assetscontainer" ng-show="!hidden">
                 <div class="assetwrapper" data-ng-repeat="asset in group.assets">
-                    <div class="asset"><img src="images/Assets/{{asset.image}}" alt="{{asset.name}}"/></div>
+                    <div class="asset"><img data-ng-src="images/Assets/{{asset.image}}" data-ng-mousedown="get_pos($event)" draggable="true" alt="{{asset.name}}" assetimage/></div>
                     <p>{{asset.description}}</p>
                 </div>
             </div>
