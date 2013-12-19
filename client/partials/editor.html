@@ -99,14 +99,10 @@
                     <img src="images/{{scene.image}}" alt="scene {{$index + 1}}"/>
                     <p>Scéne {{$index + 1}}</p>
                 </div>
-                <div id="dots" data-ng-hide="$last">
-                    <img src="images/dots.png" alt="dots"/>
-                </div>
+                <div id="dots" data-ng-hide="$last" data-ng-click="addSceneByIndex($index + 1)"></div>
             </div>
         </div>
-        <div id="plus">
-            <img src="images/plusbutton.png" alt="plus"/>
-        </div>
+        <div id="plus" data-ng-click="addScene()"></div>
         <div id="scenetrash"></div>
     </div>
 </div>
