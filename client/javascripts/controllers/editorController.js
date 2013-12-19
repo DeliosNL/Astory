@@ -1,6 +1,23 @@
+aStory.controller('editScenarioController', ['$scope', 'scenario', '$modalInstance', function ($scope, scenario, $modalInstance) {
+    $scope.scenario = scenario;
+    $scope.newdata = {
+        name: $scope.scenario.title
+    };
+
+    $scope.close = function () {
+        $modalInstance.close();
+    };
+
+    $scope.saveScenario = function () {
+        scenario.title = $scope.newdata.name;
+        $modalInstance.close();
+    };
+
+}]);
+
 aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$location', function ($scope, $modal, storiesService, $location) {
     $scope.story = storiesService.currentstory;
-    if($scope.story == null){
+    if ($scope.story == null) {
         alert("Geen story geselecteerd");
         $location.path('/stories');
     }
@@ -14,6 +31,18 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         });
     };
     // $scope.showpopup = true;
+
+    $scope.showScenarioEditPopup = function (index) {
+        var modalInstance = $modal.open({
+            templateUrl: '../partials/editscenariopopup.html',
+            controller: 'editScenarioController',
+            resolve: {
+                scenario: function () {
+                    return $scope.scenarios[index];
+                }
+            }
+        });
+    }
 
     $scope.setEditorbarDropdownColor = function (id, currentlyvisible) {
         if (currentlyvisible) { //Will be invisible soon
@@ -139,7 +168,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         }
     ]
 
-    $scope.showScenarioPopup = function (){
+    $scope.showScenarioPopup = function () {
         var scenariopopup = $modal.open({
             templateUrl: '../partials/createscenariopopup.html',
             controller: 'scenariopopupController',
@@ -173,8 +202,9 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         this.imgNew.src = imgpath;
         this.x = x || 0;
         this.y = y || 0;
-        this.w =  this.imgNew.width  || 0;
-        this.h =  this.imgNew.height || 0;;
+        this.w = this.imgNew.width || 0;
+        this.h = this.imgNew.height || 0;
+        ;
         this.fill = fill || '#AAAAAA';
     }
 
@@ -356,13 +386,13 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
     var pos;
     var canvasstate;
 
-    $scope.get_pos = function(ev){
+    $scope.get_pos = function (ev) {
         pos = [ev.pageX, ev.pageY];
     }
 
     window.addEventListener('resize', function () {
         var canvas = document.getElementById('editor');
-        if(canvas !== null && canvas !== undefined){
+        if (canvas !== null && canvas !== undefined) {
             canvas.setAttribute('width', window.getComputedStyle(canvas).width);
             canvas.setAttribute('height', window.getComputedStyle(canvas).height);
             canvasstate.valid = false;
@@ -381,7 +411,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         event.preventDefault();
     }
 
-   function dropAsset(event){
+    function dropAsset(event) {
         event.preventDefault();
         var assetmenu = document.getElementById('assetmenu');
         var editorbar = document.getElementById('editorbar');
@@ -391,10 +421,10 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         //var dy = pos[1] - img.offsetTop;
         var assetx = event.pageX - parseInt(window.getComputedStyle(assetmenu).width) - parseInt(window.getComputedStyle(assetmenu).paddingLeft) - parseInt(window.getComputedStyle(assetmenu).paddingRight);
         var assety = event.pageY - parseInt(window.getComputedStyle(editorbar).height) - parseInt(window.getComputedStyle(navbar).height);
-        canvasstate.addShape(new Shape(assetx, assety, event.dataTransfer.getData("imagepath") ));
+        canvasstate.addShape(new Shape(assetx, assety, event.dataTransfer.getData("imagepath")));
     }
 
-    $scope.dragAsset = function(event){
+    $scope.dragAsset = function (event) {
         event.dataTransfer.setData("imagepath", event.target.getAttribute('src'));
     }
 

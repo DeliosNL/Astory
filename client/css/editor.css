@@ -168,7 +168,7 @@ p.helpmessage {
 .scenariowrapper {
 }
 
-#scenarioswrapper p.scenariotitle {
+#scenarioswrapper input.scenariotitle {
     color: #989898;
     font-family: Proxima;
     font-size: 14px;
@@ -180,6 +180,17 @@ p.helpmessage {
     -o-text-overlow: elipsis;
     width: 260px;
     line-height: 36px;
+}
+
+input.scenariotitle {
+    height: 36px;
+    border: 0;
+    margin: 0;
+    padding: 0;
+}
+
+input.scenariotitle:disabled {
+    background-color: white;
 }
 
 .scenariocontainer {
