@@ -168,6 +168,18 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         }
     ]
 
+    $scope.addScene = function() {
+        $scope.scenes.push({
+            "image": "sceneexample.png"
+        });
+    };
+
+    $scope.addSceneByIndex = function(index) {
+        $scope.scenes.splice(index, 0, {
+            "image": "johndoe.png"
+        });
+    };
+
     $scope.showScenarioPopup = function () {
         var scenariopopup = $modal.open({
             templateUrl: '../partials/createscenariopopup.html',
