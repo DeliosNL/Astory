@@ -25,11 +25,16 @@ aStory.controller('registerController', ['$scope', function ($scope) {
     }).trigger('change');
 }]);
 
-aStory.controller('loginController', ['$scope', function ($scope) {
-    //TODO: invullen
+aStory.controller('loginController', ['$scope', 'loggedinService', '$location', function ($scope, loggedinService, $location) {
+    $scope.login = function(username, password){
+        loggedinService.loggedin = true;
+        loggedinService.accountinfo.username = username;
+        loggedinService.accountinfo.name = username;
+        $location.path('/stories');
+    }
 }]);
 
-aStory.controller('headerController', ['$scope', '$rootScope', '$location', function ($scope, $rootScope, $location) {
+aStory.controller('headerController', ['$scope', '$rootScope', '$location', 'loggedinService', function ($scope, $rootScope, $location, loggedinService) {
     $rootScope.$on("$routeChangeStart", function (event, next, current) {
         if ($location.path() === '/login' || $location.path() === '/register' || $location.path() === '/preview') {
             $scope.loginpage = true;
@@ -37,6 +42,33 @@ aStory.controller('headerController', ['$scope', '$rootScope', '$location', func
             $scope.loginpage = false;
         }
     });
+
+    $scope.accountinfo = loggedinService.accountinfo;
+    $scope.loggedin = loggedinService.loggedin;
+
+    $scope.$watch(
+        function(){ return loggedinService.loggedin },
+
+        function(newVal) {
+            $scope.loggedin = newVal;
+        }
+    );
+
+    $scope.$watch(
+        function(){return loggedinService.accountinfo},
+
+        function(newVal) {
+            $scope.accountinfo = newVal;
+        }
+    , true);
+
+    $scope.logout = function(){
+        loggedinService.loggedin = false;
+        for( var i in loggedinService.accountinfo){
+            loggedinService.accountinfo[i] = null;
+        }
+        $location.path('/login');
+    };
 
     $scope.swapvisibility = function (visible) {
         if (visible) {

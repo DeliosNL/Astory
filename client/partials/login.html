@@ -4,15 +4,15 @@
         <form role="form">
             <div class="form-group">
                 <label for="usernameinput">Username</label>
-                <input type="email" class="form-control" id="usernameinput" placeholder="Enter your username">
+                <input type="text" class="form-control" id="usernameinput" data-ng-model="username" placeholder="Enter your username">
             </div>
             <div class="form-group">
                 <label for="passwordinput">Password</label>
-                <input type="password" class="form-control" id="passwordinput" placeholder="Enter your password">
+                <input type="password" class="form-control" id="passwordinput" data-ng-model="password" placeholder="Enter your password">
             </div>
         </form>
         <div id="loginbottomwrapper">
-            <a href="#/editor"><button>Log in</button> <input type="checkbox"><p>Stay logged in</p></a>
+            <button data-ng-click="login(username, password);">Log in</button> <input type="checkbox"><p>Stay logged in</p>
         </div>
         <a href="#/register"><p class="createaccount">Create an account</p></a>
     </div>

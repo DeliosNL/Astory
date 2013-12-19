@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-ng-app="aStory" data-ng-controller="headerController" >
+<html lang="en" data-ng-app="aStory" data-ng-controller="headerController">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,7 +7,7 @@
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.css" rel="stylesheet"/>
     <link href="css/preview.css" rel="stylesheet"/>
-    <link href="css/header.css" rel = "stylesheet"/>
+    <link href="css/header.css" rel="stylesheet"/>
     <link href="css/editor.css" rel="stylesheet"/>
     <link href="css/login.css" rel="stylesheet"/>
     <link href="css/popup.css" rel="stylesheet"/>
@@ -31,11 +31,15 @@
 
     <img class="navlogo" src="images/Logo.png" alt="logo"/>
 
-    <div id="navaccount">
+    <a href="#/login" data-ng-show="!loggedin">
+        <div class="navlink">Login</div>
+    </a>
+
+    <div id="navaccount" data-ng-show="loggedin">
         <img src="images/johndoe.png" alt="johndoe"/>
 
         <div id="accountstorywrapper">
-            <p id="Accountname">John Doe</p>
+            <p id="Accountname">{{accountinfo.name}}</p>
 
             <div id="navstorybutton">15 stories</div>
         </div>
@@ -46,12 +50,16 @@
         </div>
         <div ng-cloak id="accountdropdown" data-ng-show="showaccountdropdown">
             <div id="accountdropdownbuttonwrapper">
-                <a href="#/account" data-ng-click="showaccountdropdown = false; setAccountDropdownColor(showaccountdropdown);"><div class="accountdropdownbuttonprofile"><p>My profile settings</p></div></a>
-                <a href="#/login"><div class="accountdropdownbuttonlogout"><p>Logout</p></div></a>
+                <a href="#/account"
+                   data-ng-click="showaccountdropdown = false; setAccountDropdownColor(showaccountdropdown);">
+                    <div class="accountdropdownbuttonprofile"><p>My profile settings</p></div>
+                </a>
+            <div class="accountdropdownbuttonlogout" data-ng-click="logout();"><p>Logout</p></div>
             </div>
         </div>
     </div>
-    <a href="#/stories">
+
+    <a href="#/stories" data-ng-show="loggedin">
         <div class="navlink">My stories</div>
     </a>
     <a href="#/library">

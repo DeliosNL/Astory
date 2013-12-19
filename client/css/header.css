@@ -122,10 +122,15 @@ img.navlogo {
 
 /*Accountnaam */
 #navaccount p{
+    width: 140px;
     font-family: Proxima;
     font-weight: bold;
     margin-top: 10px;
     margin-bottom: 8px;
+    white-space: nowrap;
+    text-overflow: clip;
+    -o-text-overlow: elipsis;
+    overflow: hidden;
 }
 
 #navstorybutton, #navdropdownbutton {

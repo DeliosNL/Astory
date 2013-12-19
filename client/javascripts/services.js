@@ -1,8 +1,8 @@
-"use strict";
-
 
 angular.module('myApp.services', ['ngResource'])
     .factory('storyService', ['$resource', '$http', function ($resource) {
+        "use strict";
+
         var actions = {
                 'get': {method: 'GET'},
                 'save': {method: 'POST'},
@@ -16,18 +16,30 @@ angular.module('myApp.services', ['ngResource'])
     }]);
 
 aStory.service('storiesService', [function() {
+    "use strict";
     var storieslocal = [
         {
             "image": "sceneexample.png",
             "name": "The Journey ofzo",
             "date": new Date().toDateString()
         }
-    ];
-
-    var currentstorylocal = null;
+    ],
+        currentstorylocal = null;
 
     return {
         stories: storieslocal,
         currentstory: currentstorylocal
+    };
+}]);
+
+aStory.service('loggedinService', [function ($rootScope) {
+    "use strict";
+    return {
+        loggedin: false,
+        accountinfo: {
+            username: null,
+            name: null,
+            email: null
+        }
     };
 }]);
