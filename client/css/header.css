@@ -45,8 +45,7 @@ body {
 
 #ng-view {
     height: calc(100% - 70px);
-    position: absolute;
-    top: 70px;
+    float: left;
     width: 100%;
 }
 
@@ -54,7 +53,7 @@ body {
 #navbar {
     float: left;
     background-color: #252525;
-    min-height: 70px;
+    height: 70px;
     width: 100%;
 }
 

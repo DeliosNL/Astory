@@ -1,8 +1,3 @@
-#ng-view {
-    position: absolute;
-    top: 0;
-}
-
 #preview {
     height: calc(100% - 70px);
     width: 100%;
@@ -11,9 +6,22 @@
 #previewbar {
     width: 100%;
     height: 70px;
-    background-color: black;
     position: absolute;
     bottom: 0;
+}
+
+p#link, p#linktitle {
+    color: white;
+    line-height: 70px;
+    padding: 0px 20px 0px 20px;
+    margin: 0;
+}
+
+#leftside {
+    width: 60%;
+    height: 100%;
+    float: left;
+    background-color: #252525;
 }
 
 img#logo {
@@ -21,4 +29,31 @@ img#logo {
     margin-left: 25px;
     height: 55px;
     width: 150px;
+    float: left;
+}
+
+p#linktitle {
+    float: right;
+    font-family: ProximaBold;
+    font-size: 14px;
+}
+
+#rightside {
+    width: 40%;
+    float: right;
+    background-color: #353535;
+}
+
+#link {
+    float: left;
+    font-family: Proxima;
+    font-size: 14px;
+}
+
+#shareicons {
+    float: right;
+}
+
+#shareicons img {
+    float: left;
 }
