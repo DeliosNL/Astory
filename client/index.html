@@ -48,15 +48,7 @@
             <img src="images/arrowdown.png" data-ng-show="!showaccountdropdown" alt="v"/>
             <img ng-cloak src="images/arrowup.png" data-ng-show="showaccountdropdown" alt="v"/>
         </div>
-        <div ng-cloak id="accountdropdown" data-ng-show="showaccountdropdown">
-            <div id="accountdropdownbuttonwrapper">
-                <a href="#/account"
-                   data-ng-click="showaccountdropdown = false; setAccountDropdownColor(showaccountdropdown);">
-                    <div class="accountdropdownbuttonprofile"><p>My profile settings</p></div>
-                </a>
-            <div class="accountdropdownbuttonlogout" data-ng-click="logout();"><p>Logout</p></div>
-            </div>
-        </div>
+        <accountdropdown></accountdropdown>
     </div>
 
     <a href="#/stories" data-ng-show="loggedin">

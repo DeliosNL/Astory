@@ -66,6 +66,28 @@
     z-index: 2;
 }
 
+.storysettingsbutton, #scenariobutton {
+    width: 219px;
+}
+
+.storysettingsbutton p, #scenariobutton p {
+    width: 170px;
+}
+
+.storysettingsbutton p:after {
+    position: absolute;
+    right: 12px;
+    top: 4px;
+    content: url('../images/settingsbutton.png');
+}
+
+#scenariobutton p:after {
+    position: absolute;
+    right: 12px;
+    content: url('../images/arrowdown2.png');
+}
+
+
 .editorbarbutton:hover {
     background-color: white;
     cursor: pointer;
@@ -78,6 +100,10 @@
     margin-bottom: 0;
     margin-left: 20px;
     margin-right: 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -o-text-overlow: elipsis;
 }
 
 .editorbarbutton img, .editorbarbutton img.settings {

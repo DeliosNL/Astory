@@ -1,0 +1,9 @@
+<div ng-cloak id="accountdropdown" data-ng-show="showaccountdropdown">
+    <div id="accountdropdownbuttonwrapper">
+        <a href="#/account"
+           data-ng-click="showaccountdropdown = false; setAccountDropdownColor(showaccountdropdown);">
+            <div class="accountdropdownbuttonprofile"><p>My profile settings</p></div>
+        </a>
+        <div class="accountdropdownbuttonlogout" data-ng-click="logout();"><p>Logout</p></div>
+    </div>
+</div>

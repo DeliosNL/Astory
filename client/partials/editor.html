@@ -10,52 +10,16 @@
 
     <div class="editorbaritem"><p>CURRENTLY IN</p></div>
     <div class="editorbarbuttonwrapper">
-        <div class="editorbarbutton" data-ng-click="showStoryPopup(0);">
-            <p><strong>Story:</strong> {{story.name}}<img class="settings" src="images/settingsbutton.png" alt="settings"/></p>
+        <div class="editorbarbutton storysettingsbutton" data-ng-click="showStoryPopup(0);">
+            <p><strong>Story:</strong> {{story.name}}</p>
         </div>
     </div>
     <div class="editorbarbuttonwrapper">
         <div class="editorbarbutton" id="scenariobutton"
             data-ng-click="setEditorbarDropdownColor('scenariobutton', showscenarios==true); showscenarios = swapvisibility(showscenarios);">
-            <p><strong>Scenario 1:</strong>&nbsp;{{scenarios[0].title}}<img src="images/arrowdown2.png" alt="v"/></p>
+            <p><strong>Scenario 1:</strong>&nbsp;{{scenarios[0].title}}</p>
         </div>
-
-        <div class="editorbardropdown" data-ng-show="showscenarios">
-            <button class="newscenariobutton" data-ng-click="showScenarioPopup();">New scenario</button>
-            <div id="scenariolistheader">
-                <p>From</p>
-
-                <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Title</p>
-
-                <p class="right">To</p>
-            </div>
-            <div id="scenariolistcontainer">
-                <div id="scenarioswrapper">
-                    <div class="scenariowrapper" data-ng-repeat="scenario in scenarios">
-                        <div class="scenariocontainer">
-                            <div class="linkfromarea">
-                               <!-- <div class="linkfromblock">1</div>
-                                <div class="linkfromblock">2</div>
-                                <div class="linkfromblock">3</div>
-                                <div class="linkfromblock">4</div> -->
-                            </div>
-                            <input class="scenariotitle" data-ng-model="scenario.title" disabled/>
-                            <div class="linktoarea">
-                               <!-- <div class="linktoblock">3</div>
-                                <div class="linktoblock">2</div>
-                                <div class="linktoblock">1</div>
-                                <div class="linktoblock">4</div> -->
-                            </div>
-                        </div>
-                        <p class="editmessage" data-ng-click="showScenarioEditPopup($index)">edit</p>
-                    </div>
-                </div>
-            </div>
-            <p class="helpmessage">Drag &amp; Drop to delete!</p>
-
-            <div class="trashcan"></div>
-        </div>
-
+    <scenariosdropdown></scenariosdropdown>
     </div>
     <div class="editorbaritem">
         <p><strong>Scene 1</strong></p>
