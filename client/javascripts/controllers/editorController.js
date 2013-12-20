@@ -230,8 +230,6 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
                 canvasstate.draw();
             }
         }
-
-        this.fill = fill || '#AAAAAA';
     }
 
     // Draws this shape to a given context

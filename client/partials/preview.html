@@ -10,10 +10,28 @@
     <div id="rightside">
         <p id="link">www.astory.com/johndoe/thejourney/preview</p>
         <div id="shareicons">
-            <img src="images/share_facebook.png" alt="facebook">
+            <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+                <a class="addthis_button_facebook"><img src ="images/share_facebook.png" alt = "facebook"></a>
+                <a class="addthis_button_twitter"><img src="images/share_twitter.png" alt="twitter"></a>
+                <a class="addthis_button_hyves"><img src="images/share_hyves.png" alt="hyves"></a>
+                <a class="addthis_button_compact"><img src="images/share_plus.png" alt="plus"></a>
+            </div>
+            <script type="text/javascript">
+                var addthis_config = {
+                    data_track_clickback: false
+                };
+                var addthis_share =
+                {
+                    url: 'www.astory.com/johndoe/thejourney/preview',
+                    title: "Check out the amazing story I've made! "
+                };
+            </script>
+            <script type="text/javascript" src="../javascripts/lib/addthis.js"></script>
+
+            <!--<img src="images/share_facebook.png" alt="facebook">
             <img src="images/share_twitter.png" alt="twitter">
             <img src="images/share_hyves.png" alt="hyves">
-            <img src="images/share_plus.png" alt="plus">
+            <img src="images/share_plus.png" alt="plus">-->
         </div>
     </div>
 </div>

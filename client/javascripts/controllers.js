@@ -3,6 +3,9 @@
 
 "use strict";
 
+aStory.controller('previewController', ['$scope', function ($scope) {
+}]);
+
 aStory.controller('mainController', ['$scope', function ($location, $scope, $http) {
     //TODO: invullen
 }]);
@@ -26,7 +29,7 @@ aStory.controller('registerController', ['$scope', function ($scope) {
 }]);
 
 aStory.controller('loginController', ['$scope', 'loggedinService', '$location', function ($scope, loggedinService, $location) {
-    $scope.login = function(username, password){
+    $scope.login = function (username, password) {
         loggedinService.loggedin = true;
         loggedinService.accountinfo.username = username;
         loggedinService.accountinfo.name = username;
@@ -47,24 +50,28 @@ aStory.controller('headerController', ['$scope', '$rootScope', '$location', 'log
     $scope.loggedin = loggedinService.loggedin;
 
     $scope.$watch(
-        function(){ return loggedinService.loggedin },
+        function () {
+            return loggedinService.loggedin
+        },
 
-        function(newVal) {
+        function (newVal) {
             $scope.loggedin = newVal;
         }
     );
 
     $scope.$watch(
-        function(){return loggedinService.accountinfo},
+        function () {
+            return loggedinService.accountinfo
+        },
 
-        function(newVal) {
+        function (newVal) {
             $scope.accountinfo = newVal;
         }
-    , true);
+        , true);
 
-    $scope.logout = function(){
+    $scope.logout = function () {
         loggedinService.loggedin = false;
-        for( var i in loggedinService.accountinfo){
+        for (var i in loggedinService.accountinfo) {
             loggedinService.accountinfo[i] = null;
         }
         $location.path('/login');
@@ -100,7 +107,7 @@ aStory.controller('createstorypopupController', ['$scope', '$modalInstance', 'st
         $modalInstance.close();
     };
 
-    $scope.addStory = function(name) {
+    $scope.addStory = function (name) {
         stories.push({
             "image": "sceneexample.png",
             "name": name,
@@ -120,7 +127,7 @@ aStory.controller('storypopupController', ['$scope', '$modalInstance', 'storiesS
         $modalInstance.close();
     };
 
-    $scope.saveStory = function(storyname){
+    $scope.saveStory = function (storyname) {
         story.name = storyname;
         $modalInstance.close();
     };
@@ -133,7 +140,7 @@ aStory.controller('storypopupController', ['$scope', '$modalInstance', 'storiesS
 
 }]);
 
-aStory.controller('overviewController', ['$scope', '$modal', 'storiesService', '$location', function($scope, $modal, storiesService, $location) {
+aStory.controller('overviewController', ['$scope', '$modal', 'storiesService', '$location', function ($scope, $modal, storiesService, $location) {
     $scope.stories = storiesService.stories;
 
     $scope.showCreateStoryPopup = function () {
@@ -155,14 +162,14 @@ aStory.controller('overviewController', ['$scope', '$modal', 'storiesService', '
         });
     };
 
-    $scope.openStory = function(index) {
+    $scope.openStory = function (index) {
         storiesService.currentstory = storiesService.stories[index];
         $location.path('/editor');
     }
 
 }]);
 
-aStory.controller('scenariopopupController', ['$scope', '$modalInstance', 'scenarios', function($scope, $modalInstance, scenarios) {
+aStory.controller('scenariopopupController', ['$scope', '$modalInstance', 'scenarios', function ($scope, $modalInstance, scenarios) {
     $scope.close = function () {
         $modalInstance.close();
     };

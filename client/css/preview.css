@@ -57,3 +57,18 @@ p#linktitle {
 #shareicons img {
     float: left;
 }
+
+
+a.addthis_button_facebook, a.addthis_button_twitter, a.addthis_button_hyves, a.addthis_button_compact {
+    margin: 0; padding: 0; float: left;
+}
+
+.addthis_default_style .at300b, .addthis_default_style .at300bo, .addthis_default_style .at300m {
+    padding: 0;
+}
+/*
+.addthis_floating_style.addthis_32x32_style a {
+    padding: 0;
+    margin: 0;
+    float: left;
+}*/
