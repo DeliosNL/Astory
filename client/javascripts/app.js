@@ -10,8 +10,12 @@ aStory.config(['$httpProvider', '$locationProvider', '$routeProvider', function 
 
     $routeProvider
         .when('/', {
-            templateUrl: 'partials/editor.html',
-            controller: 'editorController'
+            templateUrl: 'partials/home.html',
+            controller: 'homeController'
+        })
+        .when('/home', {
+            templateUrl: 'partials/home.html',
+            controller: 'homeController'
         })
         .when('/editor', {
             templateUrl: 'partials/editor.html',
