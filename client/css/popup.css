@@ -76,7 +76,7 @@
     font-size: 15px;
 }
 
-#popupwrapper p.sharedescription {
+#popupwrapper p.infotext {
     font-family: Proxima;
     font-size: 16px;
     color: #6e6e6e;
@@ -120,7 +120,7 @@ p.bottomleftredtext:hover, p.cancelstorybutton:hover, p.edit {
     cursor: pointer;
 }
 
-button.bottomrightbutton {
+button.bottomrightbutton, button.bottomleftbutton {
     width: 150px;
     height: 40px;
     background-color: #e23e1f;
@@ -129,9 +129,18 @@ button.bottomrightbutton {
     color: white;
     font-family: ProximaSemibold;
     font-size: 12px;
+}
+
+button.bottomrightbutton {
     position: absolute;
     bottom: 13px;
     right: -5px;
+}
+
+button.bottomleftbutton {
+    position: absolute;
+    bottom: 13px;
+    left: -5px;
 }
 
 input.popupinput {
