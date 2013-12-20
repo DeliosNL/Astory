@@ -16,10 +16,10 @@
     </div>
     <div class="editorbarbuttonwrapper">
         <div class="editorbarbutton" id="scenariobutton"
-            data-ng-click="setEditorbarDropdownColor('scenariobutton', showscenarios==true); showscenarios = swapvisibility(showscenarios);">
+             data-ng-click="setEditorbarDropdownColor('scenariobutton', showscenarios==true); showscenarios = swapvisibility(showscenarios);">
             <p><strong>Scenario 1:</strong>&nbsp;{{scenarios[0].title}}</p>
         </div>
-    <scenariosdropdown></scenariosdropdown>
+        <scenariosdropdown></scenariosdropdown>
     </div>
     <div class="editorbaritem">
         <p><strong>Scene 1</strong></p>
@@ -43,7 +43,9 @@
             </div>
             <div class="assetscontainer" ng-show="!hidden">
                 <div class="assetwrapper" data-ng-repeat="asset in group.assets">
-                    <div class="asset"><img data-ng-src="images/Assets/{{asset.image}}" data-ng-mousedown="get_pos($event)" draggable="true" alt="{{asset.name}}" assetimage/></div>
+                    <div class="asset"><img data-ng-src="images/Assets/{{asset.image}}"
+                                            data-ng-mousedown="get_pos($event)" draggable="true" alt="{{asset.name}}"
+                                            assetimage/></div>
                     <p>{{asset.description}}</p>
                 </div>
             </div>
@@ -61,6 +63,7 @@
             <div id="sceneitem" data-ng-repeat="scene in scenes">
                 <div id="scene">
                     <img src="images/{{scene.image}}" alt="scene {{$index + 1}}"/>
+
                     <p>Scéne {{$index + 1}}</p>
                 </div>
                 <div id="dots" data-ng-hide="$last" data-ng-click="addSceneByIndex($index + 1)"></div>

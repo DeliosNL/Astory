@@ -214,9 +214,23 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         this.imgNew.src = imgpath;
         this.x = x || 0;
         this.y = y || 0;
-        this.w = this.imgNew.width || 0;
-        this.h = this.imgNew.height || 0;
-        ;
+        this.w = this.imgNew.width || 500;
+        this.h = this.imgNew.height || 500;
+
+        var that = this;
+
+        this.imgNew.onload = onImageLoad;
+
+        function onImageLoad() {
+            that.w = this.width;
+            that.h = this.height;
+            var canvas = document.getElementById('editor');
+            if (canvas !== null && canvas !== undefined) {
+                canvasstate.valid = false;
+                canvasstate.draw();
+            }
+        }
+
         this.fill = fill || '#AAAAAA';
     }
 
