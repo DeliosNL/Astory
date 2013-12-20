@@ -180,6 +180,30 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         });
     };
 
+    $scope.deleteScene = function () {
+        var modalInstance = $modal.open({
+            templateUrl: '../partials/confirmdeletepopup.html',
+            controller: 'confirmdeletepopupcontroller',
+            resolve: {
+                itemlist: function () {
+                    return $scope.scenes;
+                },
+                itemtype: function () {
+                    return "scene";
+                },
+                item: function () {
+                    return $scope.scenes[0];
+                },
+                popupabove: function () {
+                    return null;
+                },
+                name: function () {
+                    return "Scene " + 1;
+                }
+            }
+        });
+    }
+
     $scope.showScenarioPopup = function () {
         var scenariopopup = $modal.open({
             templateUrl: '../partials/createscenariopopup.html',

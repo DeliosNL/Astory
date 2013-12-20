@@ -118,7 +118,7 @@ aStory.controller('createstorypopupController', ['$scope', '$modalInstance', 'st
 
 }]);
 
-aStory.controller('storypopupController', ['$scope', '$modalInstance', 'storiesService', '$location', function ($scope, $modalInstance, storiesService, $location) {
+aStory.controller('storypopupController', ['$scope', '$modal', '$modalInstance', 'storiesService', '$location', function ($scope, $modal, $modalInstance, storiesService, $location) {
     var story = storiesService.currentstory;
     var stories = storiesService.stories;
     $scope.storyname = story.name;
@@ -133,9 +133,27 @@ aStory.controller('storypopupController', ['$scope', '$modalInstance', 'storiesS
     };
 
     $scope.deleteStory = function () {
-        stories.splice(stories.indexOf(story), 1);
-        $scope.close();
-        $location.path('/stories');
+        var modalInstance = $modal.open({
+            templateUrl: '../partials/confirmdeletepopup.html',
+            controller: 'confirmdeletepopupcontroller',
+            resolve: {
+                itemlist: function () {
+                    return stories;
+                },
+                itemtype: function () {
+                    return "story";
+                },
+                item: function () {
+                    return story;
+                },
+                popupabove: function () {
+                    return $modalInstance;
+                },
+                name: function () {
+                    return story.name;
+                }
+            }
+        });
     }
 
 }]);
@@ -166,7 +184,6 @@ aStory.controller('overviewController', ['$scope', '$modal', 'storiesService', '
         storiesService.currentstory = storiesService.stories[index];
         $location.path('/editor');
     }
-
 }]);
 
 aStory.controller('scenariopopupController', ['$scope', '$modalInstance', 'scenarios', function ($scope, $modalInstance, scenarios) {
@@ -182,6 +199,25 @@ aStory.controller('scenariopopupController', ['$scope', '$modalInstance', 'scena
             scenes: []
         });
         $modalInstance.close();
+    };
+
+}]);
+
+aStory.controller('confirmdeletepopupcontroller', ['$scope', '$modalInstance', '$location', 'itemlist', 'item', 'itemtype', 'popupabove', 'name', function ($scope, $modalInstance, $location, itemlist, item, itemtype, popupabove, name) {
+    $scope.name = name;
+
+    $scope.close = function () {
+        $modalInstance.close();
+    };
+
+    $scope.deleteItem = function () {
+        itemlist.splice(itemlist.indexOf(item), 1);
+        $scope.close();
+
+        if(itemtype == "story") {
+            $location.path('/stories');
+            popupabove.close();
+        }
     };
 
 }]);

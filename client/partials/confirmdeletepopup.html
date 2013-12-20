@@ -1,0 +1,15 @@
+<div id="popupcontainer">
+    <div class="popupheader">
+        <p>Delete? - {{name}}</p>
+
+        <div class="popupclosebutton" data-ng-click="close()"></div>
+    </div>
+    <div id="popupwrapper">
+        <h1>Are you sure you want to delete "{{name}}"?</h1>
+
+        <p class="infotext">"{{name}}" will be lost forever!</p>
+
+        <button class="bottomleftbutton" data-ng-click="close()">No, keep it</button>
+        <button class="bottomrightbutton" data-ng-click="deleteItem()">Yes, I'm sure</button>
+    </div>
+</div>
