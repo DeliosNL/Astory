@@ -92,6 +92,24 @@ img.navlogo {
     background-color: #e23e1f;
 }
 
+.loginlink:after {
+    position: absolute;
+    right: 10px;
+    top: 5px;
+    content : url('../images/arrowright2.png');
+}
+
+.loginlink:hover {
+    background-color: white;
+}
+
+.loginlink:hover:after {
+    position: absolute;
+    right: 10px;
+    top: 5px;
+    content : url('../images/loginarrow.png');
+}
+
 #navaccount, #accountdropdown {
     min-width: 280px;
 }
@@ -219,3 +237,4 @@ img.navlogo {
 .accountdropdownbuttonlogout{
     background-image: url('../images/logouticon.png');
 }
+
