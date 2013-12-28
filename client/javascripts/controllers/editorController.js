@@ -16,6 +16,8 @@ aStory.controller('editScenarioController', ['$scope', 'scenario', '$modalInstan
 }]);
 
 aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$location', function ($scope, $modal, storiesService, $location) {
+    $scope.showassetproperties = false;
+
     $scope.story = storiesService.currentstory;
     if ($scope.story == null) {
         alert("Geen story geselecteerd");
@@ -231,6 +233,16 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         }
     ];
 
+    $scope.safeApply = function(fn) {
+        var phase = this.$root.$$phase;
+        if(phase == '$apply' || phase == '$digest') {
+            if(fn && (typeof(fn) === 'function')) {
+                fn();
+            }
+        } else {
+            this.$apply(fn);
+        }
+    };
 
     /* Drag and drop zooi */
     function Shape(x, y, imgpath, fill) {
@@ -289,7 +301,11 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         this.htmlTop = html.offsetTop;
         this.htmlLeft = html.offsetLeft;
 
+        var assetmenu = document.getElementById('assetmenu');
+        this.assetpropertiesxoffset = parseInt(window.getComputedStyle(assetmenu).width, 0) + parseInt(window.getComputedStyle(assetmenu).paddingLeft, 0) + parseInt(window.getComputedStyle(assetmenu).paddingRight, 0);
+        this.assetpropertiesyoffset = parseInt(window.getComputedStyle(document.getElementById('navbar')).height, 0) + parseInt(window.getComputedStyle(document.getElementById('editorbar')).height, 0);
 
+        this.assetpropertiesmenu = document.getElementById('assetpropertiesmenu');
         this.valid = false; // when set to false, the canvas will redraw everything
         this.shapes = [];  // the collection of things to be drawn
         this.dragging = false; // Keep track of when we are dragging
@@ -308,6 +324,9 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
 
         // Up, down, and move are for dragging
         canvas.addEventListener('mousedown', function (e) {
+            var assetpropertiesxoffset = myState.assetpropertiesxoffset;
+            var assetpropertiesyoffset = myState.assetpropertiesyoffset;
+            var assetpropertiesmenu = myState.assetpropertiesmenu
             var mouse = myState.getMouse(e);
             var mx = mouse.x;
             var my = mouse.y;
@@ -315,6 +334,11 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
             var l = shapes.length;
             for (var i = l - 1; i >= 0; i--) {
                 if (shapes[i].contains(mx, my)) {
+                    $scope.safeApply(function(){
+                        assetpropertiesmenu.style.left = shapes[i].x + assetpropertiesxoffset + shapes[i].w + "px" ;
+                        assetpropertiesmenu.style.top = shapes[i].y + assetpropertiesyoffset + "px";
+                        $scope.showassetproperties = true;
+                    });
                     var mySel = shapes[i];
                     // Keep track of where in the object we clicked
                     // so we can move it smoothly (see mousemove)
@@ -329,6 +353,9 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
             // havent returned means we have failed to select anything.
             // If there was an object selected, we deselect it
             if (myState.selection) {
+                $scope.safeApply(function(){
+                   $scope.showassetproperties = false;
+                });
                 myState.selection = null;
                 myState.valid = false; // Need to clear the old selection border
             }
@@ -336,6 +363,9 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
 
         canvas.addEventListener('mousemove', function (e) {
             if (myState.dragging) {
+                $scope.safeApply(function(){
+                    $scope.showassetproperties = false;
+                })
                 var mouse = myState.getMouse(e);
                 // We don't want to drag the object by its top-left corner, we want to drag it
                 // from where we clicked. Thats why we saved the offset and use it here
@@ -347,12 +377,18 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
 
         canvas.addEventListener('mouseup', function (e) {
             myState.dragging = false;
+            if (myState.selection != null) {
+                $scope.safeApply(function() {
+                    $scope.showassetproperties = true;
+                    myState.assetpropertiesmenu.style.left = 0 + myState.selection.x + myState.assetpropertiesxoffset + myState.selection.w + "px" ;
+                    myState.assetpropertiesmenu.style.top = myState.selection.y + myState.assetpropertiesyoffset + "px";
+                });
+            }
         }, true);
 
         // double click for making new shapes
         canvas.addEventListener('dblclick', function (e) {
             var mouse = myState.getMouse(e);
-            myState.addShape(new Shape(mouse.x - 10, mouse.y - 10, 20, 20, 'rgba(0,255,0,.6)'));
         }, true);
 
         // **** Options! ****
@@ -403,7 +439,6 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
             }
 
             // ** Add stuff you want drawn on top all the time here **
-
             this.valid = true;
         }
     }

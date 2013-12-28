@@ -529,6 +529,13 @@ p.assetmenudescription {
 
 }
 
+#assetpropertiesmenu {
+    width: 220px;
+    height: 435px;
+    background-color: #808080;
+    position: absolute;
+}
+
 /* EINDE SCÈNEBALK */
 
 /*
