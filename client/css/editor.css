@@ -532,8 +532,109 @@ p.assetmenudescription {
 #assetpropertiesmenu {
     width: 220px;
     height: 435px;
-    background-color: #808080;
+    padding-left: 10px;
+    background-color: #b7b7b7;
     position: absolute;
+}
+
+#assetpropertiesmenu h1 {
+    font-size: 16px;
+    color: #111111;
+    margin-bottom: 0;
+}
+
+#assetpropertiesmenu p {
+    font-size: 12px;
+    color: #161616;
+    margin-top: 0;
+    padding-top: 0;
+}
+
+#assetpropertiesmenu h1, #assetpropertiesmenu p {
+    font-family: Helvetica;
+    text-transform: uppercase;
+    margin-left: 14px;
+}
+
+#assetoptions {
+    margin-top: 55px;
+    border-bottom: 1px solid #d7d7d7;
+}
+
+.assetoption {
+    border-top: 1px solid #d7d7d7;
+    height: 35px;
+}
+
+.assetoption:hover {
+    background-color: #929292;
+    cursor: pointer;
+}
+
+#assetoptions p{
+    line-height: 35px;
+    font-family: Helvetica;
+    font-size: 16px;
+    color: #111111;
+    text-transform: none;
+}
+
+#assetpropertieswrapper {
+    margin-top: 25px;
+    font-family: Helvetica;
+    font-size: 16px;
+    color: black;
+    line-height: 35px;
+}
+
+.assetpropertycontainer, .assetpropertycontainerright {
+    margin-top: 12px;
+    height: 35px;
+    width: 90px;
+    background-color: #a4a4a4;
+    float: left;
+}
+
+.assetpropertycontainerright {
+    margin-left: 20px;
+}
+
+.assetpropertycontainer label, .assetpropertycontainerright label {
+    margin-left: 10px;
+    display: inline-block;
+
+}
+
+.assetpropertycontainer input, .assetpropertycontainerright input{
+    width: 30px;
+    display: inline-block;
+    background-color: transparent;
+    border: none;
+    height: 30px;
+    padding: 0;
+    margin: 0;
+}
+
+.assetpropertycontainer input, .assetpropertycontainerright input, .assetpropertycontainer label, .assetpropertycontainerright label {
+    font-family: Helvetica;
+    font-size: 16px;
+    color: black;
+    line-height: 35px;
+}
+
+p#deleteassetbutton {
+    position: absolute;
+    font-size: 12px;
+    color: #ed1c24;
+    font-family: Helvetica;
+    bottom: 25px;
+    left: 0;
+    text-transform: none;
+    margin-bottom: 0;
+}
+
+p#deleteassetbutton:hover{
+    cursor: pointer;
 }
 
 /* EINDE SCÈNEBALK */
