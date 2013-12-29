@@ -176,6 +176,11 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         });
     };
 
+    $scope.addScenarioEvent = function(index){
+        alert("Scenario: " + $scope.scenarios[index].title +  " is toegevoegd als assetoptie!");
+        $scope.showassetproperties = false;
+    }
+
     $scope.addSceneByIndex = function(index) {
         $scope.scenes.splice(index, 0, {
             "image": "johndoe.png"
@@ -305,7 +310,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         this.assetpropertiesxoffset = parseInt(window.getComputedStyle(assetmenu).width, 0) + parseInt(window.getComputedStyle(assetmenu).paddingLeft, 0) + parseInt(window.getComputedStyle(assetmenu).paddingRight, 0);
         this.assetpropertiesyoffset = parseInt(window.getComputedStyle(document.getElementById('navbar')).height, 0) + parseInt(window.getComputedStyle(document.getElementById('editorbar')).height, 0);
 
-        this.assetpropertiesmenu = document.getElementById('assetpropertiesmenu');
+        this.assetpropertiesmenu = document.getElementById('assetmenuwrapper');
         this.valid = false; // when set to false, the canvas will redraw everything
         this.shapes = [];  // the collection of things to be drawn
         this.dragging = false; // Keep track of when we are dragging

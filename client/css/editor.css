@@ -529,12 +529,22 @@ p.assetmenudescription {
 
 }
 
+#assetmenuwrapper{
+    position: absolute;
+    padding: 0;
+    margin: 0;
+    background-color: #b7b7b7;
+    padding-left: 10px;
+}
+
 #assetpropertiesmenu {
     width: 220px;
     height: 435px;
-    padding-left: 10px;
+    padding: 0;
+    margin: 0;
     background-color: #b7b7b7;
-    position: absolute;
+    position: relative;
+    top: 0;
 }
 
 #assetpropertiesmenu h1 {
@@ -561,22 +571,29 @@ p.assetmenudescription {
     border-bottom: 1px solid #d7d7d7;
 }
 
-.assetoption {
+.assetoption, .assetoptionscenario{
     border-top: 1px solid #d7d7d7;
     height: 35px;
+    position: relative;
 }
 
-.assetoption:hover {
+.assetoption:hover, .assetoptionscenario:hover{
     background-color: #929292;
     cursor: pointer;
 }
 
-#assetoptions p{
+#assetoptions p, #assetoptions p#scenario{
     line-height: 35px;
     font-family: Helvetica;
     font-size: 16px;
     color: #111111;
     text-transform: none;
+}
+
+#assetoptions p#scenario:after {
+    position: absolute;
+    right: 15px;
+    content: url('../images/gotoscenarioarrow.png');
 }
 
 #assetpropertieswrapper {
@@ -635,6 +652,47 @@ p#deleteassetbutton {
 
 p#deleteassetbutton:hover{
     cursor: pointer;
+}
+
+#gotoscenariocontainer {
+    background-color: #b7b7b7;
+    position: absolute;
+    width: 220px;
+    height: 155px;
+    top: 0;
+    display: none;
+    left: 220px;
+    padding-left: 5px;
+    padding-right: 5px;
+    overflow-y: auto;
+}
+
+.gotoscenariooption {
+    width: 210px;
+    height: 35px;
+    border-bottom: 1px solid #d7d7d7;
+    text-overflow: ellipsis;
+}
+
+.assetoptionscenario:hover > #gotoscenariocontainer {
+    display: block;
+}
+
+.gotoscenariooption:hover {
+    background-color: #929292;
+    cursor: pointer;
+}
+
+.gotoscenariooption p {
+    line-height: 35px;
+    font-family: Helvetica;
+    font-size: 16px;
+    color: #111111;
+    text-transform: none;
+    margin-left: 10px;
+    text-overflow: ellipsis;
+    overflow-x: hidden;
+    white-space: nowrap;
 }
 
 /* EINDE SCÈNEBALK */
