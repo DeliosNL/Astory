@@ -535,6 +535,7 @@ p.assetmenudescription {
     margin: 0;
     background-color: #b7b7b7;
     padding-left: 10px;
+    margin-left: 2px;
 }
 
 #assetpropertiesmenu {

@@ -177,8 +177,10 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
     };
 
     $scope.addScenarioEvent = function(index){
-        alert("Scenario: " + $scope.scenarios[index].title +  " is toegevoegd als assetoptie!");
-        $scope.showassetproperties = false;
+        $scope.safeApply(function() {
+            alert("Scenario: " + $scope.scenarios[index].title +  " is toegevoegd als assetoptie!");
+            $scope.showassetproperties = false;
+        });
     }
 
     $scope.addSceneByIndex = function(index) {
@@ -250,19 +252,38 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
     };
 
     /* Drag and drop zooi */
-    function Shape(x, y, imgpath, fill) {
+
+    function SelectionBox(x, y, state) {
+        "use strict";
+        this.state = state;
+        this.x = x || 0;
+        this.y = y || 0;
+    }
+
+    function Asset(x, y, imgpath, state) {
         this.imgNew = new Image();
         this.imgNew.src = imgpath;
         this.x = x || 0;
         this.y = y || 0;
         this.w = this.imgNew.width || 500;
         this.h = this.imgNew.height || 500;
-
+        this.state = state;
         var that = this;
 
         this.imgNew.onload = onImageLoad;
 
         function onImageLoad() {
+            if(this.width > this.height) {
+                while(this.width > 500) {
+                    this.width = this.width / 2;
+                    this.height = this.height / 2;
+                }
+            } else {
+                while(this.height > 500){
+                    this.height = this.height / 2;
+                    this.width = this.width / 2;
+                }
+            }
             that.w = this.width;
             that.h = this.height;
             var canvas = document.getElementById('editor');
@@ -274,14 +295,58 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
     }
 
     // Draws this shape to a given context
-    Shape.prototype.draw = function (ctx) {
+    Asset.prototype.draw = function (ctx) {
+        var i, cur, half;
         var locx = this.x;
         var locy = this.y;
-        ctx.drawImage(this.imgNew, locx, locy);
+
+        if(this.state.selection == this){
+            ctx.strokeStyle = this.state.selectionColor;
+            ctx.lineWidth = this.state.selectionWidth;
+            ctx.strokeRect(this.x, this.y, this.w, this.h);
+
+           half = this.state.selectionboxsize / 2;
+            // 0 1 2
+            // 3   4
+            // 5 6 7
+            this.state.selectionHandles[0].x = this.x-half;
+            this.state.selectionHandles[0].y = this.y-half;
+
+            this.state.selectionHandles[1].x = this.x + this.w/2 -half;
+            this.state.selectionHandles[1].y = this.y - half;
+
+            this.state.selectionHandles[2].x = this.x + this.w - half;
+            this.state.selectionHandles[2].y = this.y - half;
+
+            //middle left
+            this.state.selectionHandles[3].x = this.x-half;
+            this.state.selectionHandles[3].y = this.y+this.h/2-half;
+
+            //middle right
+            this.state.selectionHandles[4].x = this.x+this.w-half;
+            this.state.selectionHandles[4].y = this.y+this.h/2-half;
+
+            //bottom left, middle, right
+            this.state.selectionHandles[6].x = this.x+this.w/2-half;
+            this.state.selectionHandles[6].y = this.y+this.h-half;
+
+            this.state.selectionHandles[5].x = this.x-half;
+            this.state.selectionHandles[5].y = this.y+this.h-half;
+
+            this.state.selectionHandles[7].x = this.x+this.w-half;
+            this.state.selectionHandles[7].y = this.y+this.h-half;
+
+            for (i = 0; i < 8; i += 1) {
+                cur = this.state.selectionHandles[i];
+                ctx.fillRect(cur.x, cur.y, this.state.selectionboxsize, this.state.selectionboxsize);
+            }
+        }
+
+        ctx.drawImage(this.imgNew, locx, locy, this.w, this.h);
     }
 
     // Determine if a point is inside the shape's bounds
-    Shape.prototype.contains = function (mx, my) {
+    Asset.prototype.contains = function (mx, my) {
         // All we have to do is make sure the Mouse X,Y fall in the area between
         // the shape's X and (X + Height) and its Y and (Y + Height)
         return  (this.x <= mx) && (this.x + this.w >= mx) &&
@@ -314,12 +379,19 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         this.valid = false; // when set to false, the canvas will redraw everything
         this.shapes = [];  // the collection of things to be drawn
         this.dragging = false; // Keep track of when we are dragging
+        this.resizeDragging = false;
+        this.expectResize = -1;
         // the current selected object. In the future we could turn this into an array for multiple selection
         this.selection = null;
         this.dragoffx = 0; // See mousedown and mousemove events for explanation
         this.dragoffy = 0;
 
         var myState = this;
+
+        this.selectionHandles = [];
+        for (i = 0; i < 8; i += 1) {
+            this.selectionHandles.push(new SelectionBox(0, 0, this));
+        }
 
         //fixes a problem where double clicking causes text to get selected on the canvas
         canvas.addEventListener('selectstart', function (e) {
@@ -337,6 +409,12 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
             var my = mouse.y;
             var shapes = myState.shapes;
             var l = shapes.length;
+
+            if(myState.expectResize !== -1){
+                myState.resizeDragging = true;
+                return;
+            }
+
             for (var i = l - 1; i >= 0; i--) {
                 if (shapes[i].contains(mx, my)) {
                     $scope.safeApply(function(){
@@ -367,22 +445,128 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         }, true);
 
         canvas.addEventListener('mousemove', function (e) {
+            var mouse = myState.getMouse(e),
+                mx = mouse.x,
+                my= mouse.y,
+                oldx, oldy, i, cur;
             if (myState.dragging) {
                 $scope.safeApply(function(){
                     $scope.showassetproperties = false;
                 })
-                var mouse = myState.getMouse(e);
                 // We don't want to drag the object by its top-left corner, we want to drag it
                 // from where we clicked. Thats why we saved the offset and use it here
-                myState.selection.x = mouse.x - myState.dragoffx;
-                myState.selection.y = mouse.y - myState.dragoffy;
+                myState.selection.x = mx - myState.dragoffx;
+                myState.selection.y = my - myState.dragoffy;
                 myState.valid = false; // Something's dragging so we must redraw
+            } else if (myState.resizeDragging) {
+                $scope.safeApply(function(){
+                    $scope.showassetproperties = false;
+                })
+                oldx = myState.selection.x;
+                oldy = myState.selection.y;
+
+                // 0 1 2
+                // 3   4
+                // 5 6 7
+                switch (myState.expectResize) {
+                    case 0:
+                        myState.selection.x = mx;
+                        myState.selection.y = my;
+                        myState.selection.w += oldx - mx;
+                        myState.selection.h += oldy - my;
+                        break;
+                    case 1:
+                        myState.selection.y = my;
+                        myState.selection.h += oldy - my;
+                        break;
+                    case 2:
+                        myState.selection.y = my;
+                        myState.selection.w = mx - oldx;
+                        myState.selection.h += oldy - my;
+                        break;
+                    case 3:
+                        myState.selection.x = mx;
+                        myState.selection.w += oldx - mx;
+                        break;
+                    case 4:
+                        myState.selection.w = mx - oldx;
+                        break;
+                    case 5:
+                        myState.selection.x = mx;
+                        myState.selection.w += oldx - mx;
+                        myState.selection.h = my - oldy;
+                        break;
+                    case 6:
+                        myState.selection.h = my - oldy;
+                        break;
+                    case 7:
+                        myState.selection.w = mx - oldx;
+                        myState.selection.h = my - oldy;
+                        break;
+                }
+
+                myState.valid = false; // Something's dragging so we must redraw
+
+            }
+
+            if(myState.selection !== null && !myState.resizeDragging){
+                for(i = 0; i < 8; i+= 1){
+                    cur = myState.selectionHandles[i];
+                    if(mx >= cur.x && mx <= cur.x + myState.selectionboxsize &&
+                        my >= cur.y && my <= cur.y + myState.selectionboxsize){
+                        myState.expectResize = i;
+                        myState.valid = false;
+
+                        switch(i) {
+                            case 0:
+                                this.style.cursor='nw-resize';
+                                break;
+                            case 1:
+                                this.style.cursor='n-resize';
+                                break;
+                            case 2:
+                                this.style.cursor='ne-resize';
+                                break;
+                            case 3:
+                                this.style.cursor='w-resize';
+                                break;
+                            case 4:
+                                this.style.cursor='e-resize';
+                                break;
+                            case 5:
+                                this.style.cursor='sw-resize';
+                                break;
+                            case 6:
+                                this.style.cursor='s-resize';
+                                break;
+                            case 7:
+                                this.style.cursor='se-resize';
+                                break;
+
+                        }
+                        return;
+                    }
+
+                }
+                myState.resizeDragging = false;
+                myState.expectResize = -1;
+                this.style.cursor = 'auto';
             }
         }, true);
 
         canvas.addEventListener('mouseup', function (e) {
             myState.dragging = false;
+            myState.resizeDragging = false;
+            myState.expectResize = -1;
             if (myState.selection != null) {
+                if (myState.selection.w < 0) {
+                    myState.selection.w = -myState.selection.w;
+                    myState.selection.x -= myState.selection.w;
+                }
+                if (myState.selection.h < 0) {
+                    myState.selection.h = -myState.selection.h;
+                    myState.selection.y -= myState.selection.h;
+                }
                 $scope.safeApply(function() {
                     $scope.showassetproperties = true;
                     myState.assetpropertiesmenu.style.left = 0 + myState.selection.x + myState.assetpropertiesxoffset + myState.selection.w + "px" ;
@@ -400,6 +584,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
 
         this.selectionColor = '#CC0000';
         this.selectionWidth = 2;
+        this.selectionboxsize = 6;
         this.interval = 30;
         setInterval(function () {
             myState.draw();
@@ -432,15 +617,6 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
                 if (shape.x > parseInt(window.getComputedStyle(this.canvas).width) || shape.y > parseInt(window.getComputedStyle(this.canvas).height) ||
                     shape.x + shape.w < 0 || shape.y + shape.h < 0) continue;
                 shapes[i].draw(ctx);
-            }
-
-            // draw selection
-            // right now this is just a stroke along the edge of the selected Shape
-            if (this.selection != null) {
-                ctx.strokeStyle = this.selectionColor;
-                ctx.lineWidth = this.selectionWidth;
-                var mySel = this.selection;
-                ctx.strokeRect(mySel.x, mySel.y, mySel.w, mySel.h);
             }
 
             // ** Add stuff you want drawn on top all the time here **
@@ -509,7 +685,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         //var dy = pos[1] - img.offsetTop;
         var assetx = event.pageX - parseInt(window.getComputedStyle(assetmenu).width) - parseInt(window.getComputedStyle(assetmenu).paddingLeft) - parseInt(window.getComputedStyle(assetmenu).paddingRight);
         var assety = event.pageY - parseInt(window.getComputedStyle(editorbar).height) - parseInt(window.getComputedStyle(navbar).height);
-        canvasstate.addShape(new Shape(assetx, assety, event.dataTransfer.getData("imagepath")));
+        canvasstate.addShape(new Asset(assetx, assety, event.dataTransfer.getData("imagepath"), canvasstate));
     }
 
     $scope.dragAsset = function (event) {
