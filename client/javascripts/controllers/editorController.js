@@ -17,6 +17,31 @@ aStory.controller('editScenarioController', ['$scope', 'scenario', '$modalInstan
 
 aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$location', function ($scope, $modal, storiesService, $location) {
     $scope.showassetproperties = false;
+    $scope.selectedAsset = null;
+
+    $scope.removeSelectedAsset = function () {
+        canvasstate.removeAsset($scope.selectedAsset);
+    }
+
+    $scope.onAssetKeyUp = function (key) {
+        if(key == 13){
+            $scope.redrawCanvas();
+        }
+    };
+
+    $scope.redrawCanvas = function () {
+        $scope.safeApply(function () {
+            if ($scope.selectedAsset !== null) {
+                $scope.selectedAsset.h = parseInt($scope.selectedAsset.h);
+                $scope.selectedAsset.w = parseInt($scope.selectedAsset.w);
+                $scope.selectedAsset.x = parseInt($scope.selectedAsset.x);
+                $scope.selectedAsset.y = parseInt($scope.selectedAsset.y);
+            }
+            canvasstate.positionAssetPropertiesMenu();
+            canvasstate.valid = false;
+            canvasstate.draw();
+        });
+    }
 
     $scope.story = storiesService.currentstory;
     if ($scope.story == null) {
@@ -170,20 +195,20 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         }
     ]
 
-    $scope.addScene = function() {
+    $scope.addScene = function () {
         $scope.scenes.push({
             "image": "sceneexample.png"
         });
     };
 
-    $scope.addScenarioEvent = function(index){
-        $scope.safeApply(function() {
-            alert("Scenario: " + $scope.scenarios[index].title +  " is toegevoegd als assetoptie!");
+    $scope.addScenarioEvent = function (index) {
+        $scope.safeApply(function () {
+            alert("Scenario: " + $scope.scenarios[index].title + " is toegevoegd als assetoptie!");
             $scope.showassetproperties = false;
         });
     }
 
-    $scope.addSceneByIndex = function(index) {
+    $scope.addSceneByIndex = function (index) {
         $scope.scenes.splice(index, 0, {
             "image": "johndoe.png"
         });
@@ -240,10 +265,10 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         }
     ];
 
-    $scope.safeApply = function(fn) {
+    $scope.safeApply = function (fn) {
         var phase = this.$root.$$phase;
-        if(phase == '$apply' || phase == '$digest') {
-            if(fn && (typeof(fn) === 'function')) {
+        if (phase == '$apply' || phase == '$digest') {
+            if (fn && (typeof(fn) === 'function')) {
                 fn();
             }
         } else {
@@ -273,13 +298,13 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         this.imgNew.onload = onImageLoad;
 
         function onImageLoad() {
-            if(this.width > this.height) {
-                while(this.width > 500) {
+            if (this.width > this.height) {
+                while (this.width > 500) {
                     this.width = this.width / 2;
                     this.height = this.height / 2;
                 }
             } else {
-                while(this.height > 500){
+                while (this.height > 500) {
                     this.height = this.height / 2;
                     this.width = this.width / 2;
                 }
@@ -300,41 +325,41 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         var locx = this.x;
         var locy = this.y;
 
-        if(this.state.selection == this){
+        if (this.state.selection == this) {
             ctx.strokeStyle = this.state.selectionColor;
             ctx.lineWidth = this.state.selectionWidth;
             ctx.strokeRect(this.x, this.y, this.w, this.h);
 
-           half = this.state.selectionboxsize / 2;
+            half = this.state.selectionboxsize / 2;
             // 0 1 2
             // 3   4
             // 5 6 7
-            this.state.selectionHandles[0].x = this.x-half;
-            this.state.selectionHandles[0].y = this.y-half;
+            this.state.selectionHandles[0].x = this.x - half;
+            this.state.selectionHandles[0].y = this.y - half;
 
-            this.state.selectionHandles[1].x = this.x + this.w/2 -half;
+            this.state.selectionHandles[1].x = this.x + this.w / 2 - half;
             this.state.selectionHandles[1].y = this.y - half;
 
             this.state.selectionHandles[2].x = this.x + this.w - half;
             this.state.selectionHandles[2].y = this.y - half;
 
             //middle left
-            this.state.selectionHandles[3].x = this.x-half;
-            this.state.selectionHandles[3].y = this.y+this.h/2-half;
+            this.state.selectionHandles[3].x = this.x - half;
+            this.state.selectionHandles[3].y = this.y + this.h / 2 - half;
 
             //middle right
-            this.state.selectionHandles[4].x = this.x+this.w-half;
-            this.state.selectionHandles[4].y = this.y+this.h/2-half;
+            this.state.selectionHandles[4].x = this.x + this.w - half;
+            this.state.selectionHandles[4].y = this.y + this.h / 2 - half;
 
             //bottom left, middle, right
-            this.state.selectionHandles[6].x = this.x+this.w/2-half;
-            this.state.selectionHandles[6].y = this.y+this.h-half;
+            this.state.selectionHandles[6].x = this.x + this.w / 2 - half;
+            this.state.selectionHandles[6].y = this.y + this.h - half;
 
-            this.state.selectionHandles[5].x = this.x-half;
-            this.state.selectionHandles[5].y = this.y+this.h-half;
+            this.state.selectionHandles[5].x = this.x - half;
+            this.state.selectionHandles[5].y = this.y + this.h - half;
 
-            this.state.selectionHandles[7].x = this.x+this.w-half;
-            this.state.selectionHandles[7].y = this.y+this.h-half;
+            this.state.selectionHandles[7].x = this.x + this.w - half;
+            this.state.selectionHandles[7].y = this.y + this.h - half;
 
             for (i = 0; i < 8; i += 1) {
                 cur = this.state.selectionHandles[i];
@@ -399,45 +424,52 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
             return false;
         }, false);
 
-        // Up, down, and move are for dragging
-        canvas.addEventListener('mousedown', function (e) {
+        CanvasState.prototype.positionAssetPropertiesMenu = function () {
+            var selection = myState.selection;
             var assetpropertiesxoffset = myState.assetpropertiesxoffset;
             var assetpropertiesyoffset = myState.assetpropertiesyoffset;
             var assetpropertiesmenu = myState.assetpropertiesmenu
+            assetpropertiesmenu.style.left = selection.x + assetpropertiesxoffset + selection.w + "px";
+            assetpropertiesmenu.style.top = selection.y + assetpropertiesyoffset + "px";
+        }
+
+        // Up, down, and move are for dragging
+        canvas.addEventListener('mousedown', function (e) {
+
             var mouse = myState.getMouse(e);
             var mx = mouse.x;
             var my = mouse.y;
             var shapes = myState.shapes;
             var l = shapes.length;
 
-            if(myState.expectResize !== -1){
+            if (myState.expectResize !== -1) {
                 myState.resizeDragging = true;
                 return;
             }
 
             for (var i = l - 1; i >= 0; i--) {
+                var mySel = shapes[i];
+                myState.dragoffx = mx - mySel.x;
+                myState.dragoffy = my - mySel.y;
+                myState.dragging = true;
+                myState.selection = mySel;
+                myState.valid = false;
                 if (shapes[i].contains(mx, my)) {
-                    $scope.safeApply(function(){
-                        assetpropertiesmenu.style.left = shapes[i].x + assetpropertiesxoffset + shapes[i].w + "px" ;
-                        assetpropertiesmenu.style.top = shapes[i].y + assetpropertiesyoffset + "px";
+                    $scope.safeApply(function () {
+                        myState.positionAssetPropertiesMenu();
+                        $scope.selectedAsset = shapes[i];
                         $scope.showassetproperties = true;
                     });
-                    var mySel = shapes[i];
-                    // Keep track of where in the object we clicked
-                    // so we can move it smoothly (see mousemove)
-                    myState.dragoffx = mx - mySel.x;
-                    myState.dragoffy = my - mySel.y;
-                    myState.dragging = true;
-                    myState.selection = mySel;
-                    myState.valid = false;
+
                     return;
                 }
             }
             // havent returned means we have failed to select anything.
             // If there was an object selected, we deselect it
             if (myState.selection) {
-                $scope.safeApply(function(){
-                   $scope.showassetproperties = false;
+                $scope.safeApply(function () {
+                    $scope.showassetproperties = false;
+                    $scope.selectedAsset = null;
                 });
                 myState.selection = null;
                 myState.valid = false; // Need to clear the old selection border
@@ -447,10 +479,10 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         canvas.addEventListener('mousemove', function (e) {
             var mouse = myState.getMouse(e),
                 mx = mouse.x,
-                my= mouse.y,
+                my = mouse.y,
                 oldx, oldy, i, cur;
             if (myState.dragging) {
-                $scope.safeApply(function(){
+                $scope.safeApply(function () {
                     $scope.showassetproperties = false;
                 })
                 // We don't want to drag the object by its top-left corner, we want to drag it
@@ -459,7 +491,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
                 myState.selection.y = my - myState.dragoffy;
                 myState.valid = false; // Something's dragging so we must redraw
             } else if (myState.resizeDragging) {
-                $scope.safeApply(function(){
+                $scope.safeApply(function () {
                     $scope.showassetproperties = false;
                 })
                 oldx = myState.selection.x;
@@ -509,38 +541,38 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
 
             }
 
-            if(myState.selection !== null && !myState.resizeDragging){
-                for(i = 0; i < 8; i+= 1){
+            if (myState.selection !== null && !myState.resizeDragging) {
+                for (i = 0; i < 8; i += 1) {
                     cur = myState.selectionHandles[i];
-                    if(mx >= cur.x && mx <= cur.x + myState.selectionboxsize &&
-                        my >= cur.y && my <= cur.y + myState.selectionboxsize){
+                    if (mx >= cur.x && mx <= cur.x + myState.selectionboxsize &&
+                        my >= cur.y && my <= cur.y + myState.selectionboxsize) {
                         myState.expectResize = i;
                         myState.valid = false;
 
-                        switch(i) {
+                        switch (i) {
                             case 0:
-                                this.style.cursor='nw-resize';
+                                this.style.cursor = 'nw-resize';
                                 break;
                             case 1:
-                                this.style.cursor='n-resize';
+                                this.style.cursor = 'n-resize';
                                 break;
                             case 2:
-                                this.style.cursor='ne-resize';
+                                this.style.cursor = 'ne-resize';
                                 break;
                             case 3:
-                                this.style.cursor='w-resize';
+                                this.style.cursor = 'w-resize';
                                 break;
                             case 4:
-                                this.style.cursor='e-resize';
+                                this.style.cursor = 'e-resize';
                                 break;
                             case 5:
-                                this.style.cursor='sw-resize';
+                                this.style.cursor = 'sw-resize';
                                 break;
                             case 6:
-                                this.style.cursor='s-resize';
+                                this.style.cursor = 's-resize';
                                 break;
                             case 7:
-                                this.style.cursor='se-resize';
+                                this.style.cursor = 'se-resize';
                                 break;
 
                         }
@@ -567,10 +599,10 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
                     myState.selection.h = -myState.selection.h;
                     myState.selection.y -= myState.selection.h;
                 }
-                $scope.safeApply(function() {
+                $scope.safeApply(function () {
+                    myState.positionAssetPropertiesMenu();
                     $scope.showassetproperties = true;
-                    myState.assetpropertiesmenu.style.left = 0 + myState.selection.x + myState.assetpropertiesxoffset + myState.selection.w + "px" ;
-                    myState.assetpropertiesmenu.style.top = myState.selection.y + myState.assetpropertiesyoffset + "px";
+
                 });
             }
         }, true);
@@ -590,6 +622,16 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
             myState.draw();
         }, myState.interval);
     }
+
+    CanvasState.prototype.removeAsset = function(shape){
+        this.shapes.splice(this.shapes.indexOf(shape), 1);
+        this.valid = false;
+        $scope.safeApply(function () {
+           $scope.showassetproperties = false;
+           $scope.selectedAsset = null;
+        });
+        this.draw();
+    };
 
     CanvasState.prototype.addShape = function (shape) {
         this.shapes.push(shape);

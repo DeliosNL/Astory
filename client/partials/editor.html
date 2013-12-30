@@ -74,22 +74,22 @@
             <div id = "assetpropertieswrapper">
                 <div class="assetpropertycontainer">
                     <label for="assetx">X:</label>
-                    <input id="assetx" value="300"/>px
+                    <input type="number" id="assetx" data-ng-model="selectedAsset.x" data-ng-blur="redrawCanvas();" data-on-keyup-fn="onAssetKeyUp;"/>px
                 </div>
                 <div class="assetpropertycontainerright">
                     <label for="assety">Y:</label>
-                    <input id="assety" value="300"/>px
+                    <input type="number" id="assety" data-ng-model="selectedAsset.y" data-ng-blur="redrawCanvas();" data-on-keyup-fn="onAssetKeyUp;"/>px
                 </div>
                 <div class="assetpropertycontainer">
                     <label for="assetw">W:</label>
-                    <input id="assetw" value="300"/>px
+                    <input type="number" id="assetw" data-ng-model="selectedAsset.w" data-ng-blur="redrawCanvas();" data-on-keyup-fn="onAssetKeyUp;"/>px
                 </div>
                 <div class="assetpropertycontainerright">
                     <label for="asseth">H:</label>
-                    <input id="asseth" value="300"/>px
+                    <input type="number" id="asseth" data-ng-model="selectedAsset.h" data-ng-blur="redrawCanvas();" data-on-keyup-fn="onAssetKeyUp;"/>px
                 </div>
             </div>
-            <p id="deleteassetbutton">Delete asset</p>
+            <p id="deleteassetbutton" data-ng-click="removeSelectedAsset();">Delete asset</p>
         </div>
     </div>
     <div id="scenemenuwrapper">

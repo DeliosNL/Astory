@@ -24,3 +24,23 @@ aStory.directive('scenariosdropdown', function() {
         templateUrl: '../partials/directives/scenariosdropdown.html'
     };
 });
+
+aStory.directive('ngBlur', function() {
+    "use strict";
+    return function(scope, elem, attrs ){
+        elem.bind('blur', function () {
+            scope.$apply(attrs.ngBlur);
+        });
+    };
+});
+
+aStory.directive('onKeyupFn', function() {
+    return function(scope, elm, attrs) {
+        var keyupFn = scope.$eval(attrs.onKeyupFn);
+        elm.bind('keyup', function(evt) {
+            scope.$apply(function () {
+                keyupFn.call(scope, evt.which);
+            });
+        });
+    };
+});
