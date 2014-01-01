@@ -5,19 +5,18 @@
 /**
  * Module dependencies.
  */
-var express = require('express')
-    , fs = require('fs')
-    , http = require('http')
-    , path = require('path')
-;
+var express = require('express'),
+    fs = require('fs'),
+    http = require('http'),
+    path = require('path');
 
 // Load configuration
-var env = process.env.NODE_ENV || 'development'
-    , config = require('./config/config.js')[env];
+var env = process.env.NODE_ENV || 'development',
+    config = require('./config/config.js')[env];
 
 // Bootstrap db connection
-var mongoose = require('mongoose')
-    , Schema = mongoose.Schema
+var mongoose = require('mongoose'),
+    Schema = mongoose.Schema;
 mongoose.connect(config.db);
 
 // Bootstrap models
@@ -33,26 +32,26 @@ var passport = require('passport')
     , LocalStrategy = require('passport-local').Strategy;
 
 passport.use(new LocalStrategy(
-    function(username, password, done) {
+    function (username, password, done) {
         //TODO : Login shit invullen
     }
 ));
 
-passport.serializeUser(function(user, done) {
+passport.serializeUser(function (user, done) {
     console.log(user.id);
     done(null, user.id);
 });
 
-passport.deserializeUser(function(id, done) {
-    done(null, 'admin');
+passport.deserializeUser(function (id, done) {
+    done(null, id);
 });
 
 var app = express();
 app.configure(function () {
     app.use(express.static('public'));
     app.use(express.cookieParser());
-    app.use(express.bodyParser({uploadDir:'./client/images'}));
-    app.use(express.session({ secret: 'keyboard cat' }));
+    app.use(express.bodyParser({uploadDir: './client/images'}));
+    app.use(express.session({ secret: '2kool4skool' }));
     app.use(passport.initialize());
     app.use(passport.session());
     app.use(app.router);

@@ -1,7 +1,9 @@
 /**
  * Created by Delios on 11/30/13.
  */
-
+var Auth = require('../middlewares/authorization');
+var mongoose = require('mongoose');
+var User = mongoose.model('User');
 module.exports = function (app) {
 
     var controller = require('../app/controllers/astory.js'),
@@ -14,5 +16,9 @@ module.exports = function (app) {
 
     //PASSPORT
     app.get('/loggedin', controller.loggedin);
+
+    //Users
+    app.post("/signup", Auth.userExist, controller.register);
+
 
 }

@@ -1,12 +1,13 @@
 /**
  * Created by Delios on 11/30/13.
  */
-var mongoose = require('mongoose')
-    , Story = mongoose.model('Story');
-
+var mongoose = require('mongoose'),
+    User = mongoose.model('User');
+    Schema = mongoose.Schema,
+    hash = require('../../Utils/hash');
 
 exports.list = function (req, res) {
-    var conditions, fields, options;
+    /*var conditions, fields, options;
     console.log('LIST:' + req.params);
 
     conditions = {};
@@ -29,9 +30,35 @@ exports.list = function (req, res) {
                 err: err
             };
             return res.send(retObj);
-        })
-}
+        }) */
+};
 
-exports.loggedin = function(req, res){
+exports.loggedin = function(req, res) {
 
-}
+};
+
+exports.register = function(req, res) {
+    console.log(req.body.password);
+    hash(req.body.password, function(err, salt, hash){
+        if(err) throw err;
+        req.body.passwordhash = hash;
+        req.body.password = null;
+
+        var doc = new User(req.body);
+
+        doc.save(function (err) {
+            if (err !== null) {
+                console.log(err);
+            }
+            var retObj = {
+                meta: {"action": "Register account", 'timestamp': new Date(), filename: __filename},
+                err: err
+            };
+            return res.send(retObj);
+
+        });
+
+    });
+
+};
+

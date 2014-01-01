@@ -609,6 +609,7 @@ p.assetmenudescription {
     margin-top: 12px;
     height: 35px;
     width: 90px;
+    line-height: 35px;
     background-color: #a4a4a4;
     float: left;
 }
@@ -620,12 +621,11 @@ p.assetmenudescription {
 .assetpropertycontainer label, .assetpropertycontainerright label {
     margin-left: 10px;
     display: inline-block;
-
 }
 
 .assetpropertycontainer input, .assetpropertycontainerright input{
     width: 30px;
-    display: inline-block;
+    display: inline;
     background-color: transparent;
     border: none;
     height: 30px;
@@ -638,6 +638,12 @@ p.assetmenudescription {
     font-size: 16px;
     color: black;
     line-height: 35px;
+}
+
+.assetpropertycontainer input[type=number]::-webkit-inner-spin-button, .assetpropertycontainerright input[type=number]::-webkit-inner-spin-button,
+.assetpropertycontainer input[type=number]::-webkit-outer-spin-button, .assetpropertycontainerright input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 p#deleteassetbutton {
