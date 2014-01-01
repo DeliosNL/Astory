@@ -10,9 +10,28 @@ aStory.controller('mainController', ['$scope', function ($location, $scope, $htt
     //TODO: invullen
 }]);
 
-aStory.controller('registerController', ['$scope', function ($scope) {
+aStory.controller('registerController', ['$scope', 'accountService', '$location', function ($scope, accountService, $location) {
     $scope.days = [];
-    for (var i = 0; i <= 31; i++) {
+    $scope.username = "";
+    $scope.password = "";
+    $scope.email = "";
+    $scope.birthdateinvalid = true;
+    $scope.birthdateday = "";
+    $scope.birthdatemonth = "";
+    $scope.birthdateyear = "";
+    $scope.usedemail = false;
+    $scope.usedusername = false;
+
+
+    $scope.checkBirthdateValidity = function() {
+        if( document.getElementById('birthdatedayinput').value !== '' &&
+            document.getElementById('birthdatemonthinput').value !== '' &&
+            document.getElementById('birthdateyearinput').value !== '') {
+            $scope.birthdateinvalid = false;
+        }
+    }
+
+    for (var i = 1; i <= 31; i++) {
         $scope.days.push(i);
     }
 
@@ -26,6 +45,35 @@ aStory.controller('registerController', ['$scope', function ($scope) {
     $("select:has(option[value=]:first-child)").on('change',function () {
         $(this).toggleClass("empty", $.inArray($(this).val(), ['', null]) >= 0);
     }).trigger('change');
+
+    $scope.register = function() {
+        $scope.usedusername = false;
+        $scope.usedemail = false;
+        var datestring = "" + $scope.months[$scope.birthdatemonth - 1] + " " + $scope.birthdateday + ", " + $scope.birthdateyear;
+        var newaccount = {
+            username: $scope.username,
+            password: $scope.password,
+            email: $scope.email,
+            birthdate: datestring
+        };
+        accountService.users.save(newaccount, function(data) {
+            if(data.validationerror !== undefined){
+                if(data.validationerror === "Email already exists"){
+                    $scope.usedemail = true;
+                } else if (data.validationerror === "Username already exists"){
+                    $scope.usedusername = true;
+                } else {
+                    alert("Unknown validation error: " + data.validationerror);
+                }
+                return 0;
+            }
+            if(data.err) {
+                alert("Error while creating account, please retry");
+                return 0;
+            }
+            $location.path('/login');
+        });
+    }
 }]);
 
 aStory.controller('loginController', ['$scope', 'loggedinService', '$location', function ($scope, loggedinService, $location) {

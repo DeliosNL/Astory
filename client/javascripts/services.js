@@ -1,6 +1,6 @@
 
-angular.module('myApp.services', ['ngResource'])
-    .factory('storyService', ['$resource', '$http', function ($resource) {
+angular.module('aStory.services', ['ngResource'])
+    .factory('accountService', ['$resource', '$http', function ($resource) {
         "use strict";
 
         var actions = {
@@ -11,9 +11,24 @@ angular.module('myApp.services', ['ngResource'])
                 'delete': {method: 'DELETE'}
             },
             db = {};
-        db.cars = $resource('/stories/:_id', {}, actions);
+        db.users = $resource('/users', {}, actions);
         return db;
     }]);
+
+aStory.factory('accountService', ['$resource', '$http', function ($resource) {
+    "use strict";
+
+    var actions = {
+            'get': {method: 'GET'},
+            'save': {method: 'POST'},
+            'update': {method: 'PUT'},
+            'query': {method: 'GET', isArray: true},
+            'delete': {method: 'DELETE'}
+        },
+        db = {};
+    db.users = $resource('/users', {}, actions);
+    return db;
+}]);
 
 aStory.service('storiesService', [function() {
     "use strict";

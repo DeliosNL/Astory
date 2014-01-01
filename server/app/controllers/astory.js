@@ -38,14 +38,13 @@ exports.loggedin = function(req, res) {
 };
 
 exports.register = function(req, res) {
-    console.log(req.body.password);
     hash(req.body.password, function(err, salt, hash){
         if(err) throw err;
         req.body.passwordhash = hash;
         req.body.password = null;
-
+        req.body.birthdate = new Date(req.body.birthdate);
         var doc = new User(req.body);
-
+        console.log("Saving new account: " + req.body.username);
         doc.save(function (err) {
             if (err !== null) {
                 console.log(err);

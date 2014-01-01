@@ -36,12 +36,18 @@
     font-family: Proxima;
 }
 
-#loginfieldwrapper label, #registerfieldwrapper label {
+#loginfieldwrapper label, #registerfieldwrapper label, p.validationmessage, #registerfieldwrapper label.inline {
     font-family: ProximaLight;
     font-size: 14px;
     color: #747474;
     margin-left:  5px;
+
 }
+
+#registerfieldwrapper label.inline {
+    display: inline;
+}
+
 
 #registerfieldwrapper label {
     margin-bottom: 0;
@@ -53,6 +59,15 @@
     color: #9f9f9f;
     content: "Has to be at least 6 characters";
 }
+/*
+#usernameLabel:after, #emaillabel:after {
+    position: absolute;
+    right: 0;
+    color: #e23e1f;
+    content: "Username is already in use!";
+} */
+
+
 
 #loginfieldwrapper img , #registerfieldwrapper img{
     margin: 0 auto 30px auto;
@@ -105,7 +120,7 @@
     margin-left: 2px;
 }
 
-#loginbottomwrapper p, #registerfieldwrapper p {
+#loginbottomwrapper p, #registerfieldwrapper p.updatemessage {
     margin: 0;
     padding: 0;
     line-height: 50px;
@@ -119,7 +134,7 @@
     font-size: 15px;
 }
 
-#registerfieldwrapper p {
+#registerfieldwrapper p.updatemessage {
     font-size: 14px;
     margin-left: 4px;
     line-height: 51px;
@@ -193,3 +208,15 @@
 
 /* Hidden placeholder */
 #registerfieldwrapper select option[disabled]:first-child { display: none; }
+
+#registerbutton:disabled {
+    background-color: #f37a73;
+    border-color: #d43f3a;
+}
+
+p.validationmessage {
+    display: inline;
+    margin: 0;
+    float: right;
+    color: #e23e1f;
+}

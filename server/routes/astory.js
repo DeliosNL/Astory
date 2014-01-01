@@ -18,7 +18,7 @@ module.exports = function (app) {
     app.get('/loggedin', controller.loggedin);
 
     //Users
-    app.post("/signup", Auth.userExist, controller.register);
+    app.post("/users", Auth.userExist, controller.register);
 
 
 }
