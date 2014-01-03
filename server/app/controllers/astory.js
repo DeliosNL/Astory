@@ -12,6 +12,7 @@ exports.list = function (req, res) {
 
     conditions = {};
 
+
     if (req.params.isSold !== undefined) {
         conditions['isSold'] = req.params.isSold;
     } else if (req.params.hasBids !== undefined) {
@@ -34,7 +35,7 @@ exports.list = function (req, res) {
 };
 
 exports.loggedin = function(req, res) {
-
+    res.send(req.isAuthenticated() ? req.user : '0');
 };
 
 exports.register = function(req, res) {
@@ -43,6 +44,7 @@ exports.register = function(req, res) {
         req.body.passwordhash = hash;
         req.body.password = null;
         req.body.birthdate = new Date(req.body.birthdate);
+        req.body.salt = salt;
         var doc = new User(req.body);
         console.log("Saving new account: " + req.body.username);
         doc.save(function (err) {
@@ -61,3 +63,19 @@ exports.register = function(req, res) {
 
 };
 
+exports.isValidUserPassword = function(username, password, done) {
+    User.findOne({username : username}, function(err, user){
+        // if(err) throw err;
+        if(err) return done(err);
+        if(!user) return done(null, false, { message : 'Non-existing username' });
+        hash(password, user.salt, function(err, hash){
+            if(err) return done(err);
+            if(hash == user.passwordhash){
+                return done(null, user);
+            }
+            done(null, false, {
+                message : 'Incorrect password'
+            });
+        });
+    });
+};

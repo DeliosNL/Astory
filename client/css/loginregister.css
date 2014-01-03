@@ -12,8 +12,8 @@
 }
 
 #loginfieldwrapper {
-    height: 440px;
-    margin-top: -220px;
+    height: 450px;
+    margin-top: -225px;
 }
 
 #registerfieldwrapper {
@@ -138,6 +138,15 @@
     font-size: 14px;
     margin-left: 4px;
     line-height: 51px;
+}
+
+#loginfieldwrapper p.errormessage {
+    font-family: ProximaLight;
+    font-size: 14px;
+    color: #e23e1f;
+    padding: 0;
+    margin: 0;
+    text-align: center;
 }
 
 #loginfieldwrapper p.createaccount, #registerfieldwrapper p.login {

@@ -9,28 +9,10 @@ mongoose = require('mongoose'),
 var userSchema = Schema({
     username: {type: String, required: true, unique: true},
     passwordhash: {type: String, required: true},
+    salt: {type: String, required: true},
     email: {type: String, required: true, unique:true},
     birthdate: {type: Date,default: null, required: true}
 });
-
-userSchema.statics.signup = function(username, email, password, done){
-    var User = this;
-    hash(password, function(err, salt, hash){
-        if(err) throw err;
-        // if (err) return done(err);
-        User.create({
-            username: username,
-            email : email,
-            salt : salt,
-            passwordhash : hash
-        }, function(err, user){
-            if(err) throw err;
-            // if (err) return done(err);
-            done(null, user);
-        });
-    });
-}
-
 
 var modelName = "User";
 var collectionName = "users"; // Naming convention is plural.

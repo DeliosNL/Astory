@@ -28,23 +28,9 @@ model_files.forEach(function (file) {
 
 
 //Passport
-var passport = require('passport')
-    , LocalStrategy = require('passport-local').Strategy;
+var passport = require('passport');
+require('./config/passport')(passport, config)
 
-passport.use(new LocalStrategy(
-    function (username, password, done) {
-        //TODO : Login shit invullen
-    }
-));
-
-passport.serializeUser(function (user, done) {
-    console.log(user.id);
-    done(null, user.id);
-});
-
-passport.deserializeUser(function (id, done) {
-    done(null, id);
-});
 
 var app = express();
 app.configure(function () {

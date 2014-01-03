@@ -6,7 +6,27 @@
 var aStory = angular.module('aStory', [ 'ngResource', 'ui.bootstrap']);
 
 aStory.config(['$httpProvider', '$locationProvider', '$routeProvider', function ($httpProvider, $locationProvider, $routeProvider) {
+    var checkLoggedin = function ($q, $timeout, $http, $location, loggedinService) {
+        // Initialize a new promise
+        var deferred = $q.defer();
 
+        // Make an AJAX call to check if the user is logged in
+        $http.get('/loggedin').success(function (user) {
+            // Authenticated
+            if (user !== '0') {
+                loggedinService.loggedin = true;
+                $timeout(deferred.resolve, 0);
+            } else {
+                loggedinService.loggedin = false;
+                $timeout(function () {
+                    deferred.reject();
+                }, 0);
+                $location.path('/login');
+            }
+        });
+
+        return deferred.promise;
+    }
 
     $routeProvider
         .when('/', {
@@ -23,7 +43,7 @@ aStory.config(['$httpProvider', '$locationProvider', '$routeProvider', function 
         })
         .when('/stories', {
             templateUrl: 'partials/storyoverview.html',
-            controller: 'overviewController'
+            controller: 'overviewController',
         })
         .when('/login', {
             templateUrl: 'partials/login.html',

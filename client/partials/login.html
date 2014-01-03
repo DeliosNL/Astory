@@ -13,6 +13,8 @@
                 <input type="password" class="form-control" id="passwordinput" data-ng-model="password" placeholder="Enter your password">
             </div>
         </form>
+        <p class="errormessage" data-ng-show="failedloginattempt">Invalid username or password</p>
+
         <div id="loginbottomwrapper">
             <button data-ng-click="login(username, password);">Log in</button> <input type="checkbox"><p>Stay logged in</p>
         </div>

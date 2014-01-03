@@ -76,12 +76,22 @@ aStory.controller('registerController', ['$scope', 'accountService', '$location'
     }
 }]);
 
-aStory.controller('loginController', ['$scope', 'loggedinService', '$location', function ($scope, loggedinService, $location) {
-    $scope.login = function (username, password) {
-        loggedinService.loggedin = true;
-        loggedinService.accountinfo.username = username;
-        loggedinService.accountinfo.name = username;
-        $location.path('/stories');
+aStory.controller('loginController', ['$scope', 'loggedinService', '$location', '$http',  function ($scope, loggedinService, $location, $http) {
+    $scope.failedloginattempt = false;
+    $scope.login = function (usr, pwd) {
+        $http.post('/login', {"username": usr, "password": pwd})
+            .success(function(data, status, headers, config) {
+                $scope.failedloginattempt = false;
+                loggedinService.loggedin = true;
+                $location.path('/stories');
+            })
+            .error(function(data, status, headers, config) {
+                if(status === 401) {
+                    $scope.failedloginattempt = true;
+                } else {
+                    alert("Error: " + data);
+                }
+            });
     }
 }]);
 
@@ -206,7 +216,7 @@ aStory.controller('storypopupController', ['$scope', '$modal', '$modalInstance',
 
 }]);
 
-aStory.controller('overviewController', ['$scope', '$modal', 'storiesService', '$location', function ($scope, $modal, storiesService, $location) {
+aStory.controller('overviewController', ['$scope', '$modal', 'storiesService', '$location', '$rootScope', function ($scope, $modal, storiesService, $location) {
     $scope.stories = storiesService.stories;
 
     $scope.showCreateStoryPopup = function () {
