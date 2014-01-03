@@ -23,8 +23,8 @@ aStory.controller('registerController', ['$scope', 'accountService', '$location'
     $scope.usedusername = false;
 
 
-    $scope.checkBirthdateValidity = function() {
-        if( document.getElementById('birthdatedayinput').value !== '' &&
+    $scope.checkBirthdateValidity = function () {
+        if (document.getElementById('birthdatedayinput').value !== '' &&
             document.getElementById('birthdatemonthinput').value !== '' &&
             document.getElementById('birthdateyearinput').value !== '') {
             $scope.birthdateinvalid = false;
@@ -46,7 +46,7 @@ aStory.controller('registerController', ['$scope', 'accountService', '$location'
         $(this).toggleClass("empty", $.inArray($(this).val(), ['', null]) >= 0);
     }).trigger('change');
 
-    $scope.register = function() {
+    $scope.register = function () {
         $scope.usedusername = false;
         $scope.usedemail = false;
         var datestring = "" + $scope.months[$scope.birthdatemonth - 1] + " " + $scope.birthdateday + ", " + $scope.birthdateyear;
@@ -56,18 +56,18 @@ aStory.controller('registerController', ['$scope', 'accountService', '$location'
             email: $scope.email,
             birthdate: datestring
         };
-        accountService.users.save(newaccount, function(data) {
-            if(data.validationerror !== undefined){
-                if(data.validationerror === "Email already exists"){
+        accountService.users.save(newaccount, function (data) {
+            if (data.validationerror !== undefined) {
+                if (data.validationerror === "Email already exists") {
                     $scope.usedemail = true;
-                } else if (data.validationerror === "Username already exists"){
+                } else if (data.validationerror === "Username already exists") {
                     $scope.usedusername = true;
                 } else {
                     alert("Unknown validation error: " + data.validationerror);
                 }
                 return 0;
             }
-            if(data.err) {
+            if (data.err) {
                 alert("Error while creating account, please retry");
                 return 0;
             }
@@ -76,17 +76,19 @@ aStory.controller('registerController', ['$scope', 'accountService', '$location'
     }
 }]);
 
-aStory.controller('loginController', ['$scope', 'loggedinService', '$location', '$http',  function ($scope, loggedinService, $location, $http) {
+aStory.controller('loginController', ['$scope', 'loggedinService', '$location', '$http', function ($scope, loggedinService, $location, $http) {
+
     $scope.failedloginattempt = false;
     $scope.login = function (usr, pwd) {
         $http.post('/login', {"username": usr, "password": pwd})
-            .success(function(data, status, headers, config) {
+            .success(function (data, status, headers, config) {
                 $scope.failedloginattempt = false;
                 loggedinService.loggedin = true;
                 $location.path('/stories');
             })
-            .error(function(data, status, headers, config) {
-                if(status === 401) {
+            .error(function (data, status, headers, config) {
+                if (status === 401) {
+                    loggedinService.loggedin = false;
                     $scope.failedloginattempt = true;
                 } else {
                     alert("Error: " + data);
@@ -95,7 +97,7 @@ aStory.controller('loginController', ['$scope', 'loggedinService', '$location', 
     }
 }]);
 
-aStory.controller('headerController', ['$scope', '$rootScope', '$location', 'loggedinService', function ($scope, $rootScope, $location, loggedinService) {
+aStory.controller('headerController', ['$scope', '$rootScope', '$location', 'loggedinService', 'logoutService', function ($scope, $rootScope, $location, loggedinService, logoutService) {
     $rootScope.$on("$routeChangeStart", function (event, next, current) {
         if ($location.path() === '/login' || $location.path() === '/register' || $location.path() === '/preview') {
             $scope.loginpage = true;
@@ -109,11 +111,20 @@ aStory.controller('headerController', ['$scope', '$rootScope', '$location', 'log
 
     $scope.$watch(
         function () {
-            return loggedinService.loggedin
+            return loggedinService.loggedin;
         },
 
         function (newVal) {
             $scope.loggedin = newVal;
+        }
+    );
+
+    $scope.$watch(
+        function() {
+            return loggedinService.accountinfo;
+        },
+        function (newVal) {
+            $scope.accountinfo = newVal;
         }
     );
 
@@ -128,11 +139,15 @@ aStory.controller('headerController', ['$scope', '$rootScope', '$location', 'log
         , true);
 
     $scope.logout = function () {
-        loggedinService.loggedin = false;
-        for (var i in loggedinService.accountinfo) {
-            loggedinService.accountinfo[i] = null;
-        }
-        $location.path('/login');
+        logoutService.logout.get(function(data) {
+            loggedinService.loggedin = false;
+            for (var i in loggedinService.accountinfo) {
+                loggedinService.accountinfo[i] = null;
+            }
+            $location.path('/login');
+        }, function(err) {
+            alert("Error: " + err);
+        });
     };
 
     $scope.swapvisibility = function (visible) {
@@ -216,9 +231,8 @@ aStory.controller('storypopupController', ['$scope', '$modal', '$modalInstance',
 
 }]);
 
-aStory.controller('overviewController', ['$scope', '$modal', 'storiesService', '$location', '$rootScope', function ($scope, $modal, storiesService, $location) {
+aStory.controller('overviewController', ['$scope', '$modal', 'storiesService', '$location', 'loggedinService', function ($scope, $modal, storiesService, $location, loggedinService) {
     $scope.stories = storiesService.stories;
-
     $scope.showCreateStoryPopup = function () {
         var modalInstance = $modal.open({
             templateUrl: '../partials/createstorypopup.html',
@@ -272,10 +286,14 @@ aStory.controller('confirmdeletepopupcontroller', ['$scope', '$modalInstance', '
         itemlist.splice(itemlist.indexOf(item), 1);
         $scope.close();
 
-        if(itemtype == "story") {
+        if (itemtype == "story") {
             $location.path('/stories');
             popupabove.close();
         }
     };
 
+}]);
+
+aStory.controller('accountController', ['$scope', 'loggedinService', function($scope, loggedinService) {
+    $scope.accountinfo = loggedinService.accountinfo;
 }]);

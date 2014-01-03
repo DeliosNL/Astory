@@ -30,7 +30,7 @@ aStory.service('storiesService', [function () {
     };
 }]);
 
-aStory.service('loggedinService', [function ($rootScope) {
+aStory.service('loggedinService', [function () {
     "use strict";
     return {
         loggedin: false,
@@ -39,4 +39,14 @@ aStory.service('loggedinService', [function ($rootScope) {
             email: null
         }
     };
+}]);
+
+aStory.service('logoutService', ['$resource', '$http', function ($resource) {
+    "use strict";
+    var actions = {
+            'get': {method: 'GET'},
+        },
+        db = {};
+    db.logout = $resource('/logout', {}, actions);
+    return db;
 }]);

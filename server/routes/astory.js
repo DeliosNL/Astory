@@ -21,12 +21,11 @@ module.exports = function (app) {
     //Users
     app.post("/users", Auth.userExist, controller.register);
     app.post('/login', passport.authenticate('local'), function (req, res) {
-        console.log("watisdees");
         res.send(req.user);
     });
     app.get('/logout', function(req, res){
         req.logout();
-        res.redirect('/');
+        res.send("Logout successfull");
     });
 
 }
