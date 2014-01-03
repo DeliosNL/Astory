@@ -43,7 +43,7 @@ aStory.config(['$httpProvider', '$locationProvider', '$routeProvider', function 
         })
         .when('/stories', {
             templateUrl: 'partials/storyoverview.html',
-            controller: 'overviewController',
+            controller: 'overviewController'
         })
         .when('/login', {
             templateUrl: 'partials/login.html',
