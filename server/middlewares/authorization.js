@@ -28,3 +28,13 @@ exports.userExist = function (req, res, next) {
         next();
     });
 };
+
+exports.isloggedIn = function(req, res, next){
+    "use strict";
+    if (req.isAuthenticated() && req.user !== undefined) {
+        next();
+    } else {
+        res.send(401);
+        return 0;
+    }
+}

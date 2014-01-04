@@ -2,7 +2,8 @@
  * Created by Delios on 11/30/13.
  */
 var mongoose = require('mongoose'),
-    User = mongoose.model('User');
+    User = mongoose.model('User'),
+    Story = mongoose.model('Story'),
     Schema = mongoose.Schema,
     hash = require('../../Utils/hash');
 
@@ -79,3 +80,87 @@ exports.isValidUserPassword = function(username, password, done) {
         });
     });
 };
+
+exports.listStories = function(req, res){
+    "use strict";
+    var conditions, fields, sort, temp;
+    console.log('LIST ' + req.user.username + "'s stories, ID: " + req.user._id);
+
+    conditions = {creator: req.user._id};
+    fields = {};
+    sort = {};
+
+    Story
+        .find(conditions, fields, null)
+        .sort(sort)
+        .exec(function (err, doc) {
+            var retObj = {
+                meta: {"action": "list", 'timestamp': new Date(), filename: __filename},
+                doc: doc,
+                err: err
+            };
+            return res.send(retObj);
+        });
+};
+
+exports.addStory = function(req, res){
+    "use strict";
+    var doc = new Story(
+        {
+            name: req.body.name,
+            creator: req.user._id,
+            scenarios: []
+        }
+    );
+
+    doc.save(function (err) {
+        if (err !== null) {
+            console.log(err);
+        }
+        var retObj = {
+            meta: {"action": "create", 'timestamp': new Date(), filename: __filename},
+            doc: doc,
+            err: err
+        };
+        return res.send(retObj);
+
+    });
+};
+
+exports.deleteStory = function(req, res) {
+    "use strict";
+    var conditions;
+
+    conditions = {creator: req.user._id, _id : req.params._id};
+
+    Story
+        .remove(conditions)
+        .exec(function (err, doc) {
+            var retObj = {
+                meta: {"action": "remove", 'timestamp': new Date(), filename: __filename},
+                doc: doc,
+                err: err
+            };
+            return res.send(retObj);
+        });
+};
+
+exports.updateStory = function(req, res) {
+    var conditions = {creator: req.user._id, _id : req.params._id}, update, options;
+
+    console.log("UPDATE: " + req.body.name);
+    update = {name: req.body.name};
+    options = {};
+
+    Story
+        .findOneAndUpdate(conditions, {$set: update}, options)
+        .exec(function (err, doc) {
+            retObj = {
+                meta: {"action": "update", 'timestamp': new Date(), filename: __filename},
+                doc: doc,
+                err: err
+            };
+            return res.send(retObj);
+        });
+
+}

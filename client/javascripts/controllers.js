@@ -177,22 +177,23 @@ aStory.controller('createstorypopupController', ['$scope', '$modalInstance', 'st
     var stories = storiesService.stories;
 
     $scope.close = function () {
-        $modalInstance.close();
+        $modalInstance.dismiss();
     };
 
-    $scope.addStory = function (name) {
-        stories.push({
-            "image": "sceneexample.png",
-            "name": name,
-            "date": new Date().toDateString()
+    $scope.addStory = function (storyname) {
+        storiesService.stories.save({name: storyname}, function(data) {
+            if(data.err !== null){
+                alert(data.err);
+            } else {
+                $modalInstance.close(true);
+            }
         });
-        $modalInstance.close();
     };
 
 }]);
 
-aStory.controller('storypopupController', ['$scope', '$modal', '$modalInstance', 'storiesService', '$location', function ($scope, $modal, $modalInstance, storiesService, $location) {
-    var story = storiesService.currentstory;
+aStory.controller('storypopupController', ['$scope', '$modal', '$modalInstance', 'storiesService', 'currentStoryService', function ($scope, $modal, $modalInstance, storiesService, currentStoryService) {
+    var story = currentStoryService.currentstory;
     var stories = storiesService.stories;
     $scope.storyname = story.name;
 
@@ -210,29 +211,63 @@ aStory.controller('storypopupController', ['$scope', '$modal', '$modalInstance',
             templateUrl: '../partials/confirmdeletepopup.html',
             controller: 'confirmdeletepopupcontroller',
             resolve: {
-                itemlist: function () {
-                    return stories;
-                },
-                itemtype: function () {
-                    return "story";
-                },
-                item: function () {
-                    return story;
-                },
-                popupabove: function () {
-                    return $modalInstance;
-                },
                 name: function () {
                     return story.name;
                 }
             }
         });
+
+        modalInstance.result.then(function(confirm) {
+            storiesService.stories.delete({_id : story._id}, function(data){
+                if(data.err === null){
+                    $modalInstance.close(true);
+                } else {
+                    alert("Error while deleting : " + data.err);
+                    $modalInstance.close(false);
+                }
+            });
+        });
     }
 
 }]);
 
-aStory.controller('overviewController', ['$scope', '$modal', 'storiesService', '$location', 'loggedinService', function ($scope, $modal, storiesService, $location, loggedinService) {
-    $scope.stories = storiesService.stories;
+aStory.controller('confirmdeletepopupcontroller', ['$scope', '$modalInstance', '$location', 'name', function ($scope, $modalInstance, $location, name) {
+    $scope.name = name;
+
+    $scope.close = function () {
+        $modalInstance.dismiss();
+    };
+
+    $scope.confirm = function () {
+        $modalInstance.close(true);
+    };
+
+    /*
+    $scope.deleteItem = function () {
+        itemlist.splice(itemlist.indexOf(item), 1);
+        $scope.close();
+
+        if (itemtype == "story") {
+            $location.path('/stories');
+            popupabove.close();
+        }
+    };
+    */
+}]);
+
+
+aStory.controller('overviewController', ['$scope', '$modal', 'storiesService', '$location', 'currentStoryService', function ($scope, $modal, storiesService, $location, currentStoryService) {
+    //$scope.stories = storiesService.stories;
+    storiesService.stories.get(function(data) {
+        $scope.stories = data.doc;
+    });
+
+    function refreshStories() {
+        storiesService.stories.get(function(data) {
+            $scope.stories = data.doc;
+        });
+    }
+
     $scope.showCreateStoryPopup = function () {
         var modalInstance = $modal.open({
             templateUrl: '../partials/createstorypopup.html',
@@ -240,22 +275,34 @@ aStory.controller('overviewController', ['$scope', '$modal', 'storiesService', '
             resolve: {
             }
         });
+
+        modalInstance.result.then(function(newstory) {
+            if(newstory){
+                refreshStories();
+            }
+        });
     };
 
     $scope.showStoryPopup = function (index) {
-        storiesService.currentstory = $scope.stories[index];
+        currentStoryService.currentstory = $scope.stories[index];
         var modalInstance = $modal.open({
             templateUrl: '../partials/storypopup.html',
             controller: 'storypopupController',
             resolve: {
             }
         });
+
+        modalInstance.result.then(function(updated) {
+           if(updated){
+               refreshStories();
+           }
+        });
     };
 
     $scope.openStory = function (index) {
-        storiesService.currentstory = storiesService.stories[index];
+        currentStoryService.currentstory = $scope.stories[index];
         $location.path('/editor');
-    }
+    };
 }]);
 
 aStory.controller('scenariopopupController', ['$scope', '$modalInstance', 'scenarios', function ($scope, $modalInstance, scenarios) {
@@ -271,25 +318,6 @@ aStory.controller('scenariopopupController', ['$scope', '$modalInstance', 'scena
             scenes: []
         });
         $modalInstance.close();
-    };
-
-}]);
-
-aStory.controller('confirmdeletepopupcontroller', ['$scope', '$modalInstance', '$location', 'itemlist', 'item', 'itemtype', 'popupabove', 'name', function ($scope, $modalInstance, $location, itemlist, item, itemtype, popupabove, name) {
-    $scope.name = name;
-
-    $scope.close = function () {
-        $modalInstance.close();
-    };
-
-    $scope.deleteItem = function () {
-        itemlist.splice(itemlist.indexOf(item), 1);
-        $scope.close();
-
-        if (itemtype == "story") {
-            $location.path('/stories');
-            popupabove.close();
-        }
     };
 
 }]);

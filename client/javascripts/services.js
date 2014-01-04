@@ -13,19 +13,10 @@ aStory.factory('accountService', ['$resource', '$http', function ($resource) {
     return db;
 }]);
 
-aStory.service('storiesService', [function () {
+aStory.service('currentStoryService', [function () {
     "use strict";
-    var storieslocal = [
-            {
-                "image": "sceneexample.png",
-                "name": "The Journey ofzo",
-                "date": new Date().toDateString()
-            }
-        ],
-        currentstorylocal = null;
-
+    var currentstorylocal = null;
     return {
-        stories: storieslocal,
         currentstory: currentstorylocal
     };
 }]);
@@ -41,12 +32,25 @@ aStory.service('loggedinService', [function () {
     };
 }]);
 
-aStory.service('logoutService', ['$resource', '$http', function ($resource) {
+aStory.factory('logoutService', ['$resource', '$http', function ($resource) {
     "use strict";
     var actions = {
             'get': {method: 'GET'},
         },
         db = {};
     db.logout = $resource('/logout', {}, actions);
+    return db;
+}]);
+
+aStory.factory('storiesService', ['$resource', '$http', function($resource) {
+    "use strict";
+    var actions = {
+            'get': {method: 'GET'},
+            'save': {method: 'POST'},
+            'update': {method: 'PUT'},
+            'delete': {method: 'DELETE'}
+        },
+        db = {};
+    db.stories = $resource('/stories/:_id', {}, actions);
     return db;
 }]);

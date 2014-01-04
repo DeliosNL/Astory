@@ -15,7 +15,7 @@ aStory.controller('editScenarioController', ['$scope', 'scenario', '$modalInstan
 
 }]);
 
-aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$location', function ($scope, $modal, storiesService, $location) {
+aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$location', 'currentStoryService', function ($scope, $modal, storiesService, $location, currentStoryService) {
     $scope.showassetproperties = false;
     $scope.selectedAsset = null;
 
@@ -43,7 +43,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         });
     }
 
-    $scope.story = storiesService.currentstory;
+    $scope.story = currentStoryService.currentstory;
     if ($scope.story == null) {
         alert("Geen story geselecteerd");
         $location.path('/stories');

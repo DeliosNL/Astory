@@ -28,4 +28,9 @@ module.exports = function (app) {
         res.send("Logout successfull");
     });
 
+    //Stories maken/ophalen/verwijderen/bijwerken
+    app.get('/stories', Auth.isloggedIn, controller.listStories);
+    app.post('/stories', Auth.isloggedIn, controller.addStory);
+    app.delete('/stories/:_id', Auth.isloggedIn, controller.deleteStory);
+    app.put('/stories/:_id', Auth.isloggedIn, controller.updateStory);
 }
