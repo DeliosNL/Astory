@@ -157,6 +157,7 @@ aStory.controller('headerController', ['$scope', '$rootScope', '$location', 'log
         return true;
     };
 
+
     $scope.setAccountDropdownColor = function (currentlyvisible) {
         if (currentlyvisible) {
             document.getElementById('navaccount').style.backgroundColor = "#FFFFFF";

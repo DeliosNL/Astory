@@ -408,7 +408,8 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         var assetmenu = document.getElementById('assetmenu');
         this.assetpropertiesxoffset = parseInt(window.getComputedStyle(assetmenu).width, 0) + parseInt(window.getComputedStyle(assetmenu).paddingLeft, 0) + parseInt(window.getComputedStyle(assetmenu).paddingRight, 0);
         this.assetpropertiesyoffset = parseInt(window.getComputedStyle(document.getElementById('navbar')).height, 0) + parseInt(window.getComputedStyle(document.getElementById('editorbar')).height, 0);
-
+        this.assetpropertiesmenuwidth = 234;
+        this.assetpropertiesmenuheight = 435;
         this.assetpropertiesmenu = document.getElementById('assetmenuwrapper');
         this.valid = false; // when set to false, the canvas will redraw everything
         this.shapes = [];  // the collection of things to be drawn
@@ -438,8 +439,22 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
             var assetpropertiesxoffset = myState.assetpropertiesxoffset;
             var assetpropertiesyoffset = myState.assetpropertiesyoffset;
             var assetpropertiesmenu = myState.assetpropertiesmenu
-            assetpropertiesmenu.style.left = selection.x + assetpropertiesxoffset + selection.w + "px";
-            assetpropertiesmenu.style.top = selection.y + assetpropertiesyoffset + "px";
+
+            //X offset
+            if(selection.x > parseInt(window.getComputedStyle(this.canvas, null).width) - selection.w - this.assetpropertiesmenuwidth){
+                assetpropertiesmenu.style.left = assetpropertiesxoffset + selection.x - this.assetpropertiesmenuwidth + "px";
+            } else {
+                assetpropertiesmenu.style.left = selection.x + assetpropertiesxoffset + selection.w + "px";
+            }
+
+            //Y offset
+            if(selection.y < 0){
+                assetpropertiesmenu.style.top = assetpropertiesyoffset + "px";
+            } else if ( selection.y > parseInt(window.getComputedStyle(this.canvas, null).height) - this.assetpropertiesmenuheight){
+                assetpropertiesmenu.style.top = assetpropertiesyoffset + parseInt(window.getComputedStyle(this.canvas, null).height) - this.assetpropertiesmenuheight + "px";
+            } else {
+                assetpropertiesmenu.style.top = selection.y + assetpropertiesyoffset + "px";
+            }
         }
 
         // Up, down, and move are for dragging
