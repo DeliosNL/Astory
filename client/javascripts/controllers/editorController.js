@@ -56,6 +56,15 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
             resolve: {
             }
         });
+
+        modalInstance.result.then(function (action, test) {
+            if(action === "updated"){
+
+            } else if(action === "deleted") {
+                $location.path('/stories');
+            }
+        });
+
     };
     // $scope.showpopup = true;
 

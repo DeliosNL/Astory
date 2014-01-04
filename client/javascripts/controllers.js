@@ -145,8 +145,8 @@ aStory.controller('headerController', ['$scope', '$rootScope', '$location', 'log
                 loggedinService.accountinfo[i] = null;
             }
             $location.path('/login');
-        }, function(err) {
-            alert("Error: " + err);
+        }, function (data, status, headers, config) {
+            alert("Error: " + status);
         });
     };
 
@@ -202,8 +202,12 @@ aStory.controller('storypopupController', ['$scope', '$modal', '$modalInstance',
     };
 
     $scope.saveStory = function (storyname) {
-        story.name = storyname;
-        $modalInstance.close();
+        storiesService.stories.update({_id: story._id}, {name: storyname}, function(data){
+            currentStoryService.currentstory.name = storyname;
+            $modalInstance.close("updated");
+        }, function (data, status, headers, config) {
+            alert("Error while updating, please try again");
+        });
     };
 
     $scope.deleteStory = function () {
@@ -218,14 +222,17 @@ aStory.controller('storypopupController', ['$scope', '$modal', '$modalInstance',
         });
 
         modalInstance.result.then(function(confirm) {
-            storiesService.stories.delete({_id : story._id}, function(data){
-                if(data.err === null){
-                    $modalInstance.close(true);
-                } else {
-                    alert("Error while deleting : " + data.err);
-                    $modalInstance.close(false);
-                }
-            });
+            if(confirm){
+                storiesService.stories.delete({_id : story._id}, function(data){
+                    if(data.err === null){
+                        $modalInstance.close("deleted");
+                    } else {
+                        alert("Error while deleting : " + data.err);
+                        $modalInstance.close(false);
+                    }
+                });
+            }
+
         });
     }
 
@@ -292,10 +299,10 @@ aStory.controller('overviewController', ['$scope', '$modal', 'storiesService', '
             }
         });
 
-        modalInstance.result.then(function(updated) {
-           if(updated){
-               refreshStories();
-           }
+        modalInstance.result.then(function(action) {
+            if(action === "updated" || action === "deleted"){
+                refreshStories();
+            }
         });
     };
 
