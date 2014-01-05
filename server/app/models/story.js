@@ -5,9 +5,9 @@ var mongoose;
 mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
-var Schema = Schema({
+var storySchema = Schema({
     name: {type: String, required: true},
-    scenarios: [{type: String, default: []}],
+    scenarios: [{type: Array, default: []}],
     creator: {type: String, required: true},
     date: {type: String, default: new Date().toDateString(), required: true},
     image : {type: String, required: true, default: "sceneexample.png"}
@@ -16,5 +16,5 @@ var Schema = Schema({
 
 var modelName = "Story";
 var collectionName = "stories"; // Naming convention is plural.
-mongoose.model(modelName, Schema, collectionName);
+mongoose.model(modelName, storySchema, collectionName);
 
