@@ -45,7 +45,8 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         console.log("Loading scene: " + index);
         $scope.currentscene = $scope.scenes[index];
         $scope.currentSceneindex = index + 1;
-        canvasstate.loadScene($scope.scenes[index]);
+        $scope.showassetproperties = false;
+        canvasstate.loadScene($scope.currentscene);
     }
 
     function loadScenes(firstload) {
@@ -104,6 +105,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
 
     $scope.removeSelectedAsset = function () {
         canvasstate.removeAsset($scope.selectedAsset);
+        updateServerAssets();
     };
 
     $scope.onAssetKeyUp = function (key) {
@@ -347,6 +349,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
 
     /* Drag and drop zooi */
     function updateServerAssets() {
+
         var newshapes = [];
         for(var i = 0; i < canvasstate.shapes.length; i++){
             var shape = canvasstate.shapes[i];
@@ -361,6 +364,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
             newshapes.push(newshape);
         }
         sceneService.scene.update({sceneid: $scope.currentscene._id}, {assets: newshapes}, function(data) {
+            $scope.currentscene.assets = newshapes;
         }, function(err) {
            console.log("Error while saving assets");
         });
@@ -748,14 +752,12 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
             $scope.showassetproperties = false;
             $scope.selectedAsset = null;
         });
-        updateServerAssets();
         this.draw();
     };
 
     CanvasState.prototype.addShape = function (shape) {
         this.shapes.push(shape);
         this.valid = false;
-        updateServerAssets();
     };
 
     CanvasState.prototype.clear = function () {
@@ -848,6 +850,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         var assetx = event.pageX - parseInt(window.getComputedStyle(assetmenu).width) - parseInt(window.getComputedStyle(assetmenu).paddingLeft) - parseInt(window.getComputedStyle(assetmenu).paddingRight);
         var assety = event.pageY - parseInt(window.getComputedStyle(editorbar).height) - parseInt(window.getComputedStyle(navbar).height);
         canvasstate.addShape(new Asset(assetx, assety, event.dataTransfer.getData("imagepath"), canvasstate));
+        updateServerAssets();
     }
 
     $scope.dragAsset = function (event) {
