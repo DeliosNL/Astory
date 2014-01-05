@@ -22,7 +22,7 @@ aStory.controller('editScenarioController', ['$scope', 'scenario', '$modalInstan
 
 }]);
 
-aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$location', 'currentStoryService', 'scenariosService', function ($scope, $modal, storiesService, $location, currentStoryService, scenariosService) {
+aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$location', 'currentStoryService', 'scenariosService', 'scenesService', function ($scope, $modal, storiesService, $location, currentStoryService, scenariosService, scenesService) {
     $scope.story = currentStoryService.currentstory;
     if ($scope.story == null) {
         alert("Geen story geselecteerd");
@@ -35,28 +35,66 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
     function makeFirstScenario() {
         "use strict";
         scenariosService.scenarios.save({storyid: $scope.story._id}, {name: "My first scenario"}, function(data) {
-           refreshScenarios();
+           refreshScenarios(true);
         }, function (error) {
             alert("Error while adding scenario, please try again.");
         });
     }
 
-    function refreshScenarios() {
+    $scope.loadScene = function(index) {
+        console.log("Loading scene: " + index);
+    }
+
+    function loadScenes(firstload) {
+        scenesService.scenes.get({scenarioid: $scope.currentscenario._id}, function(data) {
+            if (data.doc.length === 0) {
+                scenesService.scenes.save({scenarioid: $scope.currentscenario._id}, {}, function(data) {
+                    if(firstload){
+                        loadScenes(true);
+                    } else {
+                        loadScenes();
+                    }
+                }, function (err) {
+                    alert("Error while trying to make the first scene");
+                });
+            } else {
+                $scope.scenes = data.doc;
+                if(firstload) {
+                    $scope.currentscene = $scope.scenes[0];
+                    $scope.loadScene(0);
+                }
+            }
+        }, function(err) {
+            alert("Failed to get scenes");
+        });
+    }
+
+    function refreshScenarios(firstrefresh) {
         "use strict";
         scenariosService.scenarios.get({storyid: $scope.story._id}, function (data) {
             $scope.scenarios = data.doc;
             if($scope.scenarios.length === 0) {
                 makeFirstScenario();
             }
+
+            if(firstrefresh) {
+                $scope.currentscenario = $scope.scenarios[0];
+                loadScenes(true);
+            }
         }, function (err) {
             alert("Error while retrieving scenarios, please refresh.");
         });
     }
-    refreshScenarios();
+    refreshScenarios(true);
+
+    $scope.openScenario = function (index) {
+        $scope.currentscenario = $scope.scenarios[index];
+        loadScenes(true);
+    };
 
     $scope.removeSelectedAsset = function () {
         canvasstate.removeAsset($scope.selectedAsset);
-    }
+    };
 
     $scope.onAssetKeyUp = function (key) {
         if(key == 13){
@@ -76,7 +114,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
             canvasstate.valid = false;
             canvasstate.draw();
         });
-    }
+    };
 
     $scope.showStoryPopup = function (index) {
         var modalInstance = $modal.open({
@@ -113,7 +151,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
                 refreshScenarios();
             }
         });
-    }
+    };
 
     $scope.setEditorbarDropdownColor = function (id, currentlyvisible) {
         if (currentlyvisible) { //Will be invisible soon
@@ -221,27 +259,12 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         }
     ];
 
-    $scope.scenes = [
-        {
-            "image": "sceneexample.png"
-        },
-        {
-            "image": "sceneexample.png"
-        },
-        {
-            "image": "sceneexample.png"
-        },
-        {
-            "image": "sceneexample.png"
-        },
-        {
-            "image": "sceneexample.png"
-        }
-    ]
 
     $scope.addScene = function () {
-        $scope.scenes.push({
-            "image": "sceneexample.png"
+        scenesService.scenes.save({scenarioid: $scope.currentscenario._id}, {}, function(data) {
+            loadScenes();
+        }, function (err) {
+            alert("Error while adding scene");
         });
     };
 
@@ -250,7 +273,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
             alert("Scenario: " + $scope.scenarios[index].title + " is toegevoegd als assetoptie!");
             $scope.showassetproperties = false;
         });
-    }
+    };
 
     $scope.addSceneByIndex = function (index) {
         $scope.scenes.splice(index, 0, {
@@ -280,7 +303,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
                 }
             }
         });
-    }
+    };
 
     $scope.showScenarioPopup = function () {
         var scenariopopup = $modal.open({
@@ -404,7 +427,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         }
 
         ctx.drawImage(this.imgNew, locx, locy, this.w, this.h);
-    }
+    };
 
     // Determine if a point is inside the shape's bounds
     Asset.prototype.contains = function (mx, my) {
@@ -412,7 +435,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         // the shape's X and (X + Height) and its Y and (Y + Height)
         return  (this.x <= mx) && (this.x + this.w >= mx) &&
             (this.y <= my) && (this.y + this.h >= my);
-    }
+    };
 
     function CanvasState(canvas) {
         // **** First some setup! ****
@@ -482,7 +505,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
             } else {
                 assetpropertiesmenu.style.top = selection.y + assetpropertiesyoffset + "px";
             }
-        }
+        };
 
         // Up, down, and move are for dragging
         canvas.addEventListener('mousedown', function (e) {
@@ -687,11 +710,11 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
     CanvasState.prototype.addShape = function (shape) {
         this.shapes.push(shape);
         this.valid = false;
-    }
+    };
 
     CanvasState.prototype.clear = function () {
         this.ctx.clearRect(0, 0, parseInt(window.getComputedStyle(this.canvas).width), parseInt(window.getComputedStyle(this.canvas).height));
-    }
+    };
 
     CanvasState.prototype.draw = function () {
         // if our state is invalid, redraw and validate!
@@ -715,7 +738,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
             // ** Add stuff you want drawn on top all the time here **
             this.valid = true;
         }
-    }
+    };
 
     CanvasState.prototype.getMouse = function (e) {
         var element = this.canvas, offsetX = 0, offsetY = 0, mx, my;
@@ -738,14 +761,14 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
 
         // We return a simple javascript object (a hash) with x and y defined
         return {x: mx, y: my};
-    }
+    };
 
     var pos;
     var canvasstate;
 
     $scope.get_pos = function (ev) {
         pos = [ev.pageX, ev.pageY];
-    }
+    };
 
     window.addEventListener('resize', function () {
         var canvas = document.getElementById('editor');

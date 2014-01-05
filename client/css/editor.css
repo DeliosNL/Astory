@@ -194,7 +194,7 @@ p.helpmessage {
 .scenariowrapper {
 }
 
-#scenarioswrapper input.scenariotitle {
+#scenarioswrapper p.scenariotitle {
     color: #989898;
     font-family: Proxima;
     font-size: 14px;
@@ -229,6 +229,10 @@ input.scenariotitle:disabled {
     background-image: url('../images/dragbalk.PNG');
     background-position: left;
     background-repeat: no-repeat;
+}
+
+.scenariocontainer:hover {
+    cursor: pointer;
 }
 
 .scenariowrapper p.editmessage {
@@ -476,6 +480,10 @@ p.assetmenudescription {
 
 #scene {
     float: left;
+}
+
+#scene:hover {
+    cursor: pointer;
 }
 
 #scene p {

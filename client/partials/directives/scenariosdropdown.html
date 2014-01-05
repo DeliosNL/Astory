@@ -10,14 +10,14 @@
     <div id="scenariolistcontainer">
         <div id="scenarioswrapper">
             <div class="scenariowrapper" data-ng-repeat="scenario in scenarios">
-                <div class="scenariocontainer">
+                <div class="scenariocontainer" data-ng-click="openScenario($index)">
                     <div class="linkfromarea">
                         <!-- <div class="linkfromblock">1</div>
                          <div class="linkfromblock">2</div>
                          <div class="linkfromblock">3</div>
                          <div class="linkfromblock">4</div> -->
                     </div>
-                    <input class="scenariotitle" data-ng-model="scenario.name" disabled/>
+                    <p class="scenariotitle" data-ng-model="scenario.name">{{scenario.name}}</p>
                     <div class="linktoarea">
                         <!-- <div class="linktoblock">3</div>
                          <div class="linktoblock">2</div>

@@ -17,7 +17,7 @@
     <div class="editorbarbuttonwrapper">
         <div class="editorbarbutton" id="scenariobutton"
              data-ng-click="setEditorbarDropdownColor('scenariobutton', showscenarios==true); showscenarios = swapvisibility(showscenarios);">
-            <p><strong>Scenario 1:</strong>&nbsp;{{scenarios[0].name}}</p>
+            <p><strong>Scenario:</strong>&nbsp;{{currentscenario.name}}</p>
         </div>
         <scenariosdropdown></scenariosdropdown>
     </div>
@@ -95,7 +95,7 @@
     <div id="scenemenuwrapper">
         <div id="scenemenu">
             <div id="sceneitem" data-ng-repeat="scene in scenes">
-                <div id="scene">
+                <div id="scene" data-ng-click="loadScene($index)">
                     <img src="images/{{scene.image}}" alt="scene {{$index + 1}}"/>
 
                     <p>Scéne {{$index + 1}}</p>
