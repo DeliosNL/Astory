@@ -385,7 +385,8 @@ exports.updateScene = function (req, res){
     var conditions = {creator: req.user._id, _id: req.params.sceneid}, update, options, retObj;
     update = {assets: req.body.assets};
     options = {};
-
+    console.log("Updating scene: " + req.params.sceneid);
+    console.log(update);
     Scene
         .findOneAndUpdate(conditions, {$set: update}, options)
         .exec(function (err, doc) {

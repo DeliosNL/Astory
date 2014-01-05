@@ -22,7 +22,7 @@
         <scenariosdropdown></scenariosdropdown>
     </div>
     <div class="editorbaritem">
-        <p><strong>Scene 1</strong></p>
+        <p><strong>Scene {{currentSceneindex}}</strong></p>
     </div>
 </div>
 
@@ -67,7 +67,7 @@
                 <div class="assetoption"><p>Go to next scene</p></div>
                 <div class="assetoptionscenario"><p id="scenario">Go to scenario..</p>
                     <div id="gotoscenariocontainer">
-                        <div class="gotoscenariooption" data-ng-repeat="scenario in scenarios" data-ng-click="addScenarioEvent($index)"><p>{{$index + 1}}: {{scenario.title}}</p></div>
+                        <div class="gotoscenariooption" data-ng-repeat="scenario in scenarios" data-ng-click="addScenarioEvent($index)"><p>{{$index + 1}}: {{scenario.name}}</p></div>
                     </div>
                 </div>
             </div>
