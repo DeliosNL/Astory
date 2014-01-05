@@ -39,4 +39,10 @@ module.exports = function (app) {
     app.post('/scenarios/:storyid', Auth.isloggedIn, controller.addScenario);
     app.delete('/scenario/:scenarioid', Auth.isloggedIn, controller.deleteScenario);
     app.put('/scenario/:scenarioid', Auth.isloggedIn, controller.updateScenario);
+
+    //Scenes ophalen/maken/verwijderen/bijwerken
+    app.get('/scenes/:scenarioid', Auth.isloggedIn, controller.listScenes);
+    app.post('/scenes/:scenarioid', Auth.isloggedIn, controller.addScene);
+    app.delete('/scene/:sceneid', Auth.isloggedIn, controller.deleteScene);
+    app.put('/scene/:sceneid', Auth.isloggedIn, controller.updateScene);
 }
