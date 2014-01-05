@@ -32,9 +32,22 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
     $scope.showassetproperties = false;
     $scope.selectedAsset = null;
 
+    function makeFirstScenario() {
+        "use strict";
+        scenariosService.scenarios.save({storyid: $scope.story._id}, {name: "My first scenario"}, function(data) {
+           refreshScenarios();
+        }, function (error) {
+            alert("Error while adding scenario, please try again.");
+        });
+    }
+
     function refreshScenarios() {
+        "use strict";
         scenariosService.scenarios.get({storyid: $scope.story._id}, function (data) {
             $scope.scenarios = data.doc;
+            if($scope.scenarios.length === 0) {
+                makeFirstScenario();
+            }
         }, function (err) {
             alert("Error while retrieving scenarios, please refresh.");
         });

@@ -76,3 +76,25 @@ aStory.factory('scenarioService', ['$resource', '$http', function($resource) {
     db.scenario = $resource('/scenario/:scenarioid', {}, actions);
     return db;
 }]);
+
+aStory.factory('scenesService', ['$resource', '$http', function ($resource) {
+    "use strict";
+    var actions = {
+            'get': {method: 'GET'},
+            'save': {method: 'POST'}
+        },
+        db = {};
+    db.scenes = $resource('/scenes/:scenarioid', {}, actions);
+    return db;
+}]);
+
+aStory.factory('sceneService', ['$resource', '$http', function ($resource) {
+    "use strict";
+    var actions = {
+            'update': {method: 'PUT'},
+            'delete': {method: 'DELETE'}
+        },
+        db = {};
+    db.scene = $resource('/scene/:sceneid', {}, actions);
+    return db;
+}]);

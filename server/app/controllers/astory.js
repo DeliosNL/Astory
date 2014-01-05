@@ -281,11 +281,28 @@ function deleteScenarios(storyid){
     var conditions = {story : storyid};
 
     Scenario
-        .remove(conditions)
+        .find(conditions)
         .exec(function (err, doc) {
             console.log(doc);
+            for(var i = 0; i < doc.length; i++){
+                deleteScenes(doc[i]._id);
+            }
+            Scenario
+                .remove(conditions)
+                .exec(function (err, doc) {
+                    console.log("Deleted scenarios from story: " + storyid);
+                });
         });
-};
+}
+
+function deleteScenes(scenarioid) {
+    var conditions = {scenario : scenarioid};
+    Scene
+        .remove(conditions)
+        .exec(function (err, doc) {
+           console.log("Deleted scenes from scenario: " + scenarioid);
+        });
+}
 
 exports.deleteScenario = function(req, res) {
     "use strict";
@@ -296,6 +313,7 @@ exports.deleteScenario = function(req, res) {
     Scenario
         .remove(conditions)
         .exec(function (err, doc) {
+            deleteScenes(req.params.scenarioid);
             var retObj = {
                 meta: {"action": "remove", 'timestamp': new Date(), filename: __filename},
                 doc: doc,

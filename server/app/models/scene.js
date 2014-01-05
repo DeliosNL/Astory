@@ -6,7 +6,8 @@ var sceneSchema = Schema({
     scenario: {type: String, required: true},
     creator: {type: String, required: true},
     assets: {type: Array, default: []},
-    date: {type: Date, default: Date.now()}
+    date: {type: Date, default: Date.now()},
+    image: {type: String, default: "sceneexample.png"}
 });
 
 var modelName = "Scene";
