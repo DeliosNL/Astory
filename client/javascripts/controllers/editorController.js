@@ -23,6 +23,7 @@ aStory.controller('editScenarioController', ['$scope', 'scenario', '$modalInstan
 }]);
 
 aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$location', 'currentStoryService', 'scenariosService', 'scenesService', 'sceneService', function ($scope, $modal, storiesService, $location, currentStoryService, scenariosService, scenesService, sceneService) {
+    var savingscene = false;
     $scope.story = currentStoryService.currentstory;
     if ($scope.story == null) {
         alert("Geen story geselecteerd");
@@ -43,10 +44,8 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
 
     $scope.loadScene = function(index) {
         console.log("Loading scene: " + index);
-        $scope.currentscene = $scope.scenes[index];
+        canvasstate.loadScene($scope.scenes[index]);
         $scope.currentSceneindex = index + 1;
-        $scope.showassetproperties = false;
-        canvasstate.loadScene($scope.currentscene);
     }
 
     function loadScenes(firstload) {
@@ -349,25 +348,30 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
 
     /* Drag and drop zooi */
     function updateServerAssets() {
-
-        var newshapes = [];
-        for(var i = 0; i < canvasstate.shapes.length; i++){
-            var shape = canvasstate.shapes[i];
-            var newshape = {
-                x: shape.x,
-                y: shape.y,
-                width: shape.w,
-                height: shape.h,
-                assetoption: shape.assetoption,
-                imagepath: shape.imgNew.src
+        if(!savingscene) {
+            savingscene = true;
+            var newshapes = [];
+            for(var i = 0; i < canvasstate.shapes.length; i++){
+                var shape = canvasstate.shapes[i];
+                var newshape = {
+                    x: shape.x,
+                    y: shape.y,
+                    width: shape.w,
+                    height: shape.h,
+                    assetoption: shape.assetoption,
+                    imagepath: shape.imgNew.src
+                }
+                newshapes.push(newshape);
             }
-            newshapes.push(newshape);
+            sceneService.scene.update({sceneid: $scope.currentscene._id}, {assets: newshapes}, function(data) {
+                $scope.currentscene.assets = newshapes;
+                savingscene = false;
+            }, function(err) {
+                savingscene = false;
+                console.log("Error while saving assets");
+            });
         }
-        sceneService.scene.update({sceneid: $scope.currentscene._id}, {assets: newshapes}, function(data) {
-            $scope.currentscene.assets = newshapes;
-        }, function(err) {
-           console.log("Error while saving assets");
-        });
+
     }
 
 
@@ -735,13 +739,19 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
     }
 
     CanvasState.prototype.loadScene = function(scene) {
-        this.shapes = [];
-        this.clear();
-        var assets = scene.assets;
-        if(assets !== undefined && assets !== null) {
-            for(var i = 0; i < assets.length; i++){
-                canvasstate.addShape(new Asset(assets[i].x, assets[i].y, assets[i].imagepath, canvasstate, assets[i].width, assets[i].height, assets[i].assetoption));
+        if(!savingscene) {
+            $scope.currentscene = scene;
+            $scope.showassetproperties = false;
+            this.shapes = [];
+            this.clear();
+            var assets = scene.assets;
+            if(assets !== undefined && assets !== null) {
+                for(var i = 0; i < assets.length; i++){
+                    canvasstate.addShape(new Asset(assets[i].x, assets[i].y, assets[i].imagepath, canvasstate, assets[i].width, assets[i].height, assets[i].assetoption));
+                }
             }
+        } else {
+            console.log("Cannot change scene -> Currently saving scene");
         }
     };
 

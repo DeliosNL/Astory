@@ -132,7 +132,7 @@ exports.listScenes = function (req, res) {
 
     conditions = {creator: req.user._id, scenario: req.params.scenarioid};
     fields = {};
-    sort = {};
+    sort = {date: 1};
 
     Scene
         .find(conditions, fields, null)
