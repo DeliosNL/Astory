@@ -35,7 +35,7 @@ aStory.service('loggedinService', [function () {
 aStory.factory('logoutService', ['$resource', '$http', function ($resource) {
     "use strict";
     var actions = {
-            'get': {method: 'GET'},
+            'get': {method: 'GET'}
         },
         db = {};
     db.logout = $resource('/logout', {}, actions);
@@ -52,5 +52,27 @@ aStory.factory('storiesService', ['$resource', '$http', function($resource) {
         },
         db = {};
     db.stories = $resource('/stories/:_id', {}, actions);
+    return db;
+}]);
+
+aStory.factory('scenariosService', ['$resource', '$http', function($resource) {
+    "use strict";
+    var actions = {
+            'get': {method: 'GET'},
+            'save': {method: 'POST'}
+        },
+        db = {};
+    db.scenarios = $resource('/scenarios/:storyid', {}, actions);
+    return db;
+}]);
+
+aStory.factory('scenarioService', ['$resource', '$http', function($resource) {
+    "use strict";
+    var actions = {
+            'update': {method: 'PUT'},
+            'delete': {method: 'DELETE'}
+        },
+        db = {};
+    db.scenario = $resource('/scenario/:scenarioid', {}, actions);
     return db;
 }]);

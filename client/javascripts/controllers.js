@@ -313,19 +313,24 @@ aStory.controller('overviewController', ['$scope', '$modal', 'storiesService', '
     };
 }]);
 
-aStory.controller('scenariopopupController', ['$scope', '$modalInstance', 'scenarios', function ($scope, $modalInstance, scenarios) {
+aStory.controller('scenariopopupController', ['$scope', '$modalInstance', 'story', 'scenariosService', function ($scope, $modalInstance, story, scenariosService) {
     $scope.close = function () {
         $modalInstance.close();
     };
 
-    $scope.addScenario = function (name) {
-        scenarios.push({
+    $scope.addScenario = function (scenarioname) {
+        scenariosService.scenarios.save({storyid: story._id}, {name: scenarioname}, function(data) {
+            $modalInstance.close(true);
+        }, function (error) {
+            alert("Error while adding scenario, please try again.");
+        });
+       /* scenarios.push({
             title: name,
             linkfrom: [],
             linkto: [],
             scenes: []
         });
-        $modalInstance.close();
+        $modalInstance.close();*/
     };
 
 }]);

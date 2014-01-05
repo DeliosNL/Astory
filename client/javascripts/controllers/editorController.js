@@ -1,23 +1,45 @@
-aStory.controller('editScenarioController', ['$scope', 'scenario', '$modalInstance', function ($scope, scenario, $modalInstance) {
+aStory.controller('editScenarioController', ['$scope', 'scenario', '$modalInstance', 'scenarioService', function ($scope, scenario, $modalInstance, scenarioService) {
     $scope.scenario = scenario;
     $scope.newdata = {
         name: $scope.scenario.title
     };
 
     $scope.close = function () {
-        $modalInstance.close();
+        $modalInstance.close(false);
     };
 
     $scope.saveScenario = function () {
+        scenarioService.scenario.update({scenarioid : scenario._id}, {name: $scope.newdata.name}, function(data) {
+            $modalInstance.close(true);
+        }, function (err) {
+           alert("Error while updating scenario, please try again");
+        });
+        /*
         scenario.title = $scope.newdata.name;
         $modalInstance.close();
+        */
     };
 
 }]);
 
-aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$location', 'currentStoryService', function ($scope, $modal, storiesService, $location, currentStoryService) {
+aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$location', 'currentStoryService', 'scenariosService', function ($scope, $modal, storiesService, $location, currentStoryService, scenariosService) {
+    $scope.story = currentStoryService.currentstory;
+    if ($scope.story == null) {
+        alert("Geen story geselecteerd");
+        $location.path('/stories');
+    }
+
     $scope.showassetproperties = false;
     $scope.selectedAsset = null;
+
+    function refreshScenarios() {
+        scenariosService.scenarios.get({storyid: $scope.story._id}, function (data) {
+            $scope.scenarios = data.doc;
+        }, function (err) {
+            alert("Error while retrieving scenarios, please refresh.");
+        });
+    }
+    refreshScenarios();
 
     $scope.removeSelectedAsset = function () {
         canvasstate.removeAsset($scope.selectedAsset);
@@ -41,12 +63,6 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
             canvasstate.valid = false;
             canvasstate.draw();
         });
-    }
-
-    $scope.story = currentStoryService.currentstory;
-    if ($scope.story == null) {
-        alert("Geen story geselecteerd");
-        $location.path('/stories');
     }
 
     $scope.showStoryPopup = function (index) {
@@ -76,6 +92,12 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
                 scenario: function () {
                     return $scope.scenarios[index];
                 }
+            }
+        });
+
+        modalInstance.result.then(function (updated) {
+            if(updated) {
+                refreshScenarios();
             }
         });
     }
@@ -252,27 +274,19 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
             templateUrl: '../partials/createscenariopopup.html',
             controller: 'scenariopopupController',
             resolve: {
-                scenarios: function () {
-                    return $scope.scenarios;
+                story: function () {
+                    return $scope.story;
                 }
+            }
+        });
+
+        scenariopopup.result.then(function(updated){
+            if(updated){
+                refreshScenarios();
             }
         });
     };
 
-    $scope.scenarios = [
-        {
-            title: "Castel: The beginning of the journey",
-            linkfrom: [],
-            linkto: [],
-            scenes: []
-        },
-        {
-            title: "The Journey: Part 2",
-            linkfrom: [],
-            linkto: [],
-            scenes: []
-        }
-    ];
 
     $scope.safeApply = function (fn) {
         var phase = this.$root.$$phase;
@@ -756,7 +770,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
 
     $scope.dragAsset = function (event) {
         event.dataTransfer.setData("imagepath", event.target.getAttribute('src'));
-    }
+    };
 
     var editor = document.getElementById('editor');
     editor.addEventListener('dragover', allowDrop);
