@@ -92,7 +92,7 @@
             <p id="deleteassetbutton" data-ng-click="removeSelectedAsset();">Delete asset</p>
         </div>
     </div>
-    <div id="scenemenuwrapper" ng:controller="editorController">
+    <div id="scenemenuwrapper">
         <div id="scenemenu" ui-sortable ng-model="scenes">
             <div id="sceneitem" data-ng-repeat="scene in scenes">
                 <div id="scene" data-ng-click="loadScene($index)">
