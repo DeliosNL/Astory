@@ -92,12 +92,11 @@
             <p id="deleteassetbutton" data-ng-click="removeSelectedAsset();">Delete asset</p>
         </div>
     </div>
-    <div id="scenemenuwrapper">
-        <div id="scenemenu">
+    <div id="scenemenuwrapper" ng:controller="editorController">
+        <div id="scenemenu" ui-sortable ng-model="scenes">
             <div id="sceneitem" data-ng-repeat="scene in scenes">
                 <div id="scene" data-ng-click="loadScene($index)">
                     <img src="images/{{scene.image}}" alt="scene {{$index + 1}}"/>
-
                     <p>Scéne {{$index + 1}}</p>
                 </div>
                 <div id="dots" data-ng-hide="$last" data-ng-click="addSceneByIndex($index + 1)"></div>

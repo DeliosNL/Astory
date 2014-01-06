@@ -192,6 +192,8 @@ p.helpmessage {
 }
 
 .scenariowrapper {
+    height: 48px;
+    position: relative;
 }
 
 #scenarioswrapper p.scenariotitle {
