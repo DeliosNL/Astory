@@ -51,6 +51,10 @@ p#linktitle {
     float: left;
     font-family: Proxima;
     font-size: 14px;
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
 }
 
 #link:hover {
