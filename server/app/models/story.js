@@ -7,7 +7,7 @@ mongoose = require('mongoose'),
 
 var storySchema = Schema({
     name: {type: String, required: true},
-    scenarios: [{type: Array, default: []}],
+    scenarioorder: {type: Array, default: []},
     creator: {type: String, required: true},
     date: {type: String, default: new Date().toDateString(), required: true},
     image : {type: String, required: true, default: "sceneexample.png"}

@@ -182,7 +182,7 @@ exports.addScenario = function (req, res) {
         .findOne(conditions, fields, null)
         .exec(function (err, doc) {
 
-            if(doc === undefined) {
+            if(doc === undefined || doc === null) {
                 res.send("Invalid story");
                 return 0;
             }
@@ -195,6 +195,13 @@ exports.addScenario = function (req, res) {
                         creator: req.user._id
                     }
                 );
+
+                //De lijst met scenariovolgorde moet een nieuwe entry @ story
+                Story
+                    .findOneAndUpdate(conditions, {$push: {scenarioorder: doc._id.toString()}})
+                    .exec(function (err, doc) {
+                        console.log("Added scenario to scenarioorder: " + doc);
+                    });
 
                 doc.save(function (err) {
                     if (err !== null) {
@@ -238,19 +245,28 @@ exports.addScene = function (req, res){
                         creator: req.user._id
                     }
                 );
+            //Update de sceneorder lijst @ Scenario-parent
+                Scenario
+                    .findOneAndUpdate(conditions, {$push: {sceneorder: doc._id.toString()}})
+                    .exec(function(scenarioerr, scenariodoc) {
+                        if(scenariodoc !== null){
+                            doc.save(function (err) {
+                                if (err !== null) {
+                                    console.log(err);
+                                }
+                                var retObj = {
+                                    meta: {"action": "create", 'timestamp': new Date(), filename: __filename},
+                                    doc: doc,
+                                    err: err
+                                };
+                                return res.send(retObj);
 
-                doc.save(function (err) {
-                    if (err !== null) {
-                        console.log(err);
-                    }
-                    var retObj = {
-                        meta: {"action": "create", 'timestamp': new Date(), filename: __filename},
-                        doc: doc,
-                        err: err
-                    };
-                    return res.send(retObj);
+                            });
+                        } else {
+                            res.send("Failed updating sceneorder list");
+                        }
+                    })
 
-                });
             } else {
                 res.send(401);
             }
@@ -306,21 +322,45 @@ function deleteScenes(scenarioid) {
 
 exports.deleteScenario = function(req, res) {
     "use strict";
-    var conditions;
+    var conditions, storyconditions;
 
     conditions = {creator: req.user._id, _id: req.params.scenarioid};
 
+    //Scenario uit scenariovolgorde van story halen
     Scenario
-        .remove(conditions)
-        .exec(function (err, doc) {
-            deleteScenes(req.params.scenarioid);
-            var retObj = {
-                meta: {"action": "remove", 'timestamp': new Date(), filename: __filename},
-                doc: doc,
-                err: err
-            };
-            return res.send(retObj);
+        .findOne(conditions)
+        .exec(function(err, doc) {
+
+            if(doc !== null) {
+                storyconditions = {creator: req.user._id, _id: doc.story};
+                Story
+                    .findOneAndUpdate(storyconditions, {$pull: {scenarioorder: doc._id.toString()}}, {})
+                    .exec(function(err, doc) {
+                        if(doc !== undefined && doc !== null) {
+                            //Daadwerkelijk het scenario verwijderen, werd ook eens tijd
+                            Scenario
+                                .remove(conditions)
+                                .exec(function (err, doc) {
+                                    deleteScenes(req.params.scenarioid);
+                                    var retObj = {
+                                        meta: {"action": "remove", 'timestamp': new Date(), filename: __filename},
+                                        doc: doc,
+                                        err: err
+                                    };
+                                    return res.send(retObj);
+                                });
+
+                        } else {
+                            res.send(401);
+                        }
+
+                    })
+            } else {
+                res.send("Invalid scenario");
+            }
+
         });
+
 };
 
 exports.deleteScene = function(req, res) {
@@ -330,15 +370,38 @@ exports.deleteScene = function(req, res) {
     conditions = {creator: req.user._id, _id: req.params.sceneid};
 
     Scene
-        .remove(conditions)
+        .findOne(conditions)
         .exec(function (err, doc) {
-            var retObj = {
-                meta: {"action": "remove", 'timestamp': new Date(), filename: __filename},
-                doc: doc,
-                err: err
-            };
-            return res.send(retObj);
+
+            if(doc !== null){
+                var scenarioconditions = {_id: doc.scenario};
+                Scenario
+                    .findOneAndUpdate(scenarioconditions, {$pull: {sceneorder: doc._id.toString()}})
+                    .exec(function(err, doc) {
+                        if(doc !== null) {
+                            //Eindelijk daadwerkelijk de scene deleten
+                            Scene
+                                .remove(conditions)
+                                .exec(function (err, doc) {
+                                    var retObj = {
+                                        meta: {"action": "remove", 'timestamp': new Date(), filename: __filename},
+                                        doc: doc,
+                                        err: err
+                                    };
+                                    return res.send(retObj);
+                                });
+                        } else {
+                            res.send("Cannot find parent scenario");
+                        }
+                    });
+
+            } else {
+                res.send("Cannot find specified scene");
+            }
+
         });
+
+
 };
 
 
@@ -347,7 +410,15 @@ exports.updateStory = function (req, res) {
     var conditions = {creator: req.user._id, _id: req.params._id}, update, options, retObj;
 
     console.log("UPDATE: " + req.body.name);
-    update = {name: req.body.name};
+    update = {};
+
+    if(req.body.name !== undefined && req.body.name !== null) {
+        update.name = req.body.name;
+    }
+    if(req.body.scenarioorder !== undefined && req.body.scenarioorder !== null) {
+        update.scenarioorder = req.body.scenarioorder;
+    }
+
     options = {};
 
     Story
@@ -365,8 +436,15 @@ exports.updateStory = function (req, res) {
 exports.updateScenario = function (req, res) {
     "use strict";
     var conditions = {creator: req.user._id, _id: req.params.scenarioid}, update, options, retObj;
-    update = {name: req.body.name};
+    update = {};
     options = {};
+
+    if(req.body.name !== undefined && req.body.name !== null){
+        update.name = req.body.name
+    }
+    if(req.body.sceneorder !== undefined && req.body.sceneorder !== null){
+        update.sceneorder = req.body.sceneorder;
+    }
 
     Scenario
         .findOneAndUpdate(conditions, {$set: update}, options)
