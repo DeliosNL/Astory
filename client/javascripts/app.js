@@ -3,7 +3,7 @@
 /**
  * @see http://docs.angularjs.org/guide/concepts
  */
-var aStory = angular.module('aStory', [ 'ngResource', 'ui.bootstrap']);
+var aStory = angular.module('aStory', [ 'ngResource', 'ui.bootstrap', 'ui.sortable']);
 
 aStory.config(['$httpProvider', '$locationProvider', '$routeProvider', function ($httpProvider, $locationProvider, $routeProvider) {
     var checkLoggedin = function ($q, $timeout, $http, $location, loggedinService) {
