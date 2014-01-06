@@ -5,6 +5,7 @@ mongoose = require('mongoose'),
 var scenarioSchema = Schema({
     name: {type: String, required: true},
     story: {type: String, required: true},
+    sceneorder: {type: Array, default: []},
     creator: {type: String, required: true}
 });
 
