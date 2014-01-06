@@ -30,9 +30,12 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         $location.path('/stories');
     }
 
-    $scope.sceneactieplaceholder = function () {
-        alert("Scene actie toegevoegd! Einde van de test");
+    $scope.scenenextplaceholder = function () {
+        alert("Link to next scene toegevoegd!");
     };
+    $scope.scenepreviousplaceholder = function () {
+        alert("Link to previous scene toegevoegd");
+    }
 
     $scope.showassetproperties = false;
     $scope.selectedAsset = null;

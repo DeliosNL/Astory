@@ -1,6 +1,8 @@
 #preview {
-    height: calc(100% - 70px);
+    height: calc(100%);
     width: 100%;
+    background-image: url(../images/previewbackground.png);
+    background-size: 100% 100%;
 }
 
 #previewbar {
@@ -49,6 +51,10 @@ p#linktitle {
     float: left;
     font-family: Proxima;
     font-size: 14px;
+}
+
+#link:hover {
+    cursor: text;
 }
 
 #shareicons {
