@@ -63,8 +63,8 @@
             <h1>Settings asset</h1>
             <p>Events</p>
             <div id = "assetoptions">
-                <div class="assetoption"><p >Go to previous scene</p></div>
-                <div class="assetoption"><p>Go to next scene</p></div>
+                <div class="assetoption" data-ng-click="sceneactieplaceholder();"><p >Go to previous scene</p></div>
+                <div class="assetoption" data-ng-click="sceneactieplaceholder();"><p>Go to next scene</p></div>
                 <div class="assetoptionscenario"><p id="scenario">Go to scenario..</p>
                     <div id="gotoscenariocontainer">
                         <div class="gotoscenariooption" data-ng-repeat="scenario in scenarios" data-ng-click="addScenarioEvent($index)"><p>{{$index + 1}}: {{scenario.name}}</p></div>
