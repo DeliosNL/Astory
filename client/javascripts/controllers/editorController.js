@@ -219,6 +219,76 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
                     "name": "Tijdelijk",
                     "description": "Testobject",
                     "image": "tijdelijk.PNG"
+                },
+                {
+                    "name": "Achtergrond1B",
+                    "description": "Sneeuwbergen achtergrond geen sneeuw",
+                    "image": "Achtergrond1B.png"
+                },
+                {
+                    "name": "Achtergrond2",
+                    "description": "Nacht zonsopgang achtergrond",
+                    "image": "Achtergrond2.png"
+                },
+                {
+                    "name": "Achtergrond3",
+                    "description": "Sneeuw achtergrond",
+                    "image": "Achtergrond3.png"
+                },
+                {
+                    "name": "Appel",
+                    "description": "Appel",
+                    "image": "Appel.png"
+                },
+                {
+                    "name": "Banaan",
+                    "description": "Banaan",
+                    "image": "Banaan.png"
+                },
+                {
+                    "name": "boom2",
+                    "description": "Boom 2",
+                    "image": "boom2.png"
+                },
+                {
+                    "name": "Druiven",
+                    "description": "Druiven",
+                    "image": "Druiven.png"
+                },
+                {
+                    "name": "Gingerbread huis",
+                    "description": "Gingerbread huis",
+                    "image": "Gingerbread huis.png"
+                },
+                {
+                    "name": "Maan",
+                    "description": "Maan",
+                    "image": "Maan.png"
+                },
+                {
+                    "name": "Pinguïn",
+                    "description": "Pinguïn",
+                    "image": "Pinguin.png"
+                },
+                {
+                    "name": "Schaap",
+                    "description": "Schaap",
+                    "image": "Schaap.png"
+                },
+                {
+                    "name": "Vissersboot",
+                    "description": "Vissersboot",
+                    "image": "Vissersboot.png"
+                },
+                {
+                    "name": "Wolk",
+                    "description": "Wolk",
+                    "image": "Wolk.png"
+                },
+                {
+                    "name": "Zon",
+                    "description": "Zon",
+                    "image": "Zon.png"
                 }
             ]
         },
@@ -239,6 +309,16 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
                     "name": "Sneeuwpop",
                     "description": "Sneeuwpop",
                     "image": "Sneeuwpop.png"
+                },
+                {
+                    "name": "Pinguïn",
+                    "description": "Pinguïn",
+                    "image": "Pinguin.png"
+                },
+                {
+                    "name": "Schaap",
+                    "description": "Schaap",
+                    "image": "Schaap.png"
                 }
             ]
         },
@@ -269,6 +349,31 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
                     "name": "Mooi huis",
                     "description": "Mooi huisje",
                     "image": "6_huis.png"
+                },
+                {
+                    "name": "Gingerbread huis",
+                    "description": "Gingerbread huis",
+                    "image": "Gingerbread huis.png"
+                }
+            ]
+        },
+        {
+            name: "Fruit",
+            assets: [
+                {
+                    "name": "Druiven",
+                    "description": "Druiven",
+                    "image": "Druiven.png"
+                },
+                {
+                    "name": "Appel",
+                    "description": "Appel",
+                    "image": "Appel.png"
+                },
+                {
+                    "name": "Banaan",
+                    "description": "Banaan",
+                    "image": "Banaan.png"
                 }
             ]
         }
