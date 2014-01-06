@@ -30,13 +30,6 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         $location.path('/stories');
     }
 
-    $scope.scenenextplaceholder = function () {
-        alert("Link to next scene toegevoegd!");
-    };
-    $scope.scenepreviousplaceholder = function () {
-        alert("Link to previous scene toegevoegd");
-    }
-
     $scope.showassetproperties = false;
     $scope.selectedAsset = null;
 
@@ -984,5 +977,15 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
     editor.addEventListener('drop', dropAsset);
 
     initCanvas();
+
+    //Sortable
+    $scope.sortableOptions = {
+        update: function(e, ui) {
+            alert('kankeururur');
+        },
+        stop: function(e, ui) {
+            alert('lel stop');
+        }
+    }
 }]);
 

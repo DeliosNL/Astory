@@ -93,7 +93,7 @@
         </div>
     </div>
     <div id="scenemenuwrapper">
-        <div id="scenemenu" ui-sortable ng-model="scenes">
+        <div id="scenemenu" ui-sortable="sortableOptions" ng-model="scenes">
             <div id="sceneitem" data-ng-repeat="scene in scenes">
                 <div id="scene" data-ng-click="loadScene($index)">
                     <img src="images/{{scene.image}}" alt="scene {{$index + 1}}"/>
