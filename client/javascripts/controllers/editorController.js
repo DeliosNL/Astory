@@ -22,8 +22,9 @@ aStory.controller('editScenarioController', ['$scope', 'scenario', '$modalInstan
 
 }]);
 
-aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$location', 'currentStoryService', 'scenariosService', 'scenesService', 'sceneService', function ($scope, $modal, storiesService, $location, currentStoryService, scenariosService, scenesService, sceneService) {
-    "use strict";
+aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$location', 'currentStoryService', 'scenariosService', 'scenesService', 'sceneService', 'scenarioService', function ($scope, $modal, storiesService, $location, currentStoryService, scenariosService, scenesService, sceneService, scenarioService) {
+    //ALERTS
+
     $scope.alerts = [];
 
     $scope.addAlert = function(message) {
@@ -33,7 +34,11 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
     $scope.closeAlert = function(index) {
         $scope.alerts.splice(index, 1);
     };
-    
+
+
+
+
+
     var savingscene = false;
     $scope.story = currentStoryService.currentstory;
     if ($scope.story == null) {
@@ -44,14 +49,17 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
     $scope.showassetproperties = false;
     $scope.selectedAsset = null;
 
-
-    $scope.openScenario = function (index) {
-        $scope.currentscenario = $scope.scenarios[index];
-        loadScenes(true);
-    };
+    function makeFirstScenario() {
+        "use strict";
+        scenariosService.scenarios.save({storyid: $scope.story._id}, {name: "My first scenario"}, function(data) {
+           refreshScenarios(true);
+        }, function (error) {
+            alert("Error while adding scenario, please try again.");
+        });
+    }
 
     $scope.loadScene = function(index) {
-        console.log("Loading scene: " + index + ", id:" + $scope.scenes[index]._id);
+        console.log("Loading scene: " + index);
         canvasstate.loadScene($scope.scenes[index]);
         $scope.currentSceneindex = index + 1;
     }
@@ -90,24 +98,6 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         });
     }
 
-    $scope.addScene = function () {
-        scenesService.scenes.save({scenarioid: $scope.currentscenario._id}, {}, function(data) {
-            refreshScenarios(false);
-            loadScenes();
-        }, function (err) {
-            alert("Error while adding scene");
-        });
-    };
-
-    function makeFirstScenario() {
-        "use strict";
-        scenariosService.scenarios.save({storyid: $scope.story._id}, {name: "My first scenario"}, function(data) {
-            refreshScenarios(true);
-        }, function (error) {
-            alert("Error while adding scenario, please try again.");
-        });
-    }
-
     function refreshScenarios(firstrefresh) {
         "use strict";
         scenariosService.scenarios.get({storyid: $scope.story._id}, function (data) {
@@ -141,6 +131,12 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         });
     }
     refreshScenarios(true);
+
+
+    $scope.openScenario = function (index) {
+        $scope.currentscenario = $scope.scenarios[index];
+        loadScenes(true);
+    };
 
     $scope.removeSelectedAsset = function () {
         canvasstate.removeAsset($scope.selectedAsset);
@@ -414,6 +410,16 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
             ]
         }
     ];
+
+
+    $scope.addScene = function () {
+        scenesService.scenes.save({scenarioid: $scope.currentscenario._id}, {}, function(data) {
+            refreshScenarios(false);
+            loadScenes();
+        }, function (err) {
+            alert("Error while adding scene");
+        });
+    };
 
     $scope.addScenarioEvent = function (index) {
         $scope.safeApply(function () {
