@@ -52,7 +52,17 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
     function makeFirstScenario() {
         "use strict";
         scenariosService.scenarios.save({storyid: $scope.story._id}, {name: "My first scenario"}, function(data) {
-           refreshScenarios(true);
+            storiesService.stories.get(function(data) {
+                for(var i = 0; i < data.doc.length; i++){
+                    if(data.doc[i]._id === $scope.story._id){
+                        $scope.story.scenarioorder = data.doc[i].scenarioorder;
+                        break;
+                    }
+                }
+                refreshScenarios(true);
+            }, function ( err) {
+                alert("Failed to refresh scenarios");
+            });
         }, function (error) {
             alert("Error while adding scenario, please try again.");
         });
@@ -105,13 +115,12 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
             if(data.doc.length === 0) {
                 makeFirstScenario();
                 return 0;
-            } else {
-                for(var i = 0; i < $scope.story.scenarioorder.length; i++){
-                    for(var b = 0; b < data.doc.length; b++){
-                        if(data.doc[b]._id === $scope.story.scenarioorder[i]){
-                            $scope.scenarios.push(data.doc[b]);
-                            break;
-                        }
+            }
+            for(var i = 0; i < $scope.story.scenarioorder.length; i++){
+                for(var b = 0; b < data.doc.length; b++){
+                    if(data.doc[b]._id === $scope.story.scenarioorder[i]){
+                        $scope.scenarios.push(data.doc[b]);
+                        break;
                     }
                 }
             }
