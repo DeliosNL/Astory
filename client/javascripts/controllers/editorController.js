@@ -25,14 +25,19 @@ aStory.controller('editScenarioController', ['$scope', 'scenario', '$modalInstan
 aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$location', 'currentStoryService', 'scenariosService', 'scenesService', 'sceneService', 'flash', function ($scope, $modal, storiesService, $location, currentStoryService, scenariosService, scenesService, sceneService, flash) {
     //ALERTS
 
-    $scope.alerts = [];
+    $scope.alerts = [
+    ];
 
-    $scope.addAlert = function(message) {
-        $scope.alerts.push({msg: message});
+    $scope.addAlert = function(type, message) {
+        $scope.alerts.push({type: type, msg: message});
+        setTimeout(function() {
+            $scope.closeAlert();
+        }, 3000);
     };
 
-    $scope.closeAlert = function(index) {
-        $scope.alerts.splice(index, 1);
+    $scope.closeAlert = function() {
+        $scope.alerts.splice(0, 1);
+        $scope.redrawCanvas();
     };
 
 
@@ -402,7 +407,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
 
     $scope.addScenarioEvent = function (index) {
         $scope.safeApply(function () {
-            alert("Scenario: " + $scope.scenarios[index].name + " is toegevoegd als assetoptie!");
+            $scope.addAlert("success", "Scenario: " + $scope.scenarios[index].name + " is toegevoegd als assetoptie!");
             $scope.showassetproperties = false;
         });
     };
