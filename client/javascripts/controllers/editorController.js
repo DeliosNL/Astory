@@ -57,13 +57,8 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
     function makeFirstScenario() {
         "use strict";
         scenariosService.scenarios.save({storyid: $scope.story._id}, {name: "My first scenario"}, function(data) {
-            storiesService.stories.get(function(data) {
-                for(var i = 0; i < data.doc.length; i++){
-                    if(data.doc[i]._id === $scope.story._id){
-                        $scope.story.scenarioorder = data.doc[i].scenarioorder;
-                        break;
-                    }
-                }
+            storiesService.stories.get({_id: $scope.story._id}, function(data) {
+                $scope.story.scenarioorder = data.doc.scenarioorder;
                 refreshScenarios(true);
             }, function ( err) {
                 $scope.addAlert("error", "Failed to refresh scenarios");
@@ -80,12 +75,25 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         $scope.currentSceneindex = index + 1;
     };
 
+    function refreshCurrentScenario(){
+        scenarioService.scenario.get({scenarioid: $scope.currentscenario._id}, function(data) {
+            $scope.currentscenario = data.doc;
+            loadScenes(true);
+        }, function(err) {
+            alert("Failed to refresh scenario");
+        });
+    }
+
     function loadScenes(firstload) {
         scenesService.scenes.get({scenarioid: $scope.currentscenario._id}, function(data) {
             if (data.doc.length === 0) {
                 scenesService.scenes.save({scenarioid: $scope.currentscenario._id}, {}, function(data) {
-                    refreshScenarios(true);
-                    return 0;
+                    if(firstload){
+                        refreshScenarios(true);
+                    } else {
+                        refreshCurrentScenario();
+                    }
+
                 }, function (err) {
                     $scope.addAlert("error", "Error while trying to make the first scene");
                 });
@@ -147,7 +155,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
 
     $scope.openScenario = function (index) {
         $scope.currentscenario = $scope.scenarios[index];
-        loadScenes(true);
+        loadScenes(false);
     };
 
     $scope.removeSelectedAsset = function () {
