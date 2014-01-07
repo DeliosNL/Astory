@@ -461,7 +461,16 @@ exports.updateScenario = function (req, res) {
 exports.updateScene = function (req, res){
     "use strict";
     var conditions = {creator: req.user._id, _id: req.params.sceneid}, update, options, retObj;
-    update = {assets: req.body.assets};
+    update = {};
+
+    if(req.body.assets !== undefined && req.body.assets !== null){
+        update.assets = req.body.assets;
+    }
+
+    if(req.body.background !== undefined && req.body.background !== null){
+        update.background = req.body.background;
+    }
+
     options = {};
     console.log("Updating scene: " + req.params.sceneid);
     console.log(update);

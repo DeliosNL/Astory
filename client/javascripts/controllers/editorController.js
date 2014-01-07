@@ -76,8 +76,9 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
     $scope.loadScene = function(index) {
         console.log("Loading scene: " + index);
         canvasstate.loadScene($scope.scenes[index]);
+        editor.style.backgroundImage = "url('../" + $scope.scenes[index].background + "')";
         $scope.currentSceneindex = index + 1;
-    }
+    };
 
     function loadScenes(firstload) {
         scenesService.scenes.get({scenarioid: $scope.currentscenario._id}, function(data) {
@@ -1059,7 +1060,14 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
             canvasstate.addShape(new Asset(assetx, assety, event.dataTransfer.getData("imagepath"), canvasstate));
             updateServerAssets();
         } else {
-            editor.style.backgroundImage = "url('../" + event.dataTransfer.getData("imagepath") + "')";
+            var imagepath = event.dataTransfer.getData("imagepath");
+            sceneService.scene.update({sceneid: $scope.currentscene._id}, {background: imagepath}, function(data) {
+                editor.style.backgroundImage = "url('../" + event.dataTransfer.getData("imagepath") + "')";
+                $scope.currentscene.background = event.dataTransfer.getData("imagepath");
+                $scope.redrawCanvas();
+            }, function(err) {
+               alert("Failed to update background, please try again.");
+            });
         }
 
     }
