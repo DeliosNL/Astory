@@ -29,7 +29,7 @@ aStory.controller('registerController', ['$scope', 'accountService', '$location'
             document.getElementById('birthdateyearinput').value !== '') {
             $scope.birthdateinvalid = false;
         }
-    }
+    };
 
     for (var i = 1; i <= 31; i++) {
         $scope.days.push(i);

@@ -22,7 +22,7 @@ aStory.controller('editScenarioController', ['$scope', 'scenario', '$modalInstan
 
 }]);
 
-aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$location', 'currentStoryService', 'scenariosService', 'scenesService', 'sceneService', 'flash', function ($scope, $modal, storiesService, $location, currentStoryService, scenariosService, scenesService, sceneService, flash) {
+aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$location', 'currentStoryService', 'scenariosService', 'scenesService', 'sceneService', 'scenarioService', function ($scope, $modal, storiesService, $location, currentStoryService, scenariosService, scenesService, sceneService, scenarioService) {
     //ALERTS
 
     $scope.alerts = [
@@ -74,15 +74,25 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
             if (data.doc.length === 0) {
                 scenesService.scenes.save({scenarioid: $scope.currentscenario._id}, {}, function(data) {
                     if(firstload){
+                        refreshScenarios(false);
                         loadScenes(true);
                     } else {
-                        loadScenes();
+                        refreshScenarios(false);
                     }
                 }, function (err) {
                     alert("Error while trying to make the first scene");
                 });
             } else {
-                $scope.scenes = data.doc;
+                $scope.scenes = [];
+                for(var i = 0; i < $scope.currentscenario.sceneorder.length; i++){
+                    for(var b = 0; b < data.doc.length; b++){
+                        if($scope.currentscenario.sceneorder[i] === data.doc[b]._id) {
+                            $scope.scenes.push(data.doc[b]);
+                            break;
+                        }
+                    }
+                }
+                //$scope.scenes = data.doc;
                 if(firstload) {
                     $scope.currentscene = $scope.scenes[0];
                     $scope.loadScene(0);
@@ -96,9 +106,19 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
     function refreshScenarios(firstrefresh) {
         "use strict";
         scenariosService.scenarios.get({storyid: $scope.story._id}, function (data) {
-            $scope.scenarios = data.doc;
-            if($scope.scenarios.length === 0) {
+            $scope.scenarios = [];
+            if(data.doc.length === 0) {
                 makeFirstScenario();
+                return 0;
+            } else {
+                for(var i = 0; i < $scope.story.scenarioorder.length; i++){
+                    for(var b = 0; b < data.doc.length; b++){
+                        if(data.doc[b]._id === $scope.story.scenarioorder[i]){
+                            $scope.scenarios.push(data.doc[b]);
+                            break;
+                        }
+                    }
+                }
             }
 
             if(firstrefresh) {
@@ -399,6 +419,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
 
     $scope.addScene = function () {
         scenesService.scenes.save({scenarioid: $scope.currentscenario._id}, {}, function(data) {
+            refreshScenarios(false);
             loadScenes();
         }, function (err) {
             alert("Error while adding scene");
@@ -455,7 +476,18 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
 
         scenariopopup.result.then(function(updated){
             if(updated){
-                refreshScenarios();
+                storiesService.stories.get(function(data) {
+                    for(var i = 0; i < data.doc.length; i++){
+                        if(data.doc[i]._id === $scope.story._id){
+                            $scope.story.scenarioorder = data.doc[i].scenarioorder;
+                            break;
+                        }
+                    }
+                    refreshScenarios();
+                }, function ( err) {
+                    alert("Failed to refresh scenarios");
+                });
+
             }
         });
     };
@@ -1002,10 +1034,35 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
     //Sortable
     $scope.sortableOptions = {
         update: function(e, ui) {
-            alert('kankeururur');
         },
         stop: function(e, ui) {
-            alert('lel stop');
+            var sceneorderlocal = [];
+            for(var i = 0 ; i < $scope.scenes.length; i++){
+                sceneorderlocal.push($scope.scenes[i]._id);
+            }
+            scenarioService.scenario.update({scenarioid : $scope.currentscenario._id}, {sceneorder: sceneorderlocal}, function(data) {
+            }, function (err) {
+                alert("Error while updating scene order, your progress might not have been saved.");
+            })
+            //alert('lel stop');
+        }
+    }
+
+    $scope.sortableOptionsScenario = {
+        update: function(e, ui) {
+            //alert('kankeururur');
+        },
+        stop: function(e, ui) {
+            var scenarioorderlocal = [];
+            for(var i = 0; i < $scope.scenarios.length; i++){
+                scenarioorderlocal.push($scope.scenarios[i]._id);
+            }
+            storiesService.stories.update({_id: $scope.story._id}, {scenarioorder: scenarioorderlocal}, function(data) {
+
+            }, function(error) {
+                alert("Failed to update scenario order on server");
+            });
+            //alert('lel stop');
         }
     }
 }]);
