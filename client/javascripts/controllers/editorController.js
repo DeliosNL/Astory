@@ -12,7 +12,7 @@ aStory.controller('editScenarioController', ['$scope', 'scenario', '$modalInstan
         scenarioService.scenario.update({scenarioid : scenario._id}, {name: $scope.newdata.name}, function(data) {
             $modalInstance.close(true);
         }, function (err) {
-           alert("Error while updating scenario, please try again");
+            $scope.addAlert("error", "Error while updating scenario, please try again");
         });
         /*
         scenario.title = $scope.newdata.name;
@@ -66,10 +66,10 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
                 }
                 refreshScenarios(true);
             }, function ( err) {
-                alert("Failed to refresh scenarios");
+                $scope.addAlert("error", "Failed to refresh scenarios");
             });
         }, function (error) {
-            alert("Error while adding scenario, please try again.");
+            $scope.addAlert("error", "Error while adding scenario, please try again");
         });
     }
 
@@ -79,7 +79,6 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         $scope.currentSceneindex = index + 1;
     }
 
-
     function loadScenes(firstload) {
         scenesService.scenes.get({scenarioid: $scope.currentscenario._id}, function(data) {
             if (data.doc.length === 0) {
@@ -87,7 +86,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
                     refreshScenarios(true);
                     return 0;
                 }, function (err) {
-                    alert("Error while adding scene");
+                    $scope.addAlert("error", "Error while trying to make the first scene");
                 });
             } else {
                 $scope.scenes = [];
@@ -106,7 +105,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
                 }
             }
         }, function(err) {
-            alert("Failed to get scenes");
+            $scope.addAlert("error", "Failed to get scenes");
         });
     }
 
@@ -129,7 +128,6 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
             }
 
             if(firstrefresh) {
-
                 $scope.currentscenario = $scope.scenarios[0];
                 loadScenes(true);
             } else {
@@ -140,7 +138,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
                 }
             }
         }, function (err) {
-            alert("Error while retrieving scenarios, please refresh.");
+            $scope.addAlert("error", "Error while retrieving scenarios, please refresh");
         });
     }
     refreshScenarios(true);
@@ -429,8 +427,9 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         scenesService.scenes.save({scenarioid: $scope.currentscenario._id}, {}, function(data) {
             refreshScenarios(false);
             loadScenes();
+            $scope.addAlert("success", "Scene added");
         }, function (err) {
-            alert("Error while adding scene");
+            $scope.addAlert("error", "Error while adding scene");
         });
     };
 
@@ -445,6 +444,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         $scope.scenes.splice(index, 0, {
             "image": "johndoe.png"
         });
+        $scope.addAlert("success", "Scene added");
     };
 
     $scope.deleteScene = function () {
@@ -469,6 +469,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
                 }
             }
         });
+        $scope.addAlert("success", "Scene deleted");
     };
 
     $scope.showScenarioPopup = function () {
@@ -493,7 +494,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
                     }
                     refreshScenarios();
                 }, function ( err) {
-                    alert("Failed to refresh scenarios");
+                    $scope.addAlert("error", "Failed to refresh scenarios");
                 });
 
             }
@@ -1050,9 +1051,8 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
             }
             scenarioService.scenario.update({scenarioid : $scope.currentscenario._id}, {sceneorder: sceneorderlocal}, function(data) {
             }, function (err) {
-                alert("Error while updating scene order, your progress might not have been saved.");
+                $scope.addAlert("error", "Error while updating scene order, your progress might not have been saved.");
             })
-            //alert('lel stop');
         }
     }
 
@@ -1068,9 +1068,8 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
             storiesService.stories.update({_id: $scope.story._id}, {scenarioorder: scenarioorderlocal}, function(data) {
 
             }, function(error) {
-                alert("Failed to update scenario order on server");
+                $scope.addAlert("error", "Failed to update scenario order on server");
             });
-            //alert('lel stop');
         }
     }
 }]);
