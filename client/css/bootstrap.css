@@ -3902,7 +3902,7 @@ input[type="submit"].btn.btn-mini {
 }
 
 .alert .close {
-  position: relative;
+  position: fixed;
   top: -2px;
   right: -21px;
   line-height: 20px;

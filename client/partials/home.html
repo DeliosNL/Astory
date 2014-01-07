@@ -1,7 +1,7 @@
-<div ng:controller="homeController" style="height: 500px">
-    <ul ui:sortable ng:model="list">
-        <li ng:repeat="item in list" class="item">{{item}}</li>
-    </ul>
+<div ng:controller="homeController">
+    <div ui:sortable ng:model="list">
+        <div ng:repeat="item in list" class="item">{{item}}</div>
+    </div>
     <hr />
     <div ng:repeat="item in list">{{item}}</div>
 </div>
