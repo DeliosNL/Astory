@@ -75,23 +75,23 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         $scope.currentSceneindex = index + 1;
     };
 
-    function refreshCurrentScenario(){
+    function refreshCurrentScenario(firstload){
         scenarioService.scenario.get({scenarioid: $scope.currentscenario._id}, function(data) {
             $scope.currentscenario = data.doc;
-            loadScenes(true);
+            loadScenes(firstload);
         }, function(err) {
             alert("Failed to refresh scenario");
         });
     }
 
-    function loadScenes(firstload) {
+    function loadScenes(firstload, isopenscenarioaction) {
         scenesService.scenes.get({scenarioid: $scope.currentscenario._id}, function(data) {
             if (data.doc.length === 0) {
                 scenesService.scenes.save({scenarioid: $scope.currentscenario._id}, {}, function(data) {
                     if(firstload){
                         refreshScenarios(true);
                     } else {
-                        refreshCurrentScenario();
+                        refreshCurrentScenario(true);
                     }
 
                 }, function (err) {
@@ -108,7 +108,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
                     }
                 }
                 //$scope.scenes = data.doc;
-                if(firstload) {
+                if(firstload || isopenscenarioaction) {
                     $scope.currentscene = $scope.scenes[0];
                     $scope.loadScene(0);
                 }
@@ -155,7 +155,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
 
     $scope.openScenario = function (index) {
         $scope.currentscenario = $scope.scenarios[index];
-        loadScenes(false);
+        loadScenes(false, true);
     };
 
     $scope.removeSelectedAsset = function () {
@@ -436,11 +436,9 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         }
     ];
 
-
     $scope.addScene = function () {
         scenesService.scenes.save({scenarioid: $scope.currentscenario._id}, {}, function(data) {
-            refreshScenarios(false);
-            loadScenes();
+            refreshCurrentScenario(false);
             $scope.addAlert("success", "Scene added");
         }, function (err) {
             $scope.addAlert("error", "Error while adding scene");
