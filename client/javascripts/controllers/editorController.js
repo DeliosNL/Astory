@@ -249,11 +249,6 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
                     "image": "Sneeuwpop.png"
                 },
                 {
-                    "name": "Achtergrond1A",
-                    "description": "Sneeuwbergen achtergrond",
-                    "image": "Achtergrond1A.png"
-                },
-                {
                     "name": "Spaceshuttle",
                     "description": "Spaceshuttle",
                     "image": "Spaceshuttle.png"
@@ -262,21 +257,6 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
                     "name": "Tijdelijk",
                     "description": "Testobject",
                     "image": "tijdelijk.PNG"
-                },
-                {
-                    "name": "Achtergrond1B",
-                    "description": "Sneeuwbergen achtergrond geen sneeuw",
-                    "image": "Achtergrond1B.png"
-                },
-                {
-                    "name": "Achtergrond2",
-                    "description": "Nacht zonsopgang achtergrond",
-                    "image": "Achtergrond2.png"
-                },
-                {
-                    "name": "Achtergrond3",
-                    "description": "Sneeuw achtergrond",
-                    "image": "Achtergrond3.png"
                 },
                 {
                     "name": "Appel",
@@ -332,6 +312,31 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
                     "name": "Zon",
                     "description": "Zon",
                     "image": "Zon.png"
+                }
+            ]
+        },
+        {
+            name: "Backgrounds",
+            assets: [
+                {
+                    "name": "Achtergrond1B",
+                    "description": "Sneeuwbergen achtergrond geen sneeuw",
+                    "image": "Achtergrond1B.png"
+                },
+                {
+                    "name": "Achtergrond2",
+                    "description": "Nacht zonsopgang achtergrond",
+                    "image": "Achtergrond2.png"
+                },
+                {
+                    "name": "Achtergrond3",
+                    "description": "Sneeuw achtergrond",
+                    "image": "Achtergrond3.png"
+                },
+                {
+                    "name": "Achtergrond1A",
+                    "description": "Sneeuwbergen achtergrond",
+                    "image": "Achtergrond1A.png"
                 }
             ]
         },
@@ -694,25 +699,28 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
 
         CanvasState.prototype.positionAssetPropertiesMenu = function () {
             var selection = myState.selection;
-            var assetpropertiesxoffset = myState.assetpropertiesxoffset;
-            var assetpropertiesyoffset = myState.assetpropertiesyoffset;
-            var assetpropertiesmenu = myState.assetpropertiesmenu
+            if(selection !== null) {
+                var assetpropertiesxoffset = myState.assetpropertiesxoffset;
+                var assetpropertiesyoffset = myState.assetpropertiesyoffset;
+                var assetpropertiesmenu = myState.assetpropertiesmenu
 
-            //X offset
-            if(selection.x > parseInt(window.getComputedStyle(this.canvas, null).width) - selection.w - this.assetpropertiesmenuwidth){
-                assetpropertiesmenu.style.left = assetpropertiesxoffset + selection.x - this.assetpropertiesmenuwidth + "px";
-            } else {
-                assetpropertiesmenu.style.left = selection.x + assetpropertiesxoffset + selection.w + "px";
+                //X offset
+                if(selection.x > parseInt(window.getComputedStyle(this.canvas, null).width) - selection.w - this.assetpropertiesmenuwidth){
+                    assetpropertiesmenu.style.left = assetpropertiesxoffset + selection.x - this.assetpropertiesmenuwidth + "px";
+                } else {
+                    assetpropertiesmenu.style.left = selection.x + assetpropertiesxoffset + selection.w + "px";
+                }
+
+                //Y offset
+                if(selection.y < 0){
+                    assetpropertiesmenu.style.top = assetpropertiesyoffset + "px";
+                } else if ( selection.y > parseInt(window.getComputedStyle(this.canvas, null).height) - this.assetpropertiesmenuheight){
+                    assetpropertiesmenu.style.top = assetpropertiesyoffset + parseInt(window.getComputedStyle(this.canvas, null).height) - this.assetpropertiesmenuheight + "px";
+                } else {
+                    assetpropertiesmenu.style.top = selection.y + assetpropertiesyoffset + "px";
+                }
             }
 
-            //Y offset
-            if(selection.y < 0){
-                assetpropertiesmenu.style.top = assetpropertiesyoffset + "px";
-            } else if ( selection.y > parseInt(window.getComputedStyle(this.canvas, null).height) - this.assetpropertiesmenuheight){
-                assetpropertiesmenu.style.top = assetpropertiesyoffset + parseInt(window.getComputedStyle(this.canvas, null).height) - this.assetpropertiesmenuheight + "px";
-            } else {
-                assetpropertiesmenu.style.top = selection.y + assetpropertiesyoffset + "px";
-            }
         };
 
         // Up, down, and move are for dragging
@@ -1016,18 +1024,44 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         event.preventDefault();
     }
 
+    function isBackgroundAsset(imagepath) {
+        var backgroundassets;
+        for(var i = 0; i < $scope.assetgroups.length; i++){
+            if($scope.assetgroups[i].name === "Backgrounds"){
+                backgroundassets = $scope.assetgroups[i].assets;
+                break;
+            }
+        }
+
+        if(backgroundassets !== null){
+            for(var i = 0; i < backgroundassets.length; i++){
+                if("images/Assets/" + backgroundassets[i].image === imagepath){
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
     function dropAsset(event) {
         event.preventDefault();
-        var assetmenu = document.getElementById('assetmenu');
-        var editorbar = document.getElementById('editorbar');
-        var navbar = document.getElementById('navbar');
 
-        //var dx = pos[0] - img.offsetLeft;
-        //var dy = pos[1] - img.offsetTop;
-        var assetx = event.pageX - parseInt(window.getComputedStyle(assetmenu).width) - parseInt(window.getComputedStyle(assetmenu).paddingLeft) - parseInt(window.getComputedStyle(assetmenu).paddingRight);
-        var assety = event.pageY - parseInt(window.getComputedStyle(editorbar).height) - parseInt(window.getComputedStyle(navbar).height);
-        canvasstate.addShape(new Asset(assetx, assety, event.dataTransfer.getData("imagepath"), canvasstate));
-        updateServerAssets();
+        if(!isBackgroundAsset(event.dataTransfer.getData("imagepath"))) {
+            var assetmenu = document.getElementById('assetmenu');
+            var editorbar = document.getElementById('editorbar');
+            var navbar = document.getElementById('navbar');
+
+            //var dx = pos[0] - img.offsetLeft;
+            //var dy = pos[1] - img.offsetTop;
+            var assetx = event.pageX - parseInt(window.getComputedStyle(assetmenu).width) - parseInt(window.getComputedStyle(assetmenu).paddingLeft) - parseInt(window.getComputedStyle(assetmenu).paddingRight);
+            var assety = event.pageY - parseInt(window.getComputedStyle(editorbar).height) - parseInt(window.getComputedStyle(navbar).height);
+            canvasstate.addShape(new Asset(assetx, assety, event.dataTransfer.getData("imagepath"), canvasstate));
+            updateServerAssets();
+        } else {
+            editor.style.backgroundImage = "url('../" + event.dataTransfer.getData("imagepath") + "')";
+        }
+
     }
 
     $scope.dragAsset = function (event) {
