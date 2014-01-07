@@ -22,7 +22,18 @@ aStory.controller('editScenarioController', ['$scope', 'scenario', '$modalInstan
 
 }]);
 
-aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$location', 'currentStoryService', 'scenariosService', 'scenesService', 'sceneService', 'scenarioService', function ($scope, $modal, storiesService, $location, currentStoryService, scenariosService, scenesService, sceneService, scenarioService) {
+aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$location', 'currentStoryService', 'scenariosService', 'scenesService', 'sceneService', function ($scope, $modal, storiesService, $location, currentStoryService, scenariosService, scenesService, sceneService) {
+    "use strict";
+    $scope.alerts = [];
+
+    $scope.addAlert = function(message) {
+        $scope.alerts.push({msg: message});
+    };
+
+    $scope.closeAlert = function(index) {
+        $scope.alerts.splice(index, 1);
+    };
+    
     var savingscene = false;
     $scope.story = currentStoryService.currentstory;
     if ($scope.story == null) {
@@ -1012,7 +1023,6 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
     //Sortable
     $scope.sortableOptions = {
         update: function(e, ui) {
-            //alert('kankeururur');
         },
         stop: function(e, ui) {
             var sceneorderlocal = [];
