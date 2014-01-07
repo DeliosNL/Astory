@@ -473,29 +473,29 @@ p.assetmenudescription {
     overflow-y: hidden;
 }
 
-#sceneitem {
+.sceneitem {
     width: 155px;
     height: 110px;
     padding: 15px 0px 0px 0px;
     display: inline-block;
 }
 
-#scene {
+.scene {
     float: left;
 }
 
-#scene:hover {
+.scene:hover {
     cursor: pointer;
 }
 
-#scene p {
+.scene p {
     margin: 0;
     text-align: center;
     font-size: 13px;
     font-family: Proxima;
 }
 
-#dots {
+.dots {
     height: 65%;
     width: 15px;
     float: left;
@@ -505,7 +505,7 @@ p.assetmenudescription {
     cursor: pointer;
 }
 
-#dots:hover {
+.dots:hover {
     background: url(../images/dots-hover.png) no-repeat;
     background-position: center center;
 }
