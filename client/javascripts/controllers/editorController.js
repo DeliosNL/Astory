@@ -447,10 +447,36 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
     };
 
     $scope.addSceneByIndex = function (index) {
-        $scope.scenes.splice(index, 0, {
+        scenesService.scenes.save({scenarioid: $scope.currentscenario._id}, {}, function(data) {
+
+            scenarioService.scenario.get({scenarioid: $scope.currentscenario._id}, function(scenariodata) {
+                var sceneorderlocal = [];
+                for(var i = 0; i < scenariodata.doc.sceneorder.length - 1; i++){
+                    if(i === index){
+                        sceneorderlocal.push((scenariodata.doc.sceneorder[scenariodata.doc.sceneorder.length - 1]));
+                    }
+                    sceneorderlocal.push(scenariodata.doc.sceneorder[i]);
+                }
+                scenarioService.scenario.update({scenarioid: $scope.currentscenario._id}, {sceneorder: sceneorderlocal}, function(savedata) {
+                    refreshScenarios(false);
+                    loadScenes();
+                    $scope.addAlert("success", "Scene added");
+                }, function(err){
+                   alert("Failed to save new scene order, your scene has been added to the back");
+                });
+            }, function(error) {
+                alert("Failed to refresh scenes");
+            });
+
+           // $scope.addAlert("success", "Scene added");
+        }, function (err) {
+            $scope.addAlert("error", "Error while adding scene");
+        });
+
+        /*$scope.scenes.splice(index, 0, {
             "image": "johndoe.png"
         });
-        $scope.addAlert("success", "Scene added");
+        $scope.addAlert("success", "Scene added"); */
     };
 
     $scope.deleteScene = function () {

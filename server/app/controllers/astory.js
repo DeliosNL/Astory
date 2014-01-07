@@ -484,5 +484,53 @@ exports.updateScene = function (req, res){
             };
             return res.send(retObj);
         });
-}
+};
+
+exports.detailStory = function(req, res) {
+    "use strict";
+    var conditions = {creator: req.user._id, _id: req.params._id}, retObj;
+
+    Story
+        .findOne(conditions)
+        .exec(function(err, doc) {
+            retObj = {
+                meta: {"action": "detail", 'timestamp': new Date(), filename: __filename},
+                doc: doc,
+                err: err
+            };
+            return res.send(retObj);
+        })
+};
+
+exports.detailScenario = function (req, res) {
+    "use strict";
+    var conditions = {creator: req.user._id, _id: req.params.scenarioid}, retObj;
+
+    Scenario
+        .findOne(conditions)
+        .exec(function(err, doc) {
+            retObj = {
+                meta: {"action": "detail", 'timestamp': new Date(), filename: __filename},
+                doc: doc,
+                err: err
+            };
+            return res.send(retObj);
+        })
+};
+
+exports.detailScene = function (req, res) {
+    "use strict";
+    var conditions = {creator: req.user._id, _id: req.params.sceneid}, retObj;
+
+    Scene
+        .findOne(conditions)
+        .exec(function(err, doc) {
+            retObj = {
+                meta: {"action": "detail", 'timestamp': new Date(), filename: __filename},
+                doc: doc,
+                err: err
+            };
+            return res.send(retObj);
+        })
+};
 
