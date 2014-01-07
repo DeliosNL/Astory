@@ -22,7 +22,23 @@ aStory.controller('editScenarioController', ['$scope', 'scenario', '$modalInstan
 
 }]);
 
-aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$location', 'currentStoryService', 'scenariosService', 'scenesService', 'sceneService', function ($scope, $modal, storiesService, $location, currentStoryService, scenariosService, scenesService, sceneService) {
+aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$location', 'currentStoryService', 'scenariosService', 'scenesService', 'sceneService', 'flash', function ($scope, $modal, storiesService, $location, currentStoryService, scenariosService, scenesService, sceneService, flash) {
+    //ALERTS
+
+    $scope.alerts = [];
+
+    $scope.addAlert = function(message) {
+        $scope.alerts.push({msg: message});
+    };
+
+    $scope.closeAlert = function(index) {
+        $scope.alerts.splice(index, 1);
+    };
+
+
+
+
+
     var savingscene = false;
     $scope.story = currentStoryService.currentstory;
     if ($scope.story == null) {
