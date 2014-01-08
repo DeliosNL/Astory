@@ -721,8 +721,8 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         var assetmenu = document.getElementById('assetmenu');
         this.assetpropertiesxoffset = parseInt(window.getComputedStyle(assetmenu).width, 0) + parseInt(window.getComputedStyle(assetmenu).paddingLeft, 0) + parseInt(window.getComputedStyle(assetmenu).paddingRight, 0);
         this.assetpropertiesyoffset = parseInt(window.getComputedStyle(document.getElementById('navbar')).height, 0) + parseInt(window.getComputedStyle(document.getElementById('editorbar')).height, 0);
-        this.assetpropertiesmenuwidth = 234;
-        this.assetpropertiesmenuheight = 445;
+        this.assetpropertiesmenuwidth = 260;
+        this.assetpropertiesmenuheight = 345;
         this.assetpropertiesmenu = document.getElementById('assetmenuwrapper');
         this.valid = false; // when set to false, the canvas will redraw everything
         this.shapes = [];  // the collection of things to be drawn
