@@ -106,7 +106,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         });
     }
 
-    function refreshScenarios(firstrefresh) {
+    function refreshScenarios(firstrefresh, openstory) {
         "use strict";
         scenariosService.scenarios.get({storyid: $scope.story._id}, function (data) {
             if(data.doc.length === 0) {
@@ -124,7 +124,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
                 }
             }
 
-            if(data.doc.length === 1){
+            if(data.doc.length === 1 || openstory){
                 $scope.currentscenario = $scope.scenarios[0];
             } else {
                 for(var i = 0; i < $scope.scenarios.length; i++){
@@ -141,7 +141,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
             $scope.addAlert("error", "Error while retrieving scenarios, please refresh");
         });
     }
-    refreshScenarios(true);
+    refreshScenarios(true, true);
 
 
     $scope.openScenario = function (index) {
