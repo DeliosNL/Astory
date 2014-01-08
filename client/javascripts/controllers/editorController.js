@@ -57,13 +57,8 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
     function makeFirstScenario() {
         "use strict";
         scenariosService.scenarios.save({storyid: $scope.story._id}, {name: "My first scenario"}, function(data) {
-            storiesService.stories.get(function(data) {
-                for(var i = 0; i < data.doc.length; i++){
-                    if(data.doc[i]._id === $scope.story._id){
-                        $scope.story.scenarioorder = data.doc[i].scenarioorder;
-                        break;
-                    }
-                }
+            storiesService.stories.get({_id: $scope.story._id}, function(data) {
+                $scope.story.scenarioorder = data.doc.scenarioorder;
                 refreshScenarios(true);
             }, function ( err) {
                 $scope.addAlert("error", "Failed to refresh scenarios");
@@ -76,18 +71,16 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
     $scope.loadScene = function(index) {
         console.log("Loading scene: " + index);
         canvasstate.loadScene($scope.scenes[index]);
+        editor.style.backgroundImage = "url('../" + $scope.scenes[index].background + "')";
         $scope.currentSceneindex = index + 1;
-    }
+    };
 
     function loadScenes(firstload) {
         scenesService.scenes.get({scenarioid: $scope.currentscenario._id}, function(data) {
             if (data.doc.length === 0) {
                 scenesService.scenes.save({scenarioid: $scope.currentscenario._id}, {}, function(data) {
                     if(firstload){
-                        refreshScenarios(false);
-                        loadScenes(true);
-                    } else {
-                        refreshScenarios(false);
+                        refreshScenarios(true);
                     }
                 }, function (err) {
                     $scope.addAlert("error", "Error while trying to make the first scene");
@@ -113,14 +106,15 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         });
     }
 
-    function refreshScenarios(firstrefresh) {
+    function refreshScenarios(firstrefresh, openstory) {
         "use strict";
         scenariosService.scenarios.get({storyid: $scope.story._id}, function (data) {
-            $scope.scenarios = [];
             if(data.doc.length === 0) {
                 makeFirstScenario();
                 return 0;
             }
+
+            $scope.scenarios = [];
             for(var i = 0; i < $scope.story.scenarioorder.length; i++){
                 for(var b = 0; b < data.doc.length; b++){
                     if(data.doc[b]._id === $scope.story.scenarioorder[i]){
@@ -130,9 +124,8 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
                 }
             }
 
-            if(firstrefresh) {
+            if(data.doc.length === 1 || openstory){
                 $scope.currentscenario = $scope.scenarios[0];
-                loadScenes(true);
             } else {
                 for(var i = 0; i < $scope.scenarios.length; i++){
                     if($scope.scenarios[i]._id === $scope.currentscenario._id){
@@ -140,11 +133,15 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
                     }
                 }
             }
+
+            if(firstrefresh) {
+                loadScenes(true);
+            }
         }, function (err) {
             $scope.addAlert("error", "Error while retrieving scenarios, please refresh");
         });
     }
-    refreshScenarios(true);
+    refreshScenarios(true, true);
 
 
     $scope.openScenario = function (index) {
@@ -252,11 +249,6 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
                     "image": "Sneeuwpop.png"
                 },
                 {
-                    "name": "Achtergrond1A",
-                    "description": "Sneeuwbergen achtergrond",
-                    "image": "Achtergrond1A.png"
-                },
-                {
                     "name": "Spaceshuttle",
                     "description": "Spaceshuttle",
                     "image": "Spaceshuttle.png"
@@ -265,21 +257,6 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
                     "name": "Tijdelijk",
                     "description": "Testobject",
                     "image": "tijdelijk.PNG"
-                },
-                {
-                    "name": "Achtergrond1B",
-                    "description": "Sneeuwbergen achtergrond geen sneeuw",
-                    "image": "Achtergrond1B.png"
-                },
-                {
-                    "name": "Achtergrond2",
-                    "description": "Nacht zonsopgang achtergrond",
-                    "image": "Achtergrond2.png"
-                },
-                {
-                    "name": "Achtergrond3",
-                    "description": "Sneeuw achtergrond",
-                    "image": "Achtergrond3.png"
                 },
                 {
                     "name": "Appel",
@@ -335,6 +312,31 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
                     "name": "Zon",
                     "description": "Zon",
                     "image": "Zon.png"
+                }
+            ]
+        },
+        {
+            name: "Backgrounds",
+            assets: [
+                {
+                    "name": "Achtergrond1B",
+                    "description": "Sneeuwbergen achtergrond geen sneeuw",
+                    "image": "Achtergrond1B.png"
+                },
+                {
+                    "name": "Achtergrond2",
+                    "description": "Nacht zonsopgang achtergrond",
+                    "image": "Achtergrond2.png"
+                },
+                {
+                    "name": "Achtergrond3",
+                    "description": "Sneeuw achtergrond",
+                    "image": "Achtergrond3.png"
+                },
+                {
+                    "name": "Achtergrond1A",
+                    "description": "Sneeuwbergen achtergrond",
+                    "image": "Achtergrond1A.png"
                 }
             ]
         },
@@ -444,10 +446,36 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
     };
 
     $scope.addSceneByIndex = function (index) {
-        $scope.scenes.splice(index, 0, {
+        scenesService.scenes.save({scenarioid: $scope.currentscenario._id}, {}, function(data) {
+
+            scenarioService.scenario.get({scenarioid: $scope.currentscenario._id}, function(scenariodata) {
+                var sceneorderlocal = [];
+                for(var i = 0; i < scenariodata.doc.sceneorder.length - 1; i++){
+                    if(i === index){
+                        sceneorderlocal.push((scenariodata.doc.sceneorder[scenariodata.doc.sceneorder.length - 1]));
+                    }
+                    sceneorderlocal.push(scenariodata.doc.sceneorder[i]);
+                }
+                scenarioService.scenario.update({scenarioid: $scope.currentscenario._id}, {sceneorder: sceneorderlocal}, function(savedata) {
+                    refreshScenarios(false);
+                    loadScenes();
+                    $scope.addAlert("success", "Scene added");
+                }, function(err){
+                   alert("Failed to save new scene order, your scene has been added to the back");
+                });
+            }, function(error) {
+                alert("Failed to refresh scenes");
+            });
+
+           // $scope.addAlert("success", "Scene added");
+        }, function (err) {
+            $scope.addAlert("error", "Error while adding scene");
+        });
+
+        /*$scope.scenes.splice(index, 0, {
             "image": "johndoe.png"
         });
-        $scope.addAlert("success", "Scene added");
+        $scope.addAlert("success", "Scene added"); */
     };
 
     $scope.deleteScene = function (index) {
@@ -698,25 +726,39 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
 
         CanvasState.prototype.positionAssetPropertiesMenu = function () {
             var selection = myState.selection;
-            var assetpropertiesxoffset = myState.assetpropertiesxoffset;
-            var assetpropertiesyoffset = myState.assetpropertiesyoffset;
-            var assetpropertiesmenu = myState.assetpropertiesmenu
+            if(selection !== null) {
+                var assetpropertiesxoffset = myState.assetpropertiesxoffset;
+                var assetpropertiesyoffset = myState.assetpropertiesyoffset;
+                var assetpropertiesmenu = myState.assetpropertiesmenu
+                var canvaswidth = parseInt(window.getComputedStyle(this.canvas, null).width);
 
-            //X offset
-            if(selection.x > parseInt(window.getComputedStyle(this.canvas, null).width) - selection.w - this.assetpropertiesmenuwidth){
-                assetpropertiesmenu.style.left = assetpropertiesxoffset + selection.x - this.assetpropertiesmenuwidth + "px";
-            } else {
-                assetpropertiesmenu.style.left = selection.x + assetpropertiesxoffset + selection.w + "px";
+                //X offset
+
+
+                //Past rechts
+                if(selection.x + selection.w < (canvaswidth - this.assetpropertiesmenuwidth) ) {
+                    assetpropertiesmenu.style.left = selection.x + assetpropertiesxoffset + selection.w + "px";
+                }
+                //Past niet rechts maar heeft nog wel ruimte links
+                else if(selection.x + selection.w > canvaswidth - this.assetpropertiesmenuwidth && selection.x > this.assetpropertiesmenuwidth){
+                    assetpropertiesmenu.style.left = assetpropertiesxoffset + selection.x - this.assetpropertiesmenuwidth + "px";
+                }
+                //Past niet links, past niet rechts
+                else {
+                    assetpropertiesmenu.style.left = assetpropertiesxoffset + "px";
+                }
+
+
+                //Y offset
+                if(selection.y < 0){
+                    assetpropertiesmenu.style.top = assetpropertiesyoffset + "px";
+                } else if ( selection.y > parseInt(window.getComputedStyle(this.canvas, null).height) - this.assetpropertiesmenuheight){
+                    assetpropertiesmenu.style.top = assetpropertiesyoffset + parseInt(window.getComputedStyle(this.canvas, null).height) - this.assetpropertiesmenuheight + "px";
+                } else {
+                    assetpropertiesmenu.style.top = selection.y + assetpropertiesyoffset + "px";
+                }
             }
 
-            //Y offset
-            if(selection.y < 0){
-                assetpropertiesmenu.style.top = assetpropertiesyoffset + "px";
-            } else if ( selection.y > parseInt(window.getComputedStyle(this.canvas, null).height) - this.assetpropertiesmenuheight){
-                assetpropertiesmenu.style.top = assetpropertiesyoffset + parseInt(window.getComputedStyle(this.canvas, null).height) - this.assetpropertiesmenuheight + "px";
-            } else {
-                assetpropertiesmenu.style.top = selection.y + assetpropertiesyoffset + "px";
-            }
         };
 
         // Up, down, and move are for dragging
@@ -1020,18 +1062,51 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         event.preventDefault();
     }
 
+    function isBackgroundAsset(imagepath) {
+        var backgroundassets;
+        for(var i = 0; i < $scope.assetgroups.length; i++){
+            if($scope.assetgroups[i].name === "Backgrounds"){
+                backgroundassets = $scope.assetgroups[i].assets;
+                break;
+            }
+        }
+
+        if(backgroundassets !== null){
+            for(var i = 0; i < backgroundassets.length; i++){
+                if("images/Assets/" + backgroundassets[i].image === imagepath){
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
     function dropAsset(event) {
         event.preventDefault();
-        var assetmenu = document.getElementById('assetmenu');
-        var editorbar = document.getElementById('editorbar');
-        var navbar = document.getElementById('navbar');
 
-        //var dx = pos[0] - img.offsetLeft;
-        //var dy = pos[1] - img.offsetTop;
-        var assetx = event.pageX - parseInt(window.getComputedStyle(assetmenu).width) - parseInt(window.getComputedStyle(assetmenu).paddingLeft) - parseInt(window.getComputedStyle(assetmenu).paddingRight);
-        var assety = event.pageY - parseInt(window.getComputedStyle(editorbar).height) - parseInt(window.getComputedStyle(navbar).height);
-        canvasstate.addShape(new Asset(assetx, assety, event.dataTransfer.getData("imagepath"), canvasstate));
-        updateServerAssets();
+        if(!isBackgroundAsset(event.dataTransfer.getData("imagepath"))) {
+            var assetmenu = document.getElementById('assetmenu');
+            var editorbar = document.getElementById('editorbar');
+            var navbar = document.getElementById('navbar');
+
+            //var dx = pos[0] - img.offsetLeft;
+            //var dy = pos[1] - img.offsetTop;
+            var assetx = event.pageX - parseInt(window.getComputedStyle(assetmenu).width) - parseInt(window.getComputedStyle(assetmenu).paddingLeft) - parseInt(window.getComputedStyle(assetmenu).paddingRight);
+            var assety = event.pageY - parseInt(window.getComputedStyle(editorbar).height) - parseInt(window.getComputedStyle(navbar).height);
+            canvasstate.addShape(new Asset(assetx, assety, event.dataTransfer.getData("imagepath"), canvasstate));
+            updateServerAssets();
+        } else {
+            var imagepath = event.dataTransfer.getData("imagepath");
+            sceneService.scene.update({sceneid: $scope.currentscene._id}, {background: imagepath}, function(data) {
+                editor.style.backgroundImage = "url('../" + event.dataTransfer.getData("imagepath") + "')";
+                $scope.currentscene.background = event.dataTransfer.getData("imagepath");
+                $scope.redrawCanvas();
+            }, function(err) {
+               alert("Failed to update background, please try again.");
+            });
+        }
+
     }
 
     $scope.dragAsset = function (event) {
@@ -1083,6 +1158,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
 
     $scope.sortableOptionsScenario = {
         update: function(e, ui) {
+            //alert('kankeururur');
         },
         stop: function(e, ui) {
             var scenarioorderlocal = [];

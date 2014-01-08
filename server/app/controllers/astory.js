@@ -461,7 +461,16 @@ exports.updateScenario = function (req, res) {
 exports.updateScene = function (req, res){
     "use strict";
     var conditions = {creator: req.user._id, _id: req.params.sceneid}, update, options, retObj;
-    update = {assets: req.body.assets};
+    update = {};
+
+    if(req.body.assets !== undefined && req.body.assets !== null){
+        update.assets = req.body.assets;
+    }
+
+    if(req.body.background !== undefined && req.body.background !== null){
+        update.background = req.body.background;
+    }
+
     options = {};
     console.log("Updating scene: " + req.params.sceneid);
     console.log(update);
@@ -475,5 +484,53 @@ exports.updateScene = function (req, res){
             };
             return res.send(retObj);
         });
-}
+};
+
+exports.detailStory = function(req, res) {
+    "use strict";
+    var conditions = {creator: req.user._id, _id: req.params._id}, retObj;
+
+    Story
+        .findOne(conditions)
+        .exec(function(err, doc) {
+            retObj = {
+                meta: {"action": "detail", 'timestamp': new Date(), filename: __filename},
+                doc: doc,
+                err: err
+            };
+            return res.send(retObj);
+        })
+};
+
+exports.detailScenario = function (req, res) {
+    "use strict";
+    var conditions = {creator: req.user._id, _id: req.params.scenarioid}, retObj;
+
+    Scenario
+        .findOne(conditions)
+        .exec(function(err, doc) {
+            retObj = {
+                meta: {"action": "detail", 'timestamp': new Date(), filename: __filename},
+                doc: doc,
+                err: err
+            };
+            return res.send(retObj);
+        })
+};
+
+exports.detailScene = function (req, res) {
+    "use strict";
+    var conditions = {creator: req.user._id, _id: req.params.sceneid}, retObj;
+
+    Scene
+        .findOne(conditions)
+        .exec(function(err, doc) {
+            retObj = {
+                meta: {"action": "detail", 'timestamp': new Date(), filename: __filename},
+                doc: doc,
+                err: err
+            };
+            return res.send(retObj);
+        })
+};
 

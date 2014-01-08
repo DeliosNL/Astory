@@ -441,7 +441,6 @@ p.assetmenudescription {
     float: left;
     width: 100%;
     height: calc(100% - 125px);
-    background-image: url('../images/Assets/Achtergrond1A.png');
     background-size: 100% 100%;
     background-repeat: no-repeat;
 }
@@ -486,6 +485,11 @@ p.assetmenudescription {
     text-align: center;
     font-size: 13px;
     font-family: Proxima;
+}
+
+.scene img {
+    width: 130px;
+    height: 72px;
 }
 
 .dots {
