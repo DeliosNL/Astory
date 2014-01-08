@@ -82,8 +82,6 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
                     if(firstload){
                         refreshScenarios(true);
                     }
-
-
                 }, function (err) {
                     $scope.addAlert("error", "Error while trying to make the first scene");
                 });
@@ -126,15 +124,18 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
                 }
             }
 
-            if(firstrefresh) {
+            if(data.doc.length === 1){
                 $scope.currentscenario = $scope.scenarios[0];
-                loadScenes(true);
             } else {
                 for(var i = 0; i < $scope.scenarios.length; i++){
                     if($scope.scenarios[i]._id === $scope.currentscenario._id){
                         $scope.currentscenario = $scope.scenarios[i]; //De naam is geupdate, currentscenario moet opnieuw gezet worden.
                     }
                 }
+            }
+
+            if(firstrefresh) {
+                loadScenes(true);
             }
         }, function (err) {
             $scope.addAlert("error", "Error while retrieving scenarios, please refresh");
