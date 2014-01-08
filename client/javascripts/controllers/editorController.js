@@ -80,7 +80,8 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
             if (data.doc.length === 0) {
                 scenesService.scenes.save({scenarioid: $scope.currentscenario._id}, {}, function(data) {
                     if(firstload){
-                        refreshScenarios(true);
+                        $scope.currentscenario.sceneorder.push(data.doc._id);
+                        loadScenes(true);
                     }
                 }, function (err) {
                     $scope.addAlert("error", "Error while trying to make the first scene");
@@ -746,7 +747,6 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
                 else {
                     assetpropertiesmenu.style.left = assetpropertiesxoffset + "px";
                 }
-
 
                 //Y offset
                 if(selection.y < 0){
