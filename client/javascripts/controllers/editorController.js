@@ -1099,8 +1099,8 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         } else {
             var imagepath = event.dataTransfer.getData("imagepath");
             sceneService.scene.update({sceneid: $scope.currentscene._id}, {background: imagepath}, function(data) {
-                editor.style.backgroundImage = "url('../" + event.dataTransfer.getData("imagepath") + "')";
-                $scope.currentscene.background = event.dataTransfer.getData("imagepath");
+                editor.style.backgroundImage = "url('../" + imagepath + "')";
+                $scope.currentscene.background = imagepath;
                 $scope.redrawCanvas();
             }, function(err) {
                alert("Failed to update background, please try again.");
@@ -1126,12 +1126,14 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         receive: function(e, ui) {
             alert("received");
             $scope.deleteScene(0);
+            $scope.deleteList=[];
         }
     }
 
     $scope.sortableOptionsTrashScenarios = {
         receive: function(e, ui) {
             alert("received");
+            $scope.deleteList=[];
         }
     }
 
