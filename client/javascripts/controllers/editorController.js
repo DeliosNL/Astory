@@ -321,7 +321,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
             assets: [
                 {
                     "name": "Achtergrond1B",
-                    "description": "Sneeuwbergen achtergrond geen sneeuw",
+                    "description": "Sneeuwbergen achtergrond geen wolken",
                     "image": "Achtergrond1B.png"
                 },
                 {
