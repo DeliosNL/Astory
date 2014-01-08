@@ -243,7 +243,7 @@ aStory.controller('confirmdeletepopupcontroller', ['$scope', '$modalInstance', '
     $scope.name = name;
 
     $scope.close = function () {
-        $modalInstance.dismiss();
+        $modalInstance.close(false);
     };
 
     $scope.confirm = function () {

@@ -100,6 +100,20 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
                 if(firstload) {
                     $scope.currentscene = $scope.scenes[0];
                     $scope.loadScene(0);
+                } else {
+                    if($scope.currentscene !== undefined && $scope.currentscene !== null){
+                        for(var i = 0; i < $scope.scenes.length; i++){
+                            if($scope.scenes[i]._id === $scope.currentscene._id) {
+                                console.log("toplel");
+                                $scope.loadScene(i);
+                                break;
+                            }
+                            if(i === $scope.scenes.length - 1){
+                                $scope.currentscene = $scope.scenes[0];
+                                $scope.loadScene(0);
+                            }
+                        }
+                    }
                 }
             }
         }, function(err) {
@@ -479,30 +493,38 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         $scope.addAlert("success", "Scene added"); */
     };
 
-    $scope.deleteScene = function (index) {
-        alert("DELETE SCENE");
+    $scope.deleteScene = function () {
         var modalInstance = $modal.open({
             templateUrl: '../partials/confirmdeletepopup.html',
             controller: 'confirmdeletepopupcontroller',
             resolve: {
-                itemlist: function () {
-                    return $scope.scenes;
-                },
-                itemtype: function () {
-                    return "scene";
-                },
-                item: function () {
-                    return $scope.scenes[index];
-                },
-                popupabove: function () {
-                    return null;
-                },
                 name: function () {
-                    return "Scene " + 1;
+                    return "Delete scene";
                 }
             }
         });
-        $scope.addAlert("success", "Scene deleted");
+
+        modalInstance.result.then(function(response){
+            if($scope.scenes.length === 0 && response){
+                $scope.addAlert("error", "Cannot remove last scene");
+                loadScenes(false);
+                $scope.deleteList = [];
+            }
+            else if(response){
+                sceneService.scene.delete({sceneid: $scope.deleteList[0]._id}, function(data) {
+                    $scope.addAlert("success", "Scene deleted");
+                    loadScenes(false);
+                }, function(err) {
+                   $scope.addAlert("error", "Failed to delete scene");
+                   loadScenes(false);
+                });
+                $scope.deleteList=[];
+            } else {
+                loadScenes(false);
+                $scope.deleteList=[];
+            }
+        })
+
     };
 
     $scope.showScenarioPopup = function () {
@@ -1124,9 +1146,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
 
     $scope.sortableOptionsTrash = {
         receive: function(e, ui) {
-            alert("received");
-            $scope.deleteScene(0);
-            $scope.deleteList=[];
+            $scope.deleteScene();
         }
     }
 
@@ -1138,17 +1158,24 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
     }
 
     $scope.sortableOptions = {
+        removed: false,
         update: function(e, ui) {
+            this.removed = false;
+        },
+        remove: function(e, ui) {
+            this.removed = true;
         },
         stop: function(e, ui) {
-            var sceneorderlocal = [];
-            for(var i = 0 ; i < $scope.scenes.length; i++){
-                sceneorderlocal.push($scope.scenes[i]._id);
+            if(!this.removed){
+                var sceneorderlocal = [];
+                for(var i = 0 ; i < $scope.scenes.length; i++){
+                    sceneorderlocal.push($scope.scenes[i]._id);
+                }
+                scenarioService.scenario.update({scenarioid : $scope.currentscenario._id}, {sceneorder: sceneorderlocal}, function(data) {
+                }, function (err) {
+                    $scope.addAlert("error", "Error while updating scene order, your progress might not have been saved.");
+                })
             }
-            scenarioService.scenario.update({scenarioid : $scope.currentscenario._id}, {sceneorder: sceneorderlocal}, function(data) {
-            }, function (err) {
-                $scope.addAlert("error", "Error while updating scene order, your progress might not have been saved.");
-            })
         },
         containment: "#scenemenuwrapper",
         revert: true,
@@ -1168,7 +1195,6 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
                 scenarioorderlocal.push($scope.scenarios[i]._id);
             }
             storiesService.stories.update({_id: $scope.story._id}, {scenarioorder: scenarioorderlocal}, function(data) {
-
             }, function(error) {
                 $scope.addAlert("error", "Failed to update scenario order on server");
             });
