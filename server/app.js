@@ -29,7 +29,7 @@ model_files.forEach(function (file) {
 
 //Passport
 var passport = require('passport');
-require('./config/passport')(passport, config)
+require('./config/passport')(passport, config);
 
 
 var app = express();
