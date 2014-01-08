@@ -450,7 +450,8 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         $scope.addAlert("success", "Scene added");
     };
 
-    $scope.deleteScene = function () {
+    $scope.deleteScene = function (index) {
+        alert("DELETE SCENE");
         var modalInstance = $modal.open({
             templateUrl: '../partials/confirmdeletepopup.html',
             controller: 'confirmdeletepopupcontroller',
@@ -462,7 +463,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
                     return "scene";
                 },
                 item: function () {
-                    return $scope.scenes[0];
+                    return $scope.scenes[index];
                 },
                 popupabove: function () {
                     return null;
@@ -1044,6 +1045,21 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
     initCanvas();
 
     //Sortable
+    $scope.deleteList = [];
+
+    $scope.sortableOptionsTrash = {
+        receive: function(e, ui) {
+            alert("received");
+            $scope.deleteScene(0);
+        }
+    }
+
+    $scope.sortableOptionsTrashScenarios = {
+        receive: function(e, ui) {
+            alert("received");
+        }
+    }
+
     $scope.sortableOptions = {
         update: function(e, ui) {
         },
@@ -1056,7 +1072,13 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
             }, function (err) {
                 $scope.addAlert("error", "Error while updating scene order, your progress might not have been saved.");
             })
-        }
+        },
+        containment: "#scenemenuwrapper",
+        revert: true,
+        opacity: 0.5,
+        tolerance: "pointer",
+        delay: 150,
+        connectWith: "#scenetrash"
     }
 
     $scope.sortableOptionsScenario = {
@@ -1072,7 +1094,12 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
             }, function(error) {
                 $scope.addAlert("error", "Failed to update scenario order on server");
             });
-        }
+        },
+        containment: ".editorbardropdown",
+        revert: true,
+        opacity: 0.5,
+        tolerance: "pointer",
+        delay: 150,
+        connectWith: ".trashcan"
     }
 }]);
-

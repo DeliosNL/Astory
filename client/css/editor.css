@@ -117,22 +117,12 @@
 
 .editorbardropdown {
     top: 60px;
-    min-width: 600px;
-    min-height: 315px;
+    min-width: 585px;
+    min-height: 340px;
     position: absolute;
     background-color: white;
     box-shadow: 1px 1px 1px 1px #d3d3d3;
     -moz-box-shadow: 1px 1px 1px 1px #d3d3d3;
-}
-
-p.helpmessage {
-    color: #7a7a7a;
-    font-size: 12px;
-    font-family: ProximaLight;
-    position: absolute;
-    right:0;
-    bottom: 57px;
-    max-width: 65px;
 }
 
 /*
@@ -143,14 +133,17 @@ p.helpmessage {
 } */
 
 .trashcan {
-    width: 59px;
-    height: 57px;
+    width: 410px;/*59px;*/
+    height: 45px;/*57px;*/
     position: absolute;
     bottom: 0;
-    right: 0;
-    background-image: url('../images/trashbin.PNG');
+    left: 40px;
+    background: url(../images/trashbin.PNG) no-repeat;
+    background-position: center;
+    background-color: #f5f5f5;
     border-left: 1px solid #dddddd;
     border-top: 1px solid #dddddd;
+    border-right: 1px solid #dddddd;
 }
 
 #scenariolistheader {
@@ -309,9 +302,9 @@ button.newscenariobutton {
     color: white;
     font-family: ProximaSemibold;
     font-size: 12px;
-    float: right;
-    margin-top: 8px;
-    margin-right: 8px;
+    position: absolute;
+    bottom: 10px;
+    right: 15px;
 }
 
 /*EDITORBAR EINDIGT HIER */
@@ -475,7 +468,7 @@ p.assetmenudescription {
 
 .sceneitem {
     width: 155px;
-    height: 110px;
+    height: 90px;
     padding: 15px 0px 0px 0px;
     display: inline-block;
 }
@@ -499,7 +492,7 @@ p.assetmenudescription {
     height: 65%;
     width: 15px;
     float: left;
-    margin: 0px 5px 0px 5px;
+    margin: 10px 5px 0px 5px;
     background: url(../images/dots.png) no-repeat;
     background-position: center center;
     cursor: pointer;

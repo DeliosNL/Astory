@@ -97,13 +97,13 @@
         <div id="scenemenu" ui-sortable="sortableOptions" ng-model="scenes">
             <div class="sceneitem" data-ng-repeat="scene in scenes">
                 <div class="scene" data-ng-click="loadScene($index)">
-                    <img src="images/{{scene.image}}" alt="scene {{$index + 1}}"/>
+                    <img src="images/{{scene.image}}" alt="scene {{$index + 1}}" draggable="false"/>
                     <p>Scéne {{$index + 1}}</p>
                 </div>
                 <div class="dots" data-ng-hide="$last" data-ng-click="addSceneByIndex($index + 1)"></div>
             </div>
         </div>
         <div id="plus" data-ng-click="addScene()"></div>
-        <div id="scenetrash" data-ng-click="deleteScene()"></div>
+        <div id="scenetrash" data-ng-click="deleteScene()" ui-sortable="sortableOptionsTrash" ng-model="deleteList"></div>
     </div>
 </div>
