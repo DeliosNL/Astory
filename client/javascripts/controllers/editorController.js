@@ -729,13 +729,24 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
                 var assetpropertiesxoffset = myState.assetpropertiesxoffset;
                 var assetpropertiesyoffset = myState.assetpropertiesyoffset;
                 var assetpropertiesmenu = myState.assetpropertiesmenu
+                var canvaswidth = parseInt(window.getComputedStyle(this.canvas, null).width);
 
                 //X offset
-                if(selection.x > parseInt(window.getComputedStyle(this.canvas, null).width) - selection.w - this.assetpropertiesmenuwidth){
-                    assetpropertiesmenu.style.left = assetpropertiesxoffset + selection.x - this.assetpropertiesmenuwidth + "px";
-                } else {
+
+
+                //Past rechts
+                if(selection.x + selection.w < (canvaswidth - this.assetpropertiesmenuwidth) ) {
                     assetpropertiesmenu.style.left = selection.x + assetpropertiesxoffset + selection.w + "px";
                 }
+                //Past niet rechts maar heeft nog wel ruimte links
+                else if(selection.x + selection.w > canvaswidth - this.assetpropertiesmenuwidth && selection.x > this.assetpropertiesmenuwidth){
+                    assetpropertiesmenu.style.left = assetpropertiesxoffset + selection.x - this.assetpropertiesmenuwidth + "px";
+                }
+                //Past niet links, past niet rechts
+                else {
+                    assetpropertiesmenu.style.left = assetpropertiesxoffset + "px";
+                }
+
 
                 //Y offset
                 if(selection.y < 0){
