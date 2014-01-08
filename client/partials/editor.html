@@ -60,9 +60,10 @@
         No HTML 5 support found! Please update your browser.
     </canvas>
     <div id = "assetmenuwrapper" data-ng-show="showassetproperties">
-        <div id="assetpropertiesmenu">
+        <div id="assetoptionsheader">
             <h1>Settings asset</h1>
-            <p>Events</p>
+        </div>
+        <div id="assetpropertiesmenu">
             <div id = "assetoptions">
                 <div class="assetoption" data-ng-click="scenepreviousplaceholder();"><p >Go to previous scene</p></div>
                 <div class="assetoption" data-ng-click="scenenextplaceholder();"><p>Go to next scene</p></div>
@@ -72,6 +73,7 @@
                     </div>
                 </div>
             </div>
+            <p style="padding-top: 15px; color: #acadad;">Linked to: PlACEHOLDER</p>
             <div id = "assetpropertieswrapper">
                 <div class="assetpropertycontainer">
                     <label for="assetx">X:</label>

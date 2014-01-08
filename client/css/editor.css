@@ -540,25 +540,33 @@ p.assetmenudescription {
     position: absolute;
     padding: 0;
     margin: 0;
-    background-color: #b7b7b7;
-    padding-left: 10px;
-    margin-left: 2px;
+    box-shadow: 1px 1px 1px 1px #d3d3d3;
+    -moz-box-shadow: 1px 1px 1px 1px #d3d3d3;
+}
+
+#assetoptionsheader {
+    background-color: #f5f5f5;
+    padding-left: 20px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
+#assetoptionsheader h1 {
+    font-size: 16px;
+    color: #9c9d9d;
+    margin-bottom: 0;
+    padding-top: 5px;
 }
 
 #assetpropertiesmenu {
     width: 220px;
-    height: 435px;
+    height: 290px;
     padding: 0;
-    margin: 0;
-    background-color: #b7b7b7;
+    padding-left: 20px;
+    padding-right: 20px;
+    background-color: white;
     position: relative;
     top: 0;
-}
-
-#assetpropertiesmenu h1 {
-    font-size: 16px;
-    color: #111111;
-    margin-bottom: 0;
 }
 
 #assetpropertiesmenu p {
@@ -575,18 +583,16 @@ p.assetmenudescription {
 }
 
 #assetoptions {
-    margin-top: 55px;
-    border-bottom: 1px solid #d7d7d7;
 }
 
 .assetoption, .assetoptionscenario{
-    border-top: 1px solid #d7d7d7;
+    border-bottom: 1px solid #d7d7d7;
     height: 35px;
     position: relative;
 }
 
 .assetoption:hover, .assetoptionscenario:hover{
-    background-color: #929292;
+    background-color: #e6e6e6;
     cursor: pointer;
 }
 
@@ -594,8 +600,8 @@ p.assetmenudescription {
     line-height: 35px;
     font-family: Helvetica;
     font-size: 16px;
-    color: #111111;
     text-transform: none;
+    color: #acadad;
 }
 
 #assetoptions p#scenario:after {
@@ -605,10 +611,8 @@ p.assetmenudescription {
 }
 
 #assetpropertieswrapper {
-    margin-top: 25px;
     font-family: Helvetica;
     font-size: 16px;
-    color: black;
     line-height: 35px;
 }
 
@@ -617,8 +621,11 @@ p.assetmenudescription {
     height: 35px;
     width: 90px;
     line-height: 35px;
-    background-color: #a4a4a4;
+    background-color: white;
+    border: #f5f5f5 1px solid;
+    border-radius: 2px;
     float: left;
+    color: #acadad;
 }
 
 .assetpropertycontainerright {
@@ -643,8 +650,8 @@ p.assetmenudescription {
 .assetpropertycontainer input, .assetpropertycontainerright input, .assetpropertycontainer label, .assetpropertycontainerright label {
     font-family: Helvetica;
     font-size: 16px;
-    color: black;
     line-height: 35px;
+    color: #acadad;
 }
 
 .assetpropertycontainer input[type=number]::-webkit-inner-spin-button, .assetpropertycontainerright input[type=number]::-webkit-inner-spin-button,
@@ -658,7 +665,7 @@ p#deleteassetbutton {
     font-size: 12px;
     color: #ed1c24;
     font-family: Helvetica;
-    bottom: 25px;
+    bottom: 10px;
     left: 0;
     text-transform: none;
     margin-bottom: 0;
@@ -669,9 +676,9 @@ p#deleteassetbutton:hover{
 }
 
 #gotoscenariocontainer {
-    background-color: #b7b7b7;
+    background-color: #e6e6e6;
     position: absolute;
-    width: 220px;
+    width: 210px;
     height: 155px;
     top: 0;
     display: none;
@@ -679,6 +686,8 @@ p#deleteassetbutton:hover{
     padding-left: 5px;
     padding-right: 5px;
     overflow-y: auto;
+    box-shadow: 1px 1px 1px 1px #c4c4c4;
+    -moz-box-shadow: 1px 1px 1px 1px #c4c4c4;
 }
 
 .gotoscenariooption {
@@ -693,7 +702,7 @@ p#deleteassetbutton:hover{
 }
 
 .gotoscenariooption:hover {
-    background-color: #929292;
+    background-color: #d6d6d6;
     cursor: pointer;
 }
 
