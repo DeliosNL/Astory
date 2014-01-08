@@ -104,7 +104,6 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
                     if($scope.currentscene !== undefined && $scope.currentscene !== null){
                         for(var i = 0; i < $scope.scenes.length; i++){
                             if($scope.scenes[i]._id === $scope.currentscene._id) {
-                                console.log("toplel");
                                 $scope.loadScene(i);
                                 break;
                             }
@@ -145,6 +144,10 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
                 for(var i = 0; i < $scope.scenarios.length; i++){
                     if($scope.scenarios[i]._id === $scope.currentscenario._id){
                         $scope.currentscenario = $scope.scenarios[i]; //De naam is geupdate, currentscenario moet opnieuw gezet worden.
+                        break;
+                    }
+                    if(i === ($scope.scenarios.length - 1)){
+                        $scope.currentscenario = $scope.scenarios[0];
                     }
                 }
             }
@@ -499,7 +502,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
             controller: 'confirmdeletepopupcontroller',
             resolve: {
                 name: function () {
-                    return "Delete scene";
+                    return "Scene";
                 }
             }
         });
@@ -526,6 +529,35 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         })
 
     };
+
+    function deleteDraggedScenario() {
+        var modalInstance = $modal.open({
+            templateUrl: '../partials/confirmdeletepopup.html',
+            controller: 'confirmdeletepopupcontroller',
+            resolve: {
+                name: function () {
+                    return "Scenario";
+                }
+            }
+        });
+
+        modalInstance.result.then(function(response){
+            if(response){
+                scenarioService.scenario.delete({scenarioid: $scope.deleteList[0]._id}, function(data){
+                    refreshScenarios(true);
+                    $scope.addAlert("success", "Scenario deleted");
+                }, function(err) {
+                    refreshScenarios(true);
+                    $scope.addAlert("error", "Failed to delete scenario");
+                });
+
+                $scope.deleteList=[];
+            } else {
+                refreshScenarios(false);
+                $scope.deleteList=[];
+            }
+        })
+    }
 
     $scope.showScenarioPopup = function () {
         var scenariopopup = $modal.open({
@@ -1148,14 +1180,13 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         receive: function(e, ui) {
             $scope.deleteScene();
         }
-    }
+    };
 
     $scope.sortableOptionsTrashScenarios = {
         receive: function(e, ui) {
-            alert("received");
-            $scope.deleteList=[];
+            deleteDraggedScenario();
         }
-    }
+    };
 
     $scope.sortableOptions = {
         removed: false,
@@ -1183,7 +1214,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         tolerance: "pointer",
         delay: 150,
         connectWith: "#scenetrash"
-    }
+    };
 
     $scope.sortableOptionsScenario = {
         update: function(e, ui) {
@@ -1205,5 +1236,5 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         tolerance: "pointer",
         delay: 150,
         connectWith: ".trashcan"
-    }
+    };
 }]);
