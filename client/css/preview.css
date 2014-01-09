@@ -27,6 +27,39 @@ p#link, p#linktitle {
     background-color: #252525;
 }
 
+#backbutton {
+    text-align: center;
+    color: white;
+    background-color: #e23e1f;
+    float: left;
+    min-width: 100px;
+    height: 70px;
+    text-align: center;
+}
+
+#backbutton p {
+    font-family: ProximaSemibold;
+    font-size: 15px;
+    float:left;
+    margin-right: 0;
+    line-height: 70px;
+    margin-left: 8px;
+    margin-bottom: 0;
+    margin-top: 0;
+}
+
+#backbutton img {
+    float:left;
+    width: 8px;
+    height: 10px;
+    margin-top: 29px;
+    margin-left: 15px;
+}
+
+#backbutton:hover {
+    background-color: #8f8f8f;
+}
+
 img#logo {
     margin-top: 5px;
     margin-left: 25px;

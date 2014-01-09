@@ -677,25 +677,80 @@ p#deleteassetbutton:hover{
 }
 
 #gotoscenariocontainer {
-    background-color: #f5f5f5;
+    background-color: #fff;
     position: absolute;
-    width: 210px;
-    height: 155px;
+    width: 220px;
+    height: 219px;
     top: 0;
     display: none;
     left: 220px;
     padding-left: 5px;
-    padding-right: 5px;
     overflow-y: auto;
     box-shadow: 1px 1px 1px 1px #c4c4c4;
     -moz-box-shadow: 1px 1px 1px 1px #c4c4c4;
 }
 
+#gotoscenariowrapper {
+    max-height: calc(219px - 35px);
+    overflow-x: auto;
+}
+
 .gotoscenariooption {
-    width: 210px;
+    width: 205px;
     height: 35px;
     border-bottom: 1px solid #d7d7d7;
     text-overflow: ellipsis;
+}
+
+.gotonewscenariooption {
+    position: inherit;
+    bottom: 0;
+    width: 219px;
+    height: 35px;
+    border-top: 1px solid #d7d7d7;
+    color: #fff;
+}
+
+.gotonewscenariooption:hover > #plusbutton {
+    background-color: #c93003;
+}
+
+.gotonewscenariooption:hover > #plustext {
+    background-color: #e23e1f;
+}
+
+.gotonewscenariooption:hover > #plusbutton p {
+    color: #fff;
+}
+
+.gotonewscenariooption:hover > #plustext p {
+    color: #fff;
+}
+
+#plusbutton {
+    background-color: #d7d7d7;
+    width: 17%;
+    float: left;
+    height: 35px;
+}
+
+#plusbutton p {
+    color: #fff;
+}
+
+#plusbutton:hover {
+}
+
+#plustext {
+    width: 83%;
+    float: left;
+    background-color: #f5f5f5;
+}
+
+#plustext p {
+    font-size: 14px;
+    margin: 0 0 0 10px;
+    color: #acadad;
 }
 
 .assetoptionscenario:hover > #gotoscenariocontainer {
@@ -703,11 +758,11 @@ p#deleteassetbutton:hover{
 }
 
 .gotoscenariooption:hover {
-    background-color: #d6d6d6;
+    background-color: #f5f5f5;
     cursor: pointer;
 }
 
-.gotoscenariooption p {
+.gotoscenariooption p, .gotonewscenariooption p {
     line-height: 35px;
     font-family: Helvetica;
     font-size: 16px;
