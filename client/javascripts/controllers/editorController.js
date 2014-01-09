@@ -1246,7 +1246,8 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         opacity: 0.5,
         tolerance: "pointer",
         delay: 150,
-        connectWith: "#scenetrash"
+        connectWith: "#scenetrash",
+        axis: "x"
     };
 
     $scope.sortableOptionsScenario = {
@@ -1273,8 +1274,8 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         containment: ".editorbardropdown",
         revert: true,
         opacity: 0.5,
-        tolerance: "pointer",
         delay: 150,
-        connectWith: ".trashcan"
+        connectWith: ".trashcan",
+        axis: "y"
     };
 }]);

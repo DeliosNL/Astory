@@ -69,7 +69,13 @@
                 <div class="assetoption" data-ng-click="scenenextplaceholder();"><p>Go to next scene</p></div>
                 <div class="assetoptionscenario"><p id="scenario">Go to scenario..</p>
                     <div id="gotoscenariocontainer">
-                        <div class="gotoscenariooption" data-ng-repeat="scenario in scenarios" data-ng-click="addScenarioEvent($index)"><p>{{$index + 1}}: {{scenario.name}}</p></div>
+                        <div id="gotoscenariowrapper">
+                            <div class="gotoscenariooption" data-ng-repeat="scenario in scenarios" data-ng-click="addScenarioEvent($index)"><p>{{$index + 1}}: {{scenario.name}}</p></div>
+                        </div>
+                        <div class="gotonewscenariooption" data-ng-click="showScenarioPopup()">
+                            <div id="plusbutton"><p>+</p></div>
+                            <div id="plustext"><p>Add new scenario</p></div>
+                        </div>
                     </div>
                 </div>
             </div>
