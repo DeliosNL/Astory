@@ -24,7 +24,7 @@ aStory.controller('editScenarioController', ['$scope', 'scenario', '$modalInstan
 
 aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$location', 'currentStoryService', 'scenariosService', 'scenesService', 'sceneService', 'scenarioService', function ($scope, $modal, storiesService, $location, currentStoryService, scenariosService, scenesService, sceneService, scenarioService) {
     //ALERTS
-    var lastscenedragx, scenedragged = false;
+    var lastscenedragx, scenedragged = false, lastscenariodragy, scenariodragged = false;
 
     $scope.alerts = [
     ];
@@ -49,6 +49,17 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
     $scope.onSceneMouseUp = function (event) {
         if(event.pageX < lastscenedragx - 5 || event.pageX > lastscenedragx + 5){
             scenedragged = true;
+        }
+    };
+
+    $scope.onScenarioMouseDown = function (event) {
+        scenariodragged = false;
+        lastscenariodragy = event.pageY;
+    };
+
+    $scope.onScenarioMouseUp = function (event) {
+        if(event.pageY > lastscenariodragy + 5 || event.pageY < lastscenariodragy - 5){
+            scenariodragged = true;
         }
     };
 
@@ -174,8 +185,12 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
 
 
     $scope.openScenario = function (index) {
-        $scope.currentscenario = $scope.scenarios[index];
-        loadScenes(true);
+        if(!scenariodragged){
+            $scope.currentscenario = $scope.scenarios[index];
+            loadScenes(true);
+        } else {
+            scenariodragged = false;
+        }
     };
 
     $scope.removeSelectedAsset = function () {
@@ -1214,10 +1229,10 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
                     sceneorderlocal.push($scope.scenes[i]._id);
                 }
                 scenarioService.scenario.update({scenarioid : $scope.currentscenario._id}, {sceneorder: sceneorderlocal}, function(data) {
+                    $scope.currentscenario.sceneorder = sceneorderlocal;
+
                     for(var i = 0; i < sceneorderlocal.length; i++){
-                        if(sceneorderlocal[i] === $scope.currentscene._id){
-                            $scope.currentscenario.sceneorder = sceneorderlocal;
-                            $scope.currentSceneindex = i + 1;
+                        if(sceneorderlocal[i] === $scope.currentscene._id){                            $scope.currentSceneindex = i + 1;
                             break;
                         }
                     }
@@ -1235,18 +1250,25 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
     };
 
     $scope.sortableOptionsScenario = {
+        removed: false,
         update: function(e, ui) {
-            //alert('kankeururur');
+            this.removed = false;
+        },
+        remove: function(e, ui) {
+            this.removed = true;
         },
         stop: function(e, ui) {
-            var scenarioorderlocal = [];
-            for(var i = 0; i < $scope.scenarios.length; i++){
-                scenarioorderlocal.push($scope.scenarios[i]._id);
+            if(!this.removed) {
+                var scenarioorderlocal = [];
+                for(var i = 0; i < $scope.scenarios.length; i++){
+                    scenarioorderlocal.push($scope.scenarios[i]._id);
+                }
+                storiesService.stories.update({_id: $scope.story._id}, {scenarioorder: scenarioorderlocal}, function(data) {
+                    $scope.story.scenarioorder = data.doc.scenarioorder;
+                }, function(error) {
+                    $scope.addAlert("error", "Failed to update scenario order on server");
+                });
             }
-            storiesService.stories.update({_id: $scope.story._id}, {scenarioorder: scenarioorderlocal}, function(data) {
-            }, function(error) {
-                $scope.addAlert("error", "Failed to update scenario order on server");
-            });
         },
         containment: ".editorbardropdown",
         revert: true,
