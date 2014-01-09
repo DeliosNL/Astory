@@ -42,21 +42,46 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
     };
 
     $scope.addNextSceneAction = function () {
+        var hadScenarioAction = false;
+        //Kijk of de vorige actie een scenario actie was, dan moet de lijst met scenarioacties namelijk opnieuw worden gevuld
+        if(hasLinktoOption($scope.selectedAsset)) {
+            hadScenarioAction = true;
+        }
+
         $scope.selectedAsset.assetoption = {
             name: "Next",
             type: "Scene"
         };
         $scope.addAlert("success", "Link to next scene has been added.");
-        updateServerAssets();
+        if(!hadScenarioAction) {
+            updateServerAssets();
+        } else {
+            updateServerAssets(function() {
+                updateAllScenarioLinks();
+                setLinkedScenarioName();
+            });
+        }
     };
 
     $scope.addPreviousSceneAction = function () {
+        var hadScenarioAction = false;
+        if(hasLinktoOption($scope.selectedAsset)) {
+            hadScenarioAction = true;
+        }
         $scope.selectedAsset.assetoption = {
             name: "Previous",
             type: "Scene"
         };
         $scope.addAlert("success", "Link to previous scene has been added.");
-        updateServerAssets();
+        if(!hadScenarioAction) {
+            updateServerAssets();
+        } else {
+            updateServerAssets(function() {
+                updateAllScenarioLinks();
+                setLinkedScenarioName();
+            });
+        }
+
     };
 
     $scope.addScenarioEvent = function (index) {
@@ -66,7 +91,10 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
                 type: "Scenario",
                 scenarioid: $scope.scenarios[index]._id
             };
-            setLinkedScenarioName();
+            updateServerAssets(function() {
+                updateAllScenarioLinks();
+                setLinkedScenarioName();
+            });
             $scope.addAlert("success", "Scenario: " + $scope.scenarios[index].name + " is toegevoegd als assetoptie!");
         });
     };
@@ -102,6 +130,53 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
 
     $scope.showassetproperties = false;
     $scope.selectedAsset = null;
+
+    function updateAllScenarioLinks() {
+        "use strict";
+
+        for (var i = 0; i < $scope.scenarios.length; i++) { //Elk scenario afgaan
+            updateSingleScenarioLinks(i);
+        }
+
+    }
+
+    function updateSingleScenarioLinks(index) {
+        $scope.scenarios[index].linkto = [];
+        $scope.scenarios[index].linkfrom = [];
+        var scenarioindex = index;
+        scenesService.scenes.get({scenarioid: $scope.scenarios[index]._id}, function (data) { //Haal de scenes van het scenario op
+
+            for (var b = 0; b < data.doc.length; b++) { //Ga elke scene na, kijk of er een link naar een scenario in zit
+
+                for (var c = 0; c < data.doc[b].assets.length; c++) { // Elke asset van de huidige scene nagaan
+                    var currentasset = data.doc[b].assets[c];
+
+                    if (currentasset.assetoption !== undefined && currentasset.assetoption !== null) {
+                        if (currentasset.assetoption.type === "Scenario") { //Deze asset linkt naar een scenario toe, voeg een from-blokje toe aan het betreffende scenario.
+
+                            for (var d = 0; d < $scope.scenarios.length; d++) {//Zoek naar welk scenario deze asset linkt
+                                if (currentasset.assetoption.scenarioid === $scope.scenarios[d]._id) { //Betreffende scenario gevonden, voeg een from blokje toe en voeg een to-blokje toe aan dit scenario
+                                    if($scope.scenarios[d].linkfrom.indexOf(scenarioindex + 1) === -1){
+                                        $scope.scenarios[d].linkfrom.push(scenarioindex + 1);
+                                    }
+                                    if($scope.scenarios[scenarioindex].linkto.indexOf(d + 1) === -1){
+                                        $scope.scenarios[scenarioindex].linkto.push(d + 1);
+                                    }
+                                    break;
+                                }
+                            }
+
+                        }
+                    }
+
+                }
+
+            }
+
+        }, function (err) {
+            alert("Failed to refresh scenario links");
+        });
+    }
 
     function makeFirstScenario() {
         "use strict";
@@ -154,6 +229,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
                 if(firstload) {
                     $scope.currentscene = $scope.scenes[0];
                     $scope.loadScene(0);
+                    updateAllScenarioLinks();
                 } else {
                     if($scope.currentscene !== undefined && $scope.currentscene !== null){
                         for(var i = 0; i < $scope.scenes.length; i++){
@@ -199,11 +275,13 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
                 for(var i = 0; i < $scope.scenarios.length; i++){
                     if($scope.scenarios[i]._id === $scope.currentscenario._id){
                         $scope.currentscenario = $scope.scenarios[i]; //De naam is geupdate, currentscenario moet opnieuw gezet worden.
+                        updateAllScenarioLinks();
                         break;
                     }
                     if(i === ($scope.scenarios.length - 1)){ //Het huidige scenario bestaat blijkbaar niet, laad de eerste.
                         $scope.currentscenario = $scope.scenarios[0];
                         loadScenes(true);
+                        updateAllScenarioLinks();
                     }
                 }
             }
@@ -223,9 +301,32 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         }
     };
 
+    function hasLinktoOption(asset) {
+        if(asset.assetoption !== undefined && asset.assetoption !== null){
+            if(asset.assetoption.type !== undefined && asset.assetoption.type !== null){
+                if(asset.assetoption.type === "Scenario"){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     $scope.removeSelectedAsset = function () {
+        var hadScenariolink = false;
+        if(hasLinktoOption($scope.selectedAsset)) {
+            $scope.selectedAsset.assetoption = [];
+            hadScenariolink = true;
+        }
         canvasstate.removeAsset($scope.selectedAsset);
-        updateServerAssets();
+        if(hadScenariolink) {
+            updateServerAssets(function() {
+                updateAllScenarioLinks();
+            });
+        } else {
+            updateServerAssets();
+        }
+
     };
 
     $scope.onAssetKeyUp = function (key) {
@@ -563,14 +664,31 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
                 $scope.deleteList = [];
             }
             else if(response){
+                var hadScenariolinkoption = false;
+                //Controleer of er assets waren in de scene die naar scenarios linkten
+                for(var i = 0; i < $scope.deleteList[0].assets.length; i++){
+                    var currentasset = $scope.deleteList[0].assets[i];
+                    if(currentasset.assetoption !== undefined && currentasset.assetoption !== null){
+                        if(currentasset.assetoption.type !== undefined && currentasset.assetoption.type !== null){
+                            if(currentasset.assetoption.type === "Scenario"){
+                                hadScenariolinkoption = true;
+                            }
+                        }
+                    }
+                }
+
                 sceneService.scene.delete({sceneid: $scope.deleteList[0]._id}, function(data) {
                     $scope.addAlert("success", "Scene deleted");
                     loadScenes(false);
+                    if(hadScenariolinkoption){
+                        updateAllScenarioLinks();
+                    }
                 }, function(err) {
                    $scope.addAlert("error", "Failed to delete scene");
                    loadScenes(false);
                 });
                 $scope.deleteList=[];
+
             } else {
                 loadScenes(false);
                 $scope.deleteList=[];
@@ -666,7 +784,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
     };
 
     /* Drag and drop zooi */
-    function updateServerAssets() {
+    function updateServerAssets(callback) {
         if(!savingscene) {
             savingscene = true;
             var newshapes = [];
@@ -685,6 +803,9 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
             sceneService.scene.update({sceneid: $scope.currentscene._id}, {assets: newshapes}, function(data) {
                 $scope.currentscene.assets = newshapes;
                 savingscene = false;
+                if(callback !== undefined && callback !== null){
+                    callback();
+                }
             }, function(err) {
                 savingscene = false;
                 console.log("Error while saving assets");
@@ -1272,7 +1393,8 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
                     $scope.currentscenario.sceneorder = sceneorderlocal;
 
                     for(var i = 0; i < sceneorderlocal.length; i++){
-                        if(sceneorderlocal[i] === $scope.currentscene._id){                            $scope.currentSceneindex = i + 1;
+                        if(sceneorderlocal[i] === $scope.currentscene._id){
+                            $scope.currentSceneindex = i + 1;
                             break;
                         }
                     }
@@ -1305,6 +1427,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
                 }
                 storiesService.stories.update({_id: $scope.story._id}, {scenarioorder: scenarioorderlocal}, function(data) {
                     $scope.story.scenarioorder = data.doc.scenarioorder;
+                    updateAllScenarioLinks();
                 }, function(error) {
                     $scope.addAlert("error", "Failed to update scenario order on server");
                 });
