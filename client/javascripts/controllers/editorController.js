@@ -793,11 +793,11 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
 
                 //Past rechts
                 if(selection.x + selection.w < (canvaswidth - this.assetpropertiesmenuwidth) ) {
-                    assetpropertiesmenu.style.left = selection.x + assetpropertiesxoffset + selection.w + "px";
+                    assetpropertiesmenu.style.left = selection.x + assetpropertiesxoffset + selection.w + 2 + "px";
                 }
                 //Past niet rechts maar heeft nog wel ruimte links
                 else if(selection.x + selection.w > canvaswidth - this.assetpropertiesmenuwidth && selection.x > this.assetpropertiesmenuwidth){
-                    assetpropertiesmenu.style.left = assetpropertiesxoffset + selection.x - this.assetpropertiesmenuwidth + "px";
+                    assetpropertiesmenu.style.left = assetpropertiesxoffset + selection.x - this.assetpropertiesmenuwidth  - 2 + "px";
                 }
                 //Past niet links, past niet rechts
                 else {
