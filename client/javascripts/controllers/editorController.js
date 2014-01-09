@@ -138,7 +138,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
                 }
             }
 
-            if(data.doc.length === 1 || openstory){
+            if(openstory){
                 $scope.currentscenario = $scope.scenarios[0];
             } else {
                 for(var i = 0; i < $scope.scenarios.length; i++){
@@ -146,8 +146,9 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
                         $scope.currentscenario = $scope.scenarios[i]; //De naam is geupdate, currentscenario moet opnieuw gezet worden.
                         break;
                     }
-                    if(i === ($scope.scenarios.length - 1)){
+                    if(i === ($scope.scenarios.length - 1)){ //Het huidige scenario bestaat blijkbaar niet, laad de eerste.
                         $scope.currentscenario = $scope.scenarios[0];
+                        loadScenes(true);
                     }
                 }
             }
@@ -544,10 +545,10 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         modalInstance.result.then(function(response){
             if(response){
                 scenarioService.scenario.delete({scenarioid: $scope.deleteList[0]._id}, function(data){
-                    refreshScenarios(true);
+                    refreshScenarios(false);
                     $scope.addAlert("success", "Scenario deleted");
                 }, function(err) {
-                    refreshScenarios(true);
+                    refreshScenarios(false);
                     $scope.addAlert("error", "Failed to delete scenario");
                 });
 
