@@ -24,6 +24,7 @@ aStory.controller('editScenarioController', ['$scope', 'scenario', '$modalInstan
 
 aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$location', 'currentStoryService', 'scenariosService', 'scenesService', 'sceneService', 'scenarioService', function ($scope, $modal, storiesService, $location, currentStoryService, scenariosService, scenesService, sceneService, scenarioService) {
     //ALERTS
+    var lastscenedragx, scenedragged = false;
 
     $scope.alerts = [
     ];
@@ -40,9 +41,16 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         $scope.redrawCanvas();
     };
 
+    $scope.onSceneMouseDown = function (event) {
+        scenedragged = false;
+        lastscenedragx = event.pageX;
+    };
 
-
-
+    $scope.onSceneMouseUp = function (event) {
+        if(event.pageX < lastscenedragx - 5 || event.pageX > lastscenedragx + 5){
+            scenedragged = true;
+        }
+    };
 
     var savingscene = false;
     $scope.story = currentStoryService.currentstory;
@@ -69,10 +77,15 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
     }
 
     $scope.loadScene = function(index) {
-        console.log("Loading scene: " + index);
-        canvasstate.loadScene($scope.scenes[index]);
-        editor.style.backgroundImage = "url('../" + $scope.scenes[index].background + "')";
-        $scope.currentSceneindex = index + 1;
+        if(!scenedragged) {
+            console.log("Loading scene: " + index);
+            canvasstate.loadScene($scope.scenes[index]);
+            editor.style.backgroundImage = "url('../" + $scope.scenes[index].background + "')";
+            $scope.currentSceneindex = index + 1;
+        } else {
+            scenedragged = false;
+        }
+
     };
 
     function loadScenes(firstload) {
@@ -1201,6 +1214,13 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
                     sceneorderlocal.push($scope.scenes[i]._id);
                 }
                 scenarioService.scenario.update({scenarioid : $scope.currentscenario._id}, {sceneorder: sceneorderlocal}, function(data) {
+                    for(var i = 0; i < sceneorderlocal.length; i++){
+                        if(sceneorderlocal[i] === $scope.currentscene._id){
+                            $scope.currentscenario.sceneorder = sceneorderlocal;
+                            $scope.currentSceneindex = i + 1;
+                            break;
+                        }
+                    }
                 }, function (err) {
                     $scope.addAlert("error", "Error while updating scene order, your progress might not have been saved.");
                 })

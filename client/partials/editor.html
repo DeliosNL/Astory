@@ -98,7 +98,7 @@
     <div id="scenemenuwrapper">
         <div id="scenemenu" ui-sortable="sortableOptions" ng-model="scenes">
             <div class="sceneitem" data-ng-repeat="scene in scenes">
-                <div class="scene" data-ng-click="loadScene($index)">
+                <div class="scene"  data-ng-mousedown="onSceneMouseDown($event)" data-ng-mouseup="onSceneMouseUp($event)" data-ng-click="loadScene($index)">
                     <img data-ng-src="{{scene.background}}" alt="scene {{$index + 1}}" draggable="false"/>
                     <p>Scéne {{$index + 1}}</p>
                 </div>
