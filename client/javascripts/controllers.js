@@ -340,5 +340,5 @@ aStory.controller('accountController', ['$scope', 'loggedinService', function($s
 }]);
 
 aStory.controller('homeController', ['$scope', function($scope) {
-    $scope.list = ["one", "two", "three", "four", "five", "six"];
+
 }]);

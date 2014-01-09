@@ -1,12 +1,283 @@
-.item, .placeholder {
-    padding: 2px;
-    width: 50px;
-    height: 20px;
-    border: 1px solid #333;
-    background: #EEE;
+.container{
+    max-width: 1218px;
+    margin: 0px auto;
+}
+
+ol, ul {
+    list-style: none;
+}
+
+/* ======= HEADER + CONTENT =======  */
+#header {
+    width: 100%;
+    height: 880px;
+    background: url(../images/heade_01.png);
+    background-size:cover;
+    float:left;
+    position:relative;
+}
+
+#siteBeginning {
+    width: 100%;
+    height:auto;
+    display:inline-block;
+    margin:70px 0 0 0;
+
+}
+
+.site-title {
+    font-family:ProximaBold;
+    color: #ffffff;
+    text-align:center;
+    font-size: 47px;
+    text-transform:uppercase;
+    margin: 55px 0 0 0;
+}
+
+.site-desc {
+    font-family:ProximaLight;
+    font-size:20px;
+    line-height:25px;
+    max-width:750px;
+    text-transform:uppercase;
+    text-align:center;
+    color: #fff;
+    margin: 20px auto 0 auto;
+}
+
+#mainbuts {
+    width: 450px;
+    min-height:48px;
+    margin: 50px auto 0 auto;
+    clear: both;
+}
+
+#mainbuts a {
+    text-decoration:none;
+}
+
+.startstory{
+    border-radius:3px;
+    background: #e23e1f;
+    padding: 15px 45px 15px 25px;
+    color:#fff;
+    text-transform:uppercase;
+    pointer: cursor;
+    transition: background-color 0.2s linear;
     float: left;
 }
 
-.placeholder {
-    background: #AEF;
+.startstory:after{
+    content: url(../images/after-beginstory.png);
+    width: 8px;
+    height: 11px;
+    margin-left: 25px;
+    position:absolute;
+}
+
+.startstory:hover{
+    background: #c92c0e;
+    color: #fff;
+}
+
+.learnmore {
+    border-radius: 3px;
+    border: 1px solid #474747;
+    padding: 14px 45px 14px 25px;
+    color: #474747;
+    pointer: cursor;
+    text-transform:uppercase;
+    float: right;
+    transition: all 0.2s linear;
+}
+
+.learnmore:after{
+    content: url(../images/learnmore-pointer.png);
+    width: 8px;
+    height: 11px;
+    margin-left: 25px;
+    position:absolute;
+}
+
+.learnmore:hover{
+    border: 1px solid #fff;
+    color: #fff;
+}
+#header-products {
+    max-width:752px;
+    max-height:433px;
+    left:50%;
+    position:absolute;
+    bottom:0;
+}
+
+#header-products img{
+    width: 100%;
+    height:100%;
+    position:relative;
+    left:-50%;
+}
+
+/* ======= USP =======  */
+
+#uniquesellingpoints {
+    width: 100%;
+    background: #f5f5f5;
+    float:left;
+}
+
+.sellingpoint {
+    width: 23%;
+    float:left;
+    margin: 50px 0 50px 2%;
+}
+
+.sellingpoint:first-child{
+    margin: 50px 0 0 0;
+}
+
+
+
+.sell-icon{
+    width: 55px;
+    height:55px;
+    margin: 0px auto 0 auto;
+    clear: both;
+}
+
+.sell-title{
+    width: 100%;
+    text-align:center;
+    float: left;
+    font-family:ProximaSemibold;
+    text-transform:uppercase;
+    font-size:18px;
+    color:#161818;
+    margin:15px 0 0 0;
+}
+
+.sell-desc{
+    width: 100%;
+    float: left;
+    margin:20px 0 0 0;
+    font: 14px/21px ProximaLight;
+    color:#5e5e5e;
+    text-align:center;
+}
+
+
+/* ======= storyexamples =======  */
+
+#storyexamples{
+    width: 100%;
+    background: #fff;
+    float:left;
+}
+
+#storyexamples h2{
+    margin: 50px 0 0 0;
+    font: 25px ProximaLight;
+    text-transform: uppercase;
+}
+
+#storyexamples ul{
+    width: 100%;
+    float:left;
+    margin:20px 0 0 0;
+}
+
+#storyexamples ul li{
+    max-width: 16.66666666666667%;
+    max-height: 115px;
+    float:left;
+}
+
+#storyexamples ul li a img{
+    max-width: 100%;
+    max-height:100%;
+}
+
+/* ======= TESTIMONIALS =======  */
+
+#testimonials{
+    width: 100%;
+    background: #fff;
+    float:left;
+}
+
+#testimonials h2{
+    margin: 50px 0 0 0;
+    font-family:ProximaLight;
+    font-size: 25px;
+    text-transform: uppercase;
+    font-weight: normal;
+}
+
+.user-test{
+    width: 22%;
+    float:left;
+    margin: 20px 3% 50px 0;
+}
+
+.user-icon {
+    float: left;
+    margin: 0px 20px 10px 0px;
+    border: 5px solid #f0f0f0;
+    width:75px;
+    height: 75px;
+}
+
+.test-name {
+    font:17px ProximaSemiBold !important;
+    text-transform:uppercase;
+    color:#5e5e5e;
+}
+
+#testimonials p {
+    font:13px/19px ProximaLight;
+    color:#5e5e5e;
+    margin:10px 0 0 0;
+}
+
+
+.vierkantwrapper{
+    overflow-x: scroll;
+    overflow-y: hidden;
+    height:85px;
+    white-space:nowrap;
+    width:100px;
+}
+
+.vierkantje{
+    display: inline-block;
+    background:#000;
+    background-position:center top;
+    background-repeat:no-repeat;
+    width:85px;
+    height:55px;
+}
+
+@media screen and (max-width: 1218px){
+}
+
+@media screen and (max-width: 850px){
+    .sellingpoint, .user-test{
+        width: 47%;
+        margin: 25px 0 0 2%;
+    }
+
+    .sellingpoint:first-child{
+        margin: 25px 0 0 2%;
+    }
+}
+
+@media screen and (max-width: 650px){
+    .sellingpoint, .user-test{
+        width: 96%;
+        margin: 0 0 0 2%;
+    }
+
+    .sellingpoint:first-child{
+        margin: 25px 0 0 2%;
+    }
 }
