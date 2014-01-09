@@ -120,7 +120,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         });
     }
 
-    function refreshScenarios(firstrefresh, openstory) {
+    function refreshScenarios(openstory) {
         "use strict";
         scenariosService.scenarios.get({storyid: $scope.story._id}, function (data) {
             if(data.doc.length === 0) {
@@ -140,6 +140,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
 
             if(openstory){
                 $scope.currentscenario = $scope.scenarios[0];
+                loadScenes(true);
             } else {
                 for(var i = 0; i < $scope.scenarios.length; i++){
                     if($scope.scenarios[i]._id === $scope.currentscenario._id){
@@ -152,15 +153,11 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
                     }
                 }
             }
-
-            if(firstrefresh) {
-                loadScenes(true);
-            }
         }, function (err) {
             $scope.addAlert("error", "Error while retrieving scenarios, please refresh");
         });
     }
-    refreshScenarios(true, true);
+    refreshScenarios(true);
 
 
     $scope.openScenario = function (index) {
@@ -225,7 +222,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
 
         modalInstance.result.then(function (updated) {
             if(updated) {
-                refreshScenarios();
+                refreshScenarios(false);
             }
         });
     };
@@ -580,7 +577,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
                             break;
                         }
                     }
-                    refreshScenarios();
+                    refreshScenarios(false);
                 }, function ( err) {
                     $scope.addAlert("error", "Failed to refresh scenarios");
                 });
