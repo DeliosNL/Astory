@@ -65,15 +65,15 @@
         </div>
         <div id="assetpropertiesmenu">
             <div id = "assetoptions">
-                <div class="assetoption" data-ng-click="scenepreviousplaceholder();"><p >Go to previous scene</p></div>
-                <div class="assetoption" data-ng-click="scenenextplaceholder();"><p>Go to next scene</p></div>
+                <div class="assetoption" data-ng-click="addPreviousSceneAction();"><p >Go to previous scene</p></div>
+                <div class="assetoption" data-ng-click="addNextSceneAction();"><p>Go to next scene</p></div>
                 <div class="assetoptionscenario"><p id="scenario">Go to scenario..</p>
                     <div id="gotoscenariocontainer">
                         <div class="gotoscenariooption" data-ng-repeat="scenario in scenarios" data-ng-click="addScenarioEvent($index)"><p>{{$index + 1}}: {{scenario.name}}</p></div>
                     </div>
                 </div>
             </div>
-            <p style="padding-top: 15px; color: #acadad;">Linked to: PLACEHOLDER</p>
+            <p style="padding-top: 15px; color: #acadad;" >Linked to: {{selectedAsset.assetoption.name}}</p>
             <div id = "assetpropertieswrapper">
                 <div class="assetpropertycontainer">
                     <label for="assetx">X:</label>
