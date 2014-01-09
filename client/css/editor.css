@@ -116,6 +116,7 @@
 }
 
 .editorbardropdown {
+    z-index: 1000;
     top: 60px;
     min-width: 585px;
     min-height: 340px;

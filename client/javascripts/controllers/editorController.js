@@ -41,6 +41,36 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         $scope.redrawCanvas();
     };
 
+    $scope.addNextSceneAction = function () {
+        $scope.selectedAsset.assetoption = {
+            name: "Next",
+            type: "Scene"
+        };
+        $scope.addAlert("success", "Link to next scene has been added.");
+        updateServerAssets();
+    };
+
+    $scope.addPreviousSceneAction = function () {
+        $scope.selectedAsset.assetoption = {
+            name: "Previous",
+            type: "Scene"
+        };
+        $scope.addAlert("success", "Link to previous scene has been added.");
+        updateServerAssets();
+    };
+
+    $scope.addScenarioEvent = function (index) {
+        $scope.safeApply(function () {
+            $scope.selectedAsset.assetoption = {
+                name: "",
+                type: "Scenario",
+                scenarioid: $scope.scenarios[index]._id
+            };
+            setLinkedScenarioName();
+            $scope.addAlert("success", "Scenario: " + $scope.scenarios[index].name + " is toegevoegd als assetoptie!");
+        });
+    };
+
     $scope.onSceneMouseDown = function (event) {
         scenedragged = false;
         lastscenedragx = event.pageX;
@@ -482,13 +512,6 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         });
     };
 
-    $scope.addScenarioEvent = function (index) {
-        $scope.safeApply(function () {
-            $scope.addAlert("success", "Scenario: " + $scope.scenarios[index].name + " is toegevoegd als assetoptie!");
-            $scope.showassetproperties = false;
-        });
-    };
-
     $scope.addSceneByIndex = function (index) {
         scenesService.scenes.save({scenarioid: $scope.currentscenario._id}, {}, function(data) {
 
@@ -614,6 +637,22 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         });
     };
 
+    function setLinkedScenarioName() {
+        var selectedAsset = $scope.selectedAsset;
+        if(selectedAsset.assetoption !== undefined && selectedAsset.assetoption !== null){
+            if(selectedAsset.assetoption.type === "Scenario") {
+                for(var b = 0; b < $scope.scenarios.length; b++){
+                    if($scope.scenarios[b]._id === selectedAsset.assetoption.scenarioid){
+                        selectedAsset.assetoption.name = $scope.scenarios[b].name;
+                        break;
+                    }
+                    if(b === $scope.scenarios.length - 1){
+                        selectedAsset.assetoption.name = "";
+                    }
+                }
+            }
+        }
+    }
 
     $scope.safeApply = function (fn) {
         var phase = this.$root.$$phase;
@@ -866,6 +905,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
                     $scope.safeApply(function () {
                         myState.positionAssetPropertiesMenu();
                         $scope.selectedAsset = shapes[i];
+                        setLinkedScenarioName();
                         $scope.showassetproperties = true;
                     });
 
