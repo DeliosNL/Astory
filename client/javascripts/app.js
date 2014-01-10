@@ -1,11 +1,11 @@
-"use strict";
-
 /**
  * @see http://docs.angularjs.org/guide/concepts
  */
-var aStory = angular.module('aStory', [ 'ngResource', 'ui.bootstrap', 'ui.sortable', 'flash']);
+var angular,
+    aStory = angular.module('aStory', [ 'ngResource', 'ui.bootstrap', 'ui.sortable', 'flash']);
 
-aStory.config(['$httpProvider', '$locationProvider', '$routeProvider', function ($httpProvider, $locationProvider, $routeProvider) {
+aStory.config(['$routeProvider', function ($routeProvider) {
+    "use strict";
     var checkLoggedin = function ($q, $timeout, $http, $location, loggedinService) {
         // Initialize a new promise
         var deferred = $q.defer();
@@ -28,9 +28,7 @@ aStory.config(['$httpProvider', '$locationProvider', '$routeProvider', function 
         });
 
         return deferred.promise;
-    };
-
-    var checkNotLoggedIn = function ($q, $timeout, $http, $location, loggedinService){
+    }, checkNotLoggedIn = function ($q, $timeout, $http, $location, loggedinService) {
         // Initialize a new promise
         var deferred = $q.defer();
 
