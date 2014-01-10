@@ -1643,8 +1643,26 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
     $scope.deleteList = [];
 
     /**
+     * Defines a function to be called when a scene is dropped into the trash.
+     */
+    $scope.sortableOptionsTrash = {
+        receive: function () {
+            $scope.deleteScene();
+        }
+    };
+
+    /**
+     * Defines a function to be called when a scenario is dropped into the trash.
+     */
+    $scope.sortableOptionsTrashScenarios = {
+        receive: function () {
+            deleteDraggedScenario();
+        }
+    };
+
+    /**
      * Options for a sortable scene, defines functions to be called when a user updates a scene's position, when a
-     * user removes the scene from the array (deletes it) and when a user stops dragging.
+     * user removes the scenes from the array (deletes it) and when a user stops dragging.
      */
     $scope.sortableOptions = {
         removed: false,
@@ -1686,8 +1704,8 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
     };
 
     /**
-     * Options for a sortable scenario, defines functions to be called when a user updates a scenario's position, when a
-     * user removes the scenario from the array (deletes it) and when a user stops dragging.
+     * Options for a sortable scene, defines functions to be called when a user updates a scene's position, when a
+     * user removes the scenes from the array (deletes it) and when a user stops dragging.
      */
     $scope.sortableOptionsScenario = {
         removed: false,
