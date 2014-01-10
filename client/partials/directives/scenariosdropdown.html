@@ -8,7 +8,7 @@
         <p class="right">To</p>
     </div>
     <div id="scenariolistcontainer">
-        <div id="scenarioswrapper" ui-sortable="sortableOptionsScenario" ng-model="scenarios">
+        <div id="scenarioswrapper" data-ui-sortable="sortableOptionsScenario" data-ng-model="scenarios">
             <div class="scenariowrapper" data-ng-repeat="scenario in scenarios">
                 <div class="scenariocontainer" data-ng-mousedown="onScenarioMouseDown($event);" data-ng-mouseup="onScenarioMouseUp($event);" data-ng-click="openScenario($index)">
                     <div class="linkfromarea">
@@ -30,5 +30,5 @@
         </div>
     </div>
 
-    <div class="trashcan" ui-sortable="sortableOptionsTrashScenarios" ng-model="deleteList"></div>
+    <div class="trashcan" data-ui-sortable="sortableOptionsTrashScenarios" data-ng-model="deleteList"></div>
 </div>

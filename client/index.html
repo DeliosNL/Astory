@@ -2,7 +2,6 @@
 <html lang="en" data-ng-app="aStory" data-ng-controller="headerController">
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Astory</title>
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.css" rel="stylesheet"/>
@@ -11,9 +10,10 @@
     <link href="css/editor.css" rel="stylesheet"/>
     <link href="css/login.css" rel="stylesheet"/>
     <link href="css/popup.css" rel="stylesheet"/>
-    <link href="css/account.css" rel="stylesheet">
-    <link href="css/home.css" rel="stylesheet">
+    <link href="css/account.css" rel="stylesheet"/>
+    <link href="css/home.css" rel="stylesheet"/>
     <link href="css/loginregister.css" rel="stylesheet"/>
+    <link href="css/storyoverview.css" rel="stylesheet"/>
     <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
     <script src="./javascripts/lib/angular.min.js"></script>
@@ -70,7 +70,7 @@
     </a>
 </div>
 
-<div id="ng-view" ng-view>
+<div id="ng-view" data-ng-view>
     <!-- HIER KOMEN DE PARTIALS, NIKS ANDERS IN ZETTEN  -->
 </div>
 </body>

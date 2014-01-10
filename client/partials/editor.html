@@ -38,14 +38,14 @@
     <div class="assetgroupswrapper">
         <div class="assetgroup" data-ng-repeat="group in assetgroups">
             <div class="assetgroupheader" data-ng-click="hidden = swapvisibility(hidden)"><p>{{group.name}}</p>
-                <img src="images/arrowdown3.png" alt="v" data-ng-show="!hidden"/>
-                <img ng-cloak src="images/arrowright3.png" class="hidden" alt="<" data-ng-show="hidden"/>
+                <img src="../images/arrowdown3.png" alt="v" data-ng-show="!hidden"/>
+                <img data-ng-cloak src="../images/arrowright3.png" class="hidden" alt="<" data-ng-show="hidden"/>
             </div>
-            <div class="assetscontainer" ng-show="!hidden">
+            <div class="assetscontainer" data-ng-show="!hidden">
                 <div class="assetwrapper" data-ng-repeat="asset in group.assets">
                     <div class="asset"><img data-ng-src="images/Assets/{{asset.image}}"
                                             data-ng-mousedown="get_pos($event)" draggable="true" alt="{{asset.name}}"
-                                            assetimage/></div>
+                                            data-assetimage/></div>
                     <p>{{asset.description}}</p>
                 </div>
             </div>
@@ -102,7 +102,7 @@
         </div>
     </div>
     <div id="scenemenuwrapper">
-        <div id="scenemenu" ui-sortable="sortableOptions" ng-model="scenes">
+        <div id="scenemenu" data-ui-sortable="sortableOptions" data-ng-model="scenes">
             <div class="sceneitem" data-ng-repeat="scene in scenes">
                 <div class="scene"  data-ng-mousedown="onSceneMouseDown($event)" data-ng-mouseup="onSceneMouseUp($event)" data-ng-click="loadScene($index)">
                     <img data-ng-src="{{scene.background}}" alt="scene {{$index + 1}}" draggable="false"/>
@@ -112,6 +112,6 @@
             </div>
         </div>
         <div id="plus" data-ng-click="addScene()"></div>
-        <div id="scenetrash" ui-sortable="sortableOptionsTrash" ng-model="deleteList"></div>
+        <div id="scenetrash" data-ui-sortable="sortableOptionsTrash" data-ng-model="deleteList"></div>
     </div>
 </div>
