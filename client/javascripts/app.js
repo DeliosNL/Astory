@@ -4,8 +4,14 @@
 var angular,
     aStory = angular.module('aStory', [ 'ngResource', 'ui.bootstrap', 'ui.sortable', 'flash']);
 
+/**
+ *
+ */
 aStory.config(['$routeProvider', function ($routeProvider) {
     "use strict";
+    /**
+     * Checks whether a user is logged in. If a user is logged in his information will be stored in the loggedinService.
+     */
     var checkLoggedin = function ($q, $timeout, $http, $location, loggedinService) {
         // Initialize a new promise
         var deferred = $q.defer();
@@ -52,6 +58,7 @@ aStory.config(['$routeProvider', function ($routeProvider) {
         return deferred.promise;
     };
 
+    //Routes
     $routeProvider
         .when('/', {
             templateUrl: 'partials/home.html',
