@@ -1,6 +1,9 @@
 /*jslint  nomen: true, node: true, plusplus: true, browser: true, todo: true */
 /*globals aStory, window, document,*/
 
+/**
+ * This controller is used when changing the name of a scenario.
+ */
 aStory.controller('editScenarioController', ['$scope', 'scenario', '$modalInstance', 'scenarioService', function ($scope, scenario, $modalInstance, scenarioService) {
     "use strict";
     $scope.scenario = scenario;
@@ -12,6 +15,9 @@ aStory.controller('editScenarioController', ['$scope', 'scenario', '$modalInstan
         $modalInstance.close(false);
     };
 
+    /**
+     * Updates the scenario's name on the server and closes the popup. Close(true) indicates that the name has been changed.
+     */
     $scope.saveScenario = function () {
         scenarioService.scenario.update({scenarioid: scenario._id}, {name: $scope.newdata.name}, function () {
             $modalInstance.close(true);
@@ -22,14 +28,26 @@ aStory.controller('editScenarioController', ['$scope', 'scenario', '$modalInstan
 
 }]);
 
+/**
+ * This is the controller for the /edit page. It contains all the functions necessary to make a story with scenes, scenarios, assets etc.
+ */
 aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$location', 'currentStoryService', 'scenariosService', 'scenesService', 'sceneService', 'scenarioService', function ($scope, $modal, storiesService, $location, currentStoryService, scenariosService, scenesService, sceneService, scenarioService) {
     var lastscenedragx, scenedragged = false, lastscenariodragy, scenariodragged = false, savingscene = false, canvasstate, refreshScenarios,
         editor = document.getElementById('editor');
 
+    /**
+     * Prevents the default behavior of the dragover event of the canvas. Without this prevention it would be impossible to drop a asset on the canvas.
+     * @param HTML 5 dragover event
+     */
     function allowDrop(event) {
         event.preventDefault();
     }
 
+    /**
+     * Checks if a given imagepath is present in the "Backgrounds" asset category.
+     * @param imagepath Imagepath to check.
+     * @returns {boolean} true if the imagepath is a background's image path. Otherwise false.
+     */
     function isBackgroundAsset(imagepath) {
         var backgroundassets, i;
         for (i = 0; i < $scope.assetgroups.length; i++) {
@@ -50,6 +68,11 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         return false;
     }
 
+    /**
+     * This function generates a new array with all the current scene's assets, this array only includes the necessary information to store in the database.
+     * After generating the array the current scene's asset-array is overwritten on the server for future reference.
+     * @param callback optional, if present this function will be called AFTER the update on the server has been successfull.
+     */
     function updateServerAssets(callback) {
         if (!savingscene) {
             savingscene = true;
@@ -80,6 +103,18 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
 
     }
 
+    /**
+     * This class represents an asset on the canvas. The canvas state keeps an array filled with Assets.
+     * The asset class contains all necessary info to draw the image to the canvas.
+     * @param x x Position indicating where the asset has been dropped.
+     * @param y y Position indicating where the asset has been dropped.
+     * @param imgpath Asset's image path, a new Image will be generated from this path and drawn on the canvas.
+     * @param state reference to the CanvasState.
+     * @param w Optional - initial width of the asset. If not present the width will be < 500 while maintaining the original aspect ratio.
+     * @param h Option - initial height of the asset. If not present the height will be < 500 while maintaining the original aspect ratio.
+     * @param assetoption Optional - If the asset is loaded from the server an assetoption might be present. Save the object for future reference.
+     * @constructor
+     */
     function Asset(x, y, imgpath, state, w, h, assetoption) {
         this.imgNew = new Image();
         this.imgNew.src = imgpath;
@@ -119,7 +154,12 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
 
     }
 
-
+    /**
+     * Drop an asset on the canvas. This function makes distinction between backgrounds and normal assets.
+     * If the dropped asset is a normal asset, the asset gets added to the CanvasState's assets[] array and drawn on the canvas.
+     * If the dropped asset is a background, the background property of the canvas is set and the new background path is saved on the server.
+     * @param event HTML 5 drop event
+     */
     function dropAsset(event) {
         event.preventDefault();
         var assetmenu = document.getElementById('assetmenu'),
@@ -153,6 +193,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
     editor.addEventListener('dragover', allowDrop);
     editor.addEventListener('drop', dropAsset);
 
+    //Check if a current story if present, if not -> Redirect the user
     $scope.story = currentStoryService.currentstory;
     if ($scope.story === null || $scope.story === undefined) {
         window.alert("Geen story geselecteerd");
@@ -163,9 +204,15 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
     $scope.showassetproperties = false;
     $scope.selectedAsset = null;
 
+    //Contains the alerts for the flash messages
     $scope.alerts = [
     ];
 
+    /**
+     * Adds an alert to the $scope.alerts array, the alert is displayed and removed after a timeout.
+     * @param type Valid options - success / error . Success gives a green message, error gives a red message.
+     * @param message Message to display in the container.
+     */
     $scope.addAlert = function (type, message) {
         $scope.alerts.push({type: type, msg: message});
         setTimeout(function () {
@@ -173,12 +220,20 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         }, 3000);
     };
 
+    /**
+     * Closes the first alert of the alerts array.
+     */
     $scope.closeAlert = function () {
         $scope.alerts.splice(0, 1);
         $scope.redrawCanvas();
     };
 
-
+    /**
+     * This function checks whether an asset has an assetoption linking to another scenario. It is used as a
+     * check in other functions.
+     * @param asset The asset to check.
+     * @returns {boolean} True if the asset has a scenariolink option, otherwise false
+     */
     function hasLinktoOption(asset) {
         if (asset.assetoption !== undefined && asset.assetoption !== null) {
             if (asset.assetoption.type !== undefined && asset.assetoption.type !== null) {
@@ -190,6 +245,12 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         return false;
     }
 
+    /**
+     * Loops through all a scenario's scene's and their underlying assets.
+     * Every asset within every scene is checked for a assetoption that links to a different scenario.
+     * If a assetoption is found the involved scenario's will get a new linkfrom/linkto option set.
+     * @param index Index of the scenario to check in the $scope.scenarios array
+     */
     function updateSingleScenarioLinks(index) {
         $scope.scenarios[index].linkto = [];
         $scope.scenarios[index].linkfrom = [];
@@ -229,6 +290,9 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         });
     }
 
+    /**
+     * Checks all scenario's for assets with links to another scenario. If such an asset is found the scenario will get a new linkto/linkfrom property added.
+     */
     function updateAllScenarioLinks() {
         var i;
         for (i = 0; i < $scope.scenarios.length; i++) { //Elk scenario afgaan
@@ -237,6 +301,11 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
 
     }
 
+    /**
+     * This function is called when the assetproperties menu appears and the selected asset has a link to another scenario.
+     * This function checks the _id property of the link to see which scenario it matches. When the scenario is found, it's name is
+     * set as the name of the asset's assetoption object. This is necessary to display the right name in the assetproperties menu.
+     */
     function setLinkedScenarioName() {
         var selectedAsset = $scope.selectedAsset, b;
         if (selectedAsset.assetoption !== undefined && selectedAsset.assetoption !== null) {
@@ -254,7 +323,10 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         }
     }
 
-
+    /**
+     * Adds an assetoption to the selected asset after clearing the old assetoption. The assetoption will be a "link to next scene" option.
+     * If the asset had a "link to scenario" option, this will be reset and the "linkto" and "linkfrom" blocks in the scenario list will be refreshed.
+     */
     $scope.addNextSceneAction = function () {
         var hadScenarioAction = false;
         //Kijk of de vorige actie een scenario actie was, dan moet de lijst met scenarioacties namelijk opnieuw worden gevuld
@@ -277,6 +349,10 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         }
     };
 
+    /**
+     * Adds an assetoption to the selected asset after clearing the old assetoption. The assetoption will be a "link to previous scene" option.
+     * If the asset had a "link to scenario" option, this will be reset and the "linkto" and "linkfrom" blocks in the scenario list will be refreshed.
+     */
     $scope.addPreviousSceneAction = function () {
         var hadScenarioAction = false;
         if (hasLinktoOption($scope.selectedAsset)) {
@@ -298,6 +374,10 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
 
     };
 
+    /**
+     * Adds an assetoption to the selected asset after clearing the old assetoption. The assetoption will be a "link to scenario" option.
+     * The _id of the linked scenario will be saved in the asset's assetoption object. After adding the option the linkto" and "linkfrom" blocks in the scenario list will be refreshed. .
+     */
     $scope.addScenarioEvent = function (index) {
         $scope.safeApply(function () {
             $scope.selectedAsset.assetoption = {
@@ -313,28 +393,52 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         });
     };
 
+    /**
+     * Saves the mousedown coordinates when clicking on a scene. This is later used to determine whether the user dragged the
+     * scene or simply clicked it. When the user hasn't fired the mouseup event yet, it's still safe to assume it's a click action.
+     * @param Mousedown event containing the mouse's coordinates
+     */
     $scope.onSceneMouseDown = function (event) {
         scenedragged = false;
         lastscenedragx = event.pageX;
     };
 
+    /**
+     * Compares the x-coordinates of the mousedown event with the mouseup event. If there's a difference this means that the
+     * user has dragged a scene instead of clicking it. The scenedragged boolean will be set to true.
+     * @param event Mouseup event containing the mouse's coordinates
+     */
     $scope.onSceneMouseUp = function (event) {
         if (event.pageX < lastscenedragx - 5 || event.pageX > lastscenedragx + 5) {
             scenedragged = true;
         }
     };
 
+    /**
+     * Saves the mousedown coordinates when clicking on a scenario. This is later used to determine whether the user dragged the
+     * scenario or simply clicked it. When the user hasn't fired the mouseup event yet, it's still safe to assume it's a click action.
+     * @param Mousedown event containing the mouse's coordinates
+     */
     $scope.onScenarioMouseDown = function (event) {
         scenariodragged = false;
         lastscenariodragy = event.pageY;
     };
 
+    /**
+     * Compares the y-coordinates of the mousedown event with the mouseup event. If there's a difference this means that the
+     * user has dragged a scenario instead of clicking it. The scenariodragged boolean will be set to true.
+     * @param event Mouseup event containing the mouse's coordinates
+     */
     $scope.onScenarioMouseUp = function (event) {
         if (event.pageY > lastscenariodragy + 5 || event.pageY < lastscenariodragy - 5) {
             scenariodragged = true;
         }
     };
 
+    /**
+     * Creates the first scenario of the story and refreshes the scenario's again with the "firstload" boolean set to true.
+     * This function is used when a user opens a new story for the first time.
+     */
     function makeFirstScenario() {
         scenariosService.scenarios.save({storyid: $scope.story._id}, {name: "My first scenario"}, function () {
             storiesService.stories.get({_id: $scope.story._id}, function (data) {
@@ -350,7 +454,10 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         });
     }
 
-
+    /**
+     * Clears the canvas and loads a specified scene's background and assets.
+     * @param index Index of the scene in the $scope.scenes[] array.
+     */
     $scope.loadScene = function (index) {
         if (!scenedragged) {
             console.log("Loading scene: " + index);
@@ -363,6 +470,12 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
 
     };
 
+    /**
+     * Retrieves the current scenario's scenes from the server and loads them into the application.
+     * @param firstload This boolean indicates whether a scenario has just been opened, meaning the first scene should be opened
+     * aswell. If this boolean is false then this means that the scenario has been refreshed, but the user should remain in the
+     * same scene.
+     */
     function loadScenes(firstload) {
         var i, b;
         scenesService.scenes.get({scenarioid: $scope.currentscenario._id}, function (data) {
@@ -412,6 +525,11 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         });
     }
 
+    /**
+     * Gets all the scenario's of the current story from the server and refreshes the scenario-list.
+     * @param openstory Boolean indicating whether the story has just been opened. If this is the case, the first scenario and
+     * first scene should be opened. If false, the list has simply been refreshed, the user wants to stay in the same scenario and scene.
+     */
     refreshScenarios = function (openstory) {
         var i, b;
         scenariosService.scenarios.get({storyid: $scope.story._id}, function (data) {
@@ -455,7 +573,12 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
 
     refreshScenarios(true);
 
-
+    /**
+     * If the scenario has been clicked instead of dragged, this function will open the given scenario.
+     * The currentscenario will be set and the scenario's scene's will be loaded. The first scene of the scenario will
+     * be opened.
+     * @param index Index of the scenario to open in the $scope.scenarios[] array.
+     */
     $scope.openScenario = function (index) {
         if (!scenariodragged) {
             $scope.currentscenario = $scope.scenarios[index];
@@ -465,6 +588,11 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         }
     };
 
+    /**
+     * Removes the $scope.selectedAsset from the canvasState's array of assets to draw.
+     * If the removed asset had a link to another scenario, the scenariolinks in the scenario list will be refreshed.
+     * After removing the asset from the canvas the server will be informed of the deletion.
+     */
     $scope.removeSelectedAsset = function () {
         var hadScenariolink = false;
         if (hasLinktoOption($scope.selectedAsset)) {
@@ -482,12 +610,20 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
 
     };
 
+    /**
+     * Checks whether or not the "enter" key has been pressed when editing a asset property.
+     * If the enter key has been pressed the canvas will be redrawn.
+     * @param key keycode of the pressed key.
+     */
     $scope.onAssetKeyUp = function (key) {
         if (key === 13) {
             $scope.redrawCanvas();
         }
     };
 
+    /**
+     * Redraws all the assets on the canvas and if necessary the assetproperties menu gets re-positioned.
+     */
     $scope.redrawCanvas = function () {
         $scope.safeApply(function () {
             if ($scope.selectedAsset !== null) {
@@ -502,6 +638,9 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         });
     };
 
+    /**
+     * Show a popup where the user can delete a story or modify it's name.
+     */
     $scope.showStoryPopup = function () {
         var modalInstance = $modal.open({
             templateUrl: '../partials/storypopup.html',
@@ -519,6 +658,11 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
     };
     // $scope.showpopup = true;
 
+    /**
+     * Show a popup where the user can modify a scenario's name.
+     * If the scenario name is updated, the scenariolist gets refreshed.
+     * @param index Index in the $scope.scenarios array of the selected scenario.
+     */
     $scope.showScenarioEditPopup = function (index) {
         var modalInstance = $modal.open({
             templateUrl: '../partials/editscenariopopup.html',
@@ -537,6 +681,13 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         });
     };
 
+    /**
+     * This function is called when the scenariodropdown button is clicked.
+     * This function checks whether the scenario dropdown is about to be displayed or hidden and sets the color
+     * of the scenariodropdown button to match either the dropdon or the menubar.
+     * @param id id of the element to change.
+     * @param currentlyvisible Boolean indicating whether the dropdown is visible at the time of clicking.
+     */
     $scope.setEditorbarDropdownColor = function (id, currentlyvisible) {
         var i, editorbarbuttons;
         if (currentlyvisible) { //Will be invisible soon
@@ -551,6 +702,9 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         }
     };
 
+    /**
+     * JSON array containing the possible assets.
+     */
     $scope.assetgroups = [
         {
             name: "Most used assets",
@@ -754,7 +908,10 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         }
     ];
 
-
+    /**
+     * Adds a scene to the end of the scenelist. The scene is first saved to the server,
+     * If the scene has successfully been saved on the server the list of scenes gets refreshed.
+     */
     $scope.addScene = function () {
         scenesService.scenes.save({scenarioid: $scope.currentscenario._id}, {}, function () {
             refreshScenarios(false);
@@ -766,6 +923,12 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         });
     };
 
+    /**
+     * Function for adding a scene on a specified index. The scene is first saved to the server.
+     * After saving the scene, the scenario's scene-order array gets updated and sent to the server.
+     * After updating the scene-order the scenelist gets refreshed.
+     * @param index Index indicating where the new scene should be added.
+     */
     $scope.addSceneByIndex = function (index) {
         var sceneorderlocal = [], i;
         scenesService.scenes.save({scenarioid: $scope.currentscenario._id}, {}, function () {
@@ -803,6 +966,13 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
          $scope.addAlert("success", "Scene added"); */
     };
 
+    /**
+     * Shows a popup asking verification for deleting a scene. If verification is given the scene will first be checked for
+     * links to other scenario's. If the scene had a link to another scenario, the scenariolist's links will be updated.
+     * After checking for scenario links the scene gets deleted on the server, afterwards the scenes are refreshed on
+     * the clientside.
+     * If the scene being deleted is the last scene of the scenario, the delete attempt will be refused.
+     */
     $scope.deleteScene = function () {
         var modalInstance = $modal.open({
             templateUrl: '../partials/confirmdeletepopup.html',
@@ -855,6 +1025,12 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
 
     };
 
+    /**
+     * Shows a popup asking verification for removing a scenario.
+     * If the user chooses to delete the scenario, the scenario is first deleted on the server, after that the scenario
+     * list will be refreshed. If the user changes his mind, the scenario will be added back to the array of scenarios
+     * and the scenariolist will be refreshed.
+     */
     function deleteDraggedScenario() {
         var modalInstance = $modal.open({
             templateUrl: '../partials/confirmdeletepopup.html',
@@ -884,6 +1060,11 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         });
     }
 
+    /**
+     * Shows a popup where the user can choose to make a new scenario.
+     * If the fills in a name and then chooses to save the new scenario, it will first be saved to the server. After
+     * saving the scenario on the server the scenariolist will be refreshed.
+     */
     $scope.showScenarioPopup = function () {
         var scenariopopup = $modal.open({
             templateUrl: '../partials/createscenariopopup.html',
@@ -915,6 +1096,11 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         });
     };
 
+    /**
+     * This function is a reusable piece of code that makes sure that your actions to the scoped are applied only
+     * when possible. This function serves to prevent a "$scope.digest is already in progress!" error.
+     * @param fn The function to execute when possible.
+     */
     $scope.safeApply = function (fn) {
         var phase = this.$root.$$phase;
         if (phase === '$apply' || phase === '$digest') {
@@ -927,15 +1113,25 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
     };
 
     /* Drag and drop zooi */
-
+    /**
+     * Constructor for a selection box, these boxes get added to the selected asset.
+     * @param x x position of the selection box.
+     * @param y y position of the selection box.
+     * @param state reference to the canvas state.
+     * @constructor
+     */
     function SelectionBox(x, y, state) {
         this.state = state;
         this.x = x || 0;
         this.y = y || 0;
     }
 
-
-    // Draws this shape to a given context
+    /**
+     * Draw's the asset's image to the canvas. This draw function uses the properties of the Asset to determine
+     * position, size, image etc.
+     * If the Asset is the currently selected asset, the selection boxes and an outline will be drawn.
+     * @param ctx Context to draw the asset on, this is the canvas.
+     */
     Asset.prototype.draw = function (ctx) {
         var i, cur, half,
             locx = this.x,
@@ -986,7 +1182,12 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         ctx.drawImage(this.imgNew, locx, locy, this.w, this.h);
     };
 
-    // Determine if a point is inside the shape's bounds
+    /**
+     * This function determines whether the mouse is hovering a drawn asset.
+     * @param mx mouse's x position
+     * @param my mouse's y position
+     * @returns {boolean} True if the mouse is above the asset, otherwise false
+     */
     Asset.prototype.contains = function (mx, my) {
         // All we have to do is make sure the Mouse X,Y fall in the area between
         // the shape's X and (X + Height) and its Y and (Y + Height)
@@ -994,6 +1195,12 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
             (this.y <= my) && (this.y + this.h >= my);
     };
 
+    /**
+     * This is the state that contains all the Assets on the canvas and is responsible for managing everything that happens on the canvas.
+     * The canvasstate contains all the assets and functions for adding, drawing, removing, dragging and resizing assets.
+     * @param canvas Canvas where the assets will be drawn on.
+     * @constructor
+     */
     function CanvasState(canvas) {
         // **** First some setup! ****
         this.canvas = canvas;
@@ -1041,6 +1248,10 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
             return false;
         }, false);
 
+        /**
+         * This function checks whether the user has currently selected an asset. If an asset has been selected it will
+         * position the asset's properties menu next to it.
+         */
         CanvasState.prototype.positionAssetPropertiesMenu = function () {
             var selection = myState.selection, assetpropertiesxoffset, assetpropertiesyoffset, assetpropertiesmenu, canvaswidth;
             if (selection !== null) {
@@ -1085,7 +1296,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
                 mySel,
                 selectasset;
 
-            if (myState.expectResize !== -1) {
+            if (myState.expectResize !== -1) { // Mouse is above one of the resize-boxes. If a user clicks this means that he is dragging a resize-box.
                 myState.resizeDragging = true;
                 return;
             }
@@ -1099,6 +1310,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
                 });
             };
 
+            //Check if we've selected an asset
             for (index = l - 1; index >= 0; index--) {
                 mySel = shapes[index];
                 myState.dragoffx = mx - mySel.x;
@@ -1191,6 +1403,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
 
             }
 
+            //If we're hovering a resize-box, set the cursor to match your action.
             if (myState.selection !== null && !myState.resizeDragging) {
                 for (moveindex = 0; moveindex < 8; moveindex += 1) {
                     cur = myState.selectionHandles[moveindex];
@@ -1232,7 +1445,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
                 }
                 myState.resizeDragging = false;
                 myState.expectResize = -1;
-                this.style.cursor = 'auto';
+                this.style.cursor = 'auto'; //Don't forget to reset the cursor to normal.
             }
         }, true);
 
@@ -1249,7 +1462,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
                     myState.selection.h = -myState.selection.h;
                     myState.selection.y -= myState.selection.h;
                 }
-                $scope.safeApply(function () {
+                $scope.safeApply(function () { //After dragging we want to show the asset properties again
                     myState.positionAssetPropertiesMenu();
                     $scope.showassetproperties = true;
                     updateServerAssets();
@@ -1257,7 +1470,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
             }
         }, true);
 
-        // double click for making new shapes
+
         canvas.addEventListener('dblclick', function (e) {
             console.log(e);
       //      var mouse = myState.getMouse(e);
@@ -1268,12 +1481,17 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         this.selectionColor = '#CC0000';
         this.selectionWidth = 2;
         this.selectionboxsize = 6;
-        this.interval = 30;
+        this.interval = 30; //Interval for redrawing while dragging. 1000/30 = 33fps.
         setInterval(function () {
             myState.draw();
         }, myState.interval);
     }
 
+    /**
+     * Loads a given scene by clearing the canvas, setting the right background and drawing all the scene's assets
+     * on the canvas.
+     * @param scene Scene-object to open, must contain at least the background and the asset-array.
+     */
     CanvasState.prototype.loadScene = function (scene) {
         var i, assets;
         if (!savingscene) {
@@ -1292,6 +1510,10 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         }
     };
 
+    /**
+     * Removes a given asset from the canvas and redraws the canvas.
+     * @param shape Asset to remove
+     */
     CanvasState.prototype.removeAsset = function (shape) {
         this.shapes.splice(this.shapes.indexOf(shape), 1);
         this.valid = false;
@@ -1302,15 +1524,26 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         this.draw();
     };
 
+    /**
+     * Adds an asset to the canvas, set's the canvas state to invalid so it gets redrawn with the new asset.
+     * @param shape
+     */
     CanvasState.prototype.addShape = function (shape) {
         this.shapes.push(shape);
         this.valid = false;
     };
 
+    /**
+     * Clears the entire canvas. Constantly used when redrawing.
+     */
     CanvasState.prototype.clear = function () {
         this.ctx.clearRect(0, 0, parseInt(window.getComputedStyle(this.canvas, null).width, 10), parseInt(window.getComputedStyle(this.canvas, null).height, 10));
     };
 
+    /**
+     * Checks whether the canvas' state has been set to invalid, meaning something new happened. If this is the case
+     * the entire canvas gets cleared and then redrawn.
+     */
     CanvasState.prototype.draw = function () {
         // if our state is invalid, redraw and validate!
         if (!this.valid) {
@@ -1322,9 +1555,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
                 outofcanvas;
             this.clear();
 
-            // ** Add stuff you want drawn in the background all the time here **
-
-            // draw all shapes
+            // draw all assets
             l = shapes.length;
             for (i = 0; i < l; i++) {
                 shape = shapes[i];
@@ -1345,6 +1576,11 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         }
     };
 
+    /**
+     * Calculates the correct x and y position of the mouse when a user clicks and returns this in an object.
+     * @param e Mousedown event
+     * @returns {{x: number, y: number}} x and y position of the mouse.
+     */
     CanvasState.prototype.getMouse = function (e) {
         var element = this.canvas, offsetX = 0, offsetY = 0, mx, my;
 
@@ -1368,6 +1604,9 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         return {x: mx, y: my};
     };
 
+    /**
+     * When the window resizes, the width and height properties of the canvas need to be set aswell.
+     */
     window.addEventListener('resize', function () {
         var canvas = document.getElementById('editor');
         if (canvas !== null && canvas !== undefined) {
@@ -1378,6 +1617,10 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         }
     });
 
+    /**
+     * Called at the start of the application. A new canvas state object is made and the height and width properties
+     * of the canvas are set. This canvasstate will be used for future reference.
+     */
     function initCanvas() {
         var canvas = document.getElementById(('editor'));
         canvas.setAttribute('width',  parseInt(window.getComputedStyle(canvas, null).width, 10).toString());
@@ -1385,7 +1628,11 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         canvasstate = new CanvasState(canvas);
     }
 
-
+    /**
+     * When a user drops an asset on the canvas, the canvas needs to know which asset has been dropped. This function
+     * adds the source of the image to the event for future reference.
+     * @param event HTML5 dragstart event, set from the directive
+     */
     $scope.dragAsset = function (event) {
         event.dataTransfer.setData("imagepath", event.target.getAttribute('src'));
     };
@@ -1395,18 +1642,10 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
     //Sortable
     $scope.deleteList = [];
 
-    $scope.sortableOptionsTrash = {
-        receive: function () {
-            $scope.deleteScene();
-        }
-    };
-
-    $scope.sortableOptionsTrashScenarios = {
-        receive: function () {
-            deleteDraggedScenario();
-        }
-    };
-
+    /**
+     * Options for a sortable scene, defines functions to be called when a user updates a scene's position, when a
+     * user removes the scene from the array (deletes it) and when a user stops dragging.
+     */
     $scope.sortableOptions = {
         removed: false,
         update: function () {
@@ -1446,6 +1685,10 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         axis: "x"
     };
 
+    /**
+     * Options for a sortable scenario, defines functions to be called when a user updates a scenario's position, when a
+     * user removes the scenario from the array (deletes it) and when a user stops dragging.
+     */
     $scope.sortableOptionsScenario = {
         removed: false,
         update: function () {
