@@ -62,7 +62,7 @@ ol, ul {
     padding: 15px 45px 15px 25px;
     color:#fff;
     text-transform:uppercase;
-    pointer: cursor;
+    cursor: pointer;
     transition: background-color 0.2s linear;
     float: left;
 }
@@ -85,7 +85,7 @@ ol, ul {
     border: 1px solid #474747;
     padding: 14px 45px 14px 25px;
     color: #474747;
-    pointer: cursor;
+    cursor: pointer;
     text-transform:uppercase;
     float: right;
     transition: all 0.2s linear;

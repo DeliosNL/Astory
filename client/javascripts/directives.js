@@ -13,7 +13,8 @@ aStory.directive('accountdropdown', function () {
     "use strict";
     return {
         restrict: 'E',
-        templateUrl: '../partials/directives/accountdropdown.html'
+        templateUrl: '../partials/directives/accountdropdown.html',
+        replace: true
     };
 });
 
@@ -21,7 +22,8 @@ aStory.directive('scenariosdropdown', function() {
     "use strict";
     return {
         restrict: 'E',
-        templateUrl: '../partials/directives/scenariosdropdown.html'
+        templateUrl: '../partials/directives/scenariosdropdown.html',
+        replace: true
     };
 });
 

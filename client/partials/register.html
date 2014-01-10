@@ -8,9 +8,9 @@
                 <label for="usernameinput" class="inline" id="usernameLabel">Username</label><p class="validationmessage" data-ng-show="usedusername">Username is already in use</p>
                 <input type="text" class="form-control" data-ng-model="username" id="usernameinput" required>
             </div>
-            <div class="form-group"">
+            <div class="form-group">
                 <label for="passwordinput" class="passwordlabel">Password</label>
-                <input type="password" pattern=".{6,}" ng-minlength="6" class="form-control" data-ng-model="password" id="passwordinput" required>
+                <input type="password" pattern=".{6,}" data-ng-minlength="6" class="form-control" data-ng-model="password" id="passwordinput" required>
             </div>
             <div class="form-group">
                 <label for="emailinput" class="inline" id="emaillabel">E-mail address</label><p class="validationmessage" data-ng-show="usedemail">E-mail is already in use</p>
@@ -19,7 +19,7 @@
             <div class="form-group">
                 <label>Date of birth</label>
                 <div class="selectwrapperday">
-                    <select class="day" id="birthdatedayinput" type="number" data-ng-model = "birthdateday" name="birthdateday" data-ng-change="checkBirthdateValidity()" required>
+                    <select class="day" id="birthdatedayinput" data-type="number" data-ng-model = "birthdateday" name="birthdateday" data-ng-change="checkBirthdateValidity()" required>
                         <option value="" selected disabled>Day</option>
                         <option data-ng-repeat="day in days" value="{{day}}">{{day}}</option>
                     </select>
