@@ -37,7 +37,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
 
     /**
      * Prevents the default behavior of the dragover event of the canvas. Without this prevention it would be impossible to drop a asset on the canvas.
-     * @param HTML 5 dragover event
+     * @param event HTML 5 dragover event
      */
     function allowDrop(event) {
         event.preventDefault();
@@ -160,7 +160,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
      * If the dropped asset is a background, the background property of the canvas is set and the new background path is saved on the server.
      * @param event HTML 5 drop event
      */
-    function dropAsset(event) {
+    $scope.dropAsset = function (event) {
         event.preventDefault();
         var assetmenu = document.getElementById('assetmenu'),
             editorbar = document.getElementById('editorbar'),
@@ -170,9 +170,13 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
             imagepath;
 
         if (!isBackgroundAsset(event.dataTransfer.getData("imagepath"))) {
-
-            assetx = event.pageX - parseInt(window.getComputedStyle(assetmenu, null).width, 10) - parseInt(window.getComputedStyle(assetmenu, null).paddingLeft, 10) - parseInt(window.getComputedStyle(assetmenu, null).paddingRight, 10);
-            assety = event.pageY - parseInt(window.getComputedStyle(editorbar, null).height, 10) - parseInt(window.getComputedStyle(navbar, null).height, 10);
+            if (assetmenu !== null && editorbar !== null) {
+                assetx = event.pageX - parseInt(window.getComputedStyle(assetmenu, null).width, 10) - parseInt(window.getComputedStyle(assetmenu, null).paddingLeft, 10) - parseInt(window.getComputedStyle(assetmenu, null).paddingRight, 10);
+                assety = event.pageY - parseInt(window.getComputedStyle(editorbar, null).height, 10) - parseInt(window.getComputedStyle(navbar, null).height, 10);
+            } else {
+                assetx = event.pageX;
+                assety = event.pageY;
+            }
             canvasstate.addShape(new Asset(assetx, assety, event.dataTransfer.getData("imagepath"), canvasstate));
             updateServerAssets();
         } else {
@@ -187,14 +191,19 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
             });
         }
 
+    };
+
+    if (editor !== null && editor !== undefined) {
+        editor.addEventListener('dragover', allowDrop);
+        editor.addEventListener('drop', $scope.dropAsset);
     }
 
 
-    editor.addEventListener('dragover', allowDrop);
-    editor.addEventListener('drop', dropAsset);
-
     //Check if a current story if present, if not -> Redirect the user
-    $scope.story = currentStoryService.currentstory;
+    if (currentStoryService.currentstory !== null && currentStoryService.currentstory !== undefined) {
+        $scope.story = currentStoryService.currentstory;
+    }
+
     if ($scope.story === null || $scope.story === undefined) {
         window.alert("Geen story geselecteerd");
         $location.path('/stories');
@@ -462,7 +471,9 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         if (!scenedragged) {
             console.log("Loading scene: " + index);
             canvasstate.loadScene($scope.scenes[index]);
-            editor.style.backgroundImage = "url('../" + $scope.scenes[index].background + "')";
+            if (editor !== null && editor !== undefined) {
+                editor.style.backgroundImage = "url('../" + $scope.scenes[index].background + "')";
+            }
             $scope.currentSceneindex = index + 1;
         } else {
             scenedragged = false;
@@ -529,15 +540,15 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
      * Gets all the scenario's of the current story from the server and refreshes the scenario-list.
      * @param openstory Boolean indicating whether the story has just been opened. If this is the case, the first scenario and
      * first scene should be opened. If false, the list has simply been refreshed, the user wants to stay in the same scenario and scene.
+     * @param callback optional, callback function to call after refreshing the scenarios
      */
-    refreshScenarios = function (openstory) {
+    refreshScenarios = function (openstory, callback) {
         var i, b;
         scenariosService.scenarios.get({storyid: $scope.story._id}, function (data) {
             if (data.doc.length === 0) {
                 makeFirstScenario();
                 return 0;
             }
-
             $scope.scenarios = [];
             for (i = 0; i < $scope.story.scenarioorder.length; i++) {
                 for (b = 0; b < data.doc.length; b++) {
@@ -564,6 +575,9 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
                         updateAllScenarioLinks();
                     }
                 }
+            }
+            if (callback !== undefined && callback !== null) {
+                callback();
             }
         }, function (err) {
             $scope.addAlert("error", "Error while retrieving scenarios, please refresh");
@@ -914,8 +928,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
      */
     $scope.addScene = function () {
         scenesService.scenes.save({scenarioid: $scope.currentscenario._id}, {}, function () {
-            refreshScenarios(false);
-            loadScenes();
+            refreshScenarios(false, loadScenes);
             $scope.addAlert("success", "Scene added");
         }, function (err) {
             $scope.addAlert("error", "Error while adding scene");
@@ -1220,8 +1233,12 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         this.htmlLeft = html.offsetLeft;
 
         assetmenu = document.getElementById('assetmenu');
-        this.assetpropertiesxoffset = parseInt(window.getComputedStyle(assetmenu).width, 0) + parseInt(window.getComputedStyle(assetmenu).paddingLeft, 0) + parseInt(window.getComputedStyle(assetmenu).paddingRight, 0);
-        this.assetpropertiesyoffset = parseInt(window.getComputedStyle(document.getElementById('navbar')).height, 0) + parseInt(window.getComputedStyle(document.getElementById('editorbar')).height, 0);
+        if (assetmenu !== null && assetmenu !== undefined) {
+            this.assetpropertiesxoffset = parseInt(window.getComputedStyle(assetmenu).width, 0) + parseInt(window.getComputedStyle(assetmenu).paddingLeft, 0) + parseInt(window.getComputedStyle(assetmenu).paddingRight, 0);
+        }
+        if (document.getElementById('navbar') !== null) {
+            this.assetpropertiesyoffset = parseInt(window.getComputedStyle(document.getElementById('navbar')).height, 0) + parseInt(window.getComputedStyle(document.getElementById('editorbar')).height, 0);
+        }
         this.assetpropertiesmenuwidth = 260;
         this.assetpropertiesmenuheight = 345;
         this.assetpropertiesmenu = document.getElementById('assetmenuwrapper');
@@ -1622,10 +1639,17 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
      * of the canvas are set. This canvasstate will be used for future reference.
      */
     function initCanvas() {
-        var canvas = document.getElementById(('editor'));
-        canvas.setAttribute('width',  parseInt(window.getComputedStyle(canvas, null).width, 10).toString());
-        canvas.setAttribute('height', parseInt(window.getComputedStyle(canvas, null).height, 10).toString());
-        canvasstate = new CanvasState(canvas);
+        var canvas = document.getElementById(('editor')), testcanvas;
+        if (canvas !== null) {
+            canvas.setAttribute('width',  parseInt(window.getComputedStyle(canvas, null).width, 10).toString());
+            canvas.setAttribute('height', parseInt(window.getComputedStyle(canvas, null).height, 10).toString());
+        }
+        if (canvas === null) {
+            testcanvas = document.createElement('canvas');
+            canvasstate = new CanvasState(testcanvas);
+        } else {
+            canvasstate = new CanvasState(canvas);
+        }
     }
 
     /**
@@ -1738,4 +1762,9 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         connectWith: ".trashcan",
         axis: "y"
     };
+
+    $scope.getCanvasstate = function () {
+        return canvasstate;
+    };
+
 }]);
