@@ -1,6 +1,7 @@
+/*globals aStory */
+
 aStory.factory('accountService', ['$resource', '$http', function ($resource) {
     "use strict";
-
     var actions = {
             'get': {method: 'GET'},
             'save': {method: 'POST'},
@@ -42,7 +43,7 @@ aStory.factory('logoutService', ['$resource', '$http', function ($resource) {
     return db;
 }]);
 
-aStory.factory('storiesService', ['$resource', '$http', function($resource) {
+aStory.factory('storiesService', ['$resource', '$http', function ($resource) {
     "use strict";
     var actions = {
             'get': {method: 'GET'},
@@ -55,7 +56,7 @@ aStory.factory('storiesService', ['$resource', '$http', function($resource) {
     return db;
 }]);
 
-aStory.factory('scenariosService', ['$resource', '$http', function($resource) {
+aStory.factory('scenariosService', ['$resource', '$http', function ($resource) {
     "use strict";
     var actions = {
             'get': {method: 'GET'},
@@ -66,7 +67,7 @@ aStory.factory('scenariosService', ['$resource', '$http', function($resource) {
     return db;
 }]);
 
-aStory.factory('scenarioService', ['$resource', '$http', function($resource) {
+aStory.factory('scenarioService', ['$resource', '$http', function ($resource) {
     "use strict";
     var actions = {
             'update': {method: 'PUT'},

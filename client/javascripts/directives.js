@@ -1,8 +1,10 @@
+/*globals aStory */
+
 aStory.directive('assetimage', function () {
     "use strict";
     return {
-        link: function (scope, element, attrs) {
-            element.bind("load", function (e) {
+        link: function (scope, element) {
+            element.bind("load", function () {
                 element[0].addEventListener('dragstart', scope.dragAsset);
             });
         }
@@ -18,7 +20,7 @@ aStory.directive('accountdropdown', function () {
     };
 });
 
-aStory.directive('scenariosdropdown', function() {
+aStory.directive('scenariosdropdown', function () {
     "use strict";
     return {
         restrict: 'E',
@@ -27,19 +29,20 @@ aStory.directive('scenariosdropdown', function() {
     };
 });
 
-aStory.directive('ngBlur', function() {
+aStory.directive('ngBlur', function () {
     "use strict";
-    return function(scope, elem, attrs ){
+    return function (scope, elem, attrs) {
         elem.bind('blur', function () {
             scope.$apply(attrs.ngBlur);
         });
     };
 });
 
-aStory.directive('onKeyupFn', function() {
-    return function(scope, elm, attrs) {
+aStory.directive('onKeyupFn', function () {
+    "use strict";
+    return function (scope, elm, attrs) {
         var keyupFn = scope.$eval(attrs.onKeyupFn);
-        elm.bind('keyup', function(evt) {
+        elm.bind('keyup', function (evt) {
             scope.$apply(function () {
                 keyupFn.call(scope, evt.which);
             });
