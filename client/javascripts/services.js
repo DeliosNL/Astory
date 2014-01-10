@@ -1,5 +1,8 @@
 /*globals aStory */
 
+/**
+ * Factory for account operations. Mainly used to create accounts or update account information.
+ */
 aStory.factory('accountService', ['$resource', '$http', function ($resource) {
     "use strict";
     var actions = {
@@ -14,6 +17,9 @@ aStory.factory('accountService', ['$resource', '$http', function ($resource) {
     return db;
 }]);
 
+/**
+ * This service stores the currently selected story so it can be shared amongst different controllers.
+ */
 aStory.service('currentStoryService', [function () {
     "use strict";
     var currentstorylocal = null;
@@ -22,6 +28,9 @@ aStory.service('currentStoryService', [function () {
     };
 }]);
 
+/**
+ * This service saves the user's account details for usage in different controllers
+ */
 aStory.service('loggedinService', [function () {
     "use strict";
     return {
@@ -33,6 +42,9 @@ aStory.service('loggedinService', [function () {
     };
 }]);
 
+/**
+ * This service allows for a logout action, this will break the login session.
+ */
 aStory.factory('logoutService', ['$resource', '$http', function ($resource) {
     "use strict";
     var actions = {
@@ -43,6 +55,9 @@ aStory.factory('logoutService', ['$resource', '$http', function ($resource) {
     return db;
 }]);
 
+/**
+ * This service allows operations for creating new stories, updating stories, deleting stories and retrieving stories.
+ */
 aStory.factory('storiesService', ['$resource', '$http', function ($resource) {
     "use strict";
     var actions = {
@@ -56,6 +71,9 @@ aStory.factory('storiesService', ['$resource', '$http', function ($resource) {
     return db;
 }]);
 
+/**
+ * This service allows operations for creating scenario's and getting all of a story's scenaros.
+ */
 aStory.factory('scenariosService', ['$resource', '$http', function ($resource) {
     "use strict";
     var actions = {
@@ -67,6 +85,9 @@ aStory.factory('scenariosService', ['$resource', '$http', function ($resource) {
     return db;
 }]);
 
+/**
+ * This service allows operations for updating a single scenario or deleting a single scenarios.
+ */
 aStory.factory('scenarioService', ['$resource', '$http', function ($resource) {
     "use strict";
     var actions = {
@@ -78,6 +99,9 @@ aStory.factory('scenarioService', ['$resource', '$http', function ($resource) {
     return db;
 }]);
 
+/**
+ * This service allows operations for retrieving all scene's from a scenario and for adding a scene to a scenario.
+ */
 aStory.factory('scenesService', ['$resource', '$http', function ($resource) {
     "use strict";
     var actions = {
@@ -89,6 +113,9 @@ aStory.factory('scenesService', ['$resource', '$http', function ($resource) {
     return db;
 }]);
 
+/**
+ * This server allows operations for deleting a single scene or updating a single scene.
+ */
 aStory.factory('sceneService', ['$resource', '$http', function ($resource) {
     "use strict";
     var actions = {
