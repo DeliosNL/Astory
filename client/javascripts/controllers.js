@@ -17,7 +17,9 @@ aStory.controller('registerController', ['$scope', 'accountService', '$location'
     $scope.usedemail = false;
     $scope.usedusername = false;
 
-
+    /**
+     * Checks if the filled in birthday is valid.
+     */
     $scope.checkBirthdateValidity = function () {
         if (document.getElementById('birthdatedayinput').value !== '' &&
                 document.getElementById('birthdatemonthinput').value !== '' &&
@@ -41,6 +43,9 @@ aStory.controller('registerController', ['$scope', 'accountService', '$location'
         $(this).toggleClass("empty", $.inArray($(this).val(), ['', null]) >= 0);
     }).trigger('change');
 
+    /**
+     * Sets the new account's properties and handles validation errors.
+     */
     $scope.register = function () {
         $scope.usedusername = false;
         $scope.usedemail = false;
@@ -71,9 +76,15 @@ aStory.controller('registerController', ['$scope', 'accountService', '$location'
     };
 }]);
 
-aStory.controller('loginController', ['$scope', 'loggedinService', '$location', '$http', function ($scope, loggedinService, $location, $http) {
 
+aStory.controller('loginController', ['$scope', 'loggedinService', '$location', '$http', function ($scope, loggedinService, $location, $http) {
     $scope.failedloginattempt = false;
+
+    /**
+     * Checks the entered values and validates them with the server, handling the result.
+     * @param usr   Username
+     * @param pwd   Password
+     */
     $scope.login = function (usr, pwd) {
         $http.post('/login', {"username": usr, "password": pwd})
             .success(function () {
@@ -94,6 +105,7 @@ aStory.controller('loginController', ['$scope', 'loggedinService', '$location', 
 
 aStory.controller('headerController', ['$scope', '$rootScope', '$location', 'loggedinService', 'logoutService', function ($scope, $rootScope, $location, loggedinService, logoutService) {
     var i;
+
     $rootScope.$on("$routeChangeStart", function () {
         if ($location.path() === '/login' || $location.path() === '/register' || $location.path() === '/preview') {
             $scope.loginpage = true;
@@ -105,6 +117,9 @@ aStory.controller('headerController', ['$scope', '$rootScope', '$location', 'log
     $scope.accountinfo = loggedinService.accountinfo;
     $scope.loggedin = loggedinService.loggedin;
 
+    /**
+     * Updates the scope when the loggedin variable changes.
+     */
     $scope.$watch(
         function () {
             return loggedinService.loggedin;
@@ -115,15 +130,9 @@ aStory.controller('headerController', ['$scope', '$rootScope', '$location', 'log
         }
     );
 
-    $scope.$watch(
-        function () {
-            return loggedinService.accountinfo;
-        },
-        function (newVal) {
-            $scope.accountinfo = newVal;
-        }
-    );
-
+    /**
+     * Updates the scope when the accountinfo changes.
+     */
     $scope.$watch(
         function () {
             return loggedinService.accountinfo;
@@ -134,6 +143,9 @@ aStory.controller('headerController', ['$scope', '$rootScope', '$location', 'log
         true
     );
 
+    /**
+     * Logs the user out and redirects them to the login page.
+     */
     $scope.logout = function () {
         logoutService.logout.get(function () {
             loggedinService.loggedin = false;
@@ -146,6 +158,11 @@ aStory.controller('headerController', ['$scope', '$rootScope', '$location', 'log
         });
     };
 
+    /**
+     * Used together with ng-show in the HTML to swap visibility.
+     * @param visible   Whether the element is already visible or not.
+     * @returns {boolean}   The new visibility.
+     */
     $scope.swapvisibility = function (visible) {
         if (visible) {
             return false;
@@ -154,6 +171,10 @@ aStory.controller('headerController', ['$scope', '$rootScope', '$location', 'log
     };
 
 
+    /**
+     * Swaps the background colors for the account dropdown menu.
+     * @param currentlyvisible  Whether the menu is visible or not.
+     */
     $scope.setAccountDropdownColor = function (currentlyvisible) {
         if (currentlyvisible) {
             document.getElementById('navaccount').style.backgroundColor = "#FFFFFF";
@@ -169,12 +190,15 @@ aStory.controller('headerController', ['$scope', '$rootScope', '$location', 'log
     };
 }]);
 
-
 aStory.controller('createstorypopupController', ['$scope', '$modalInstance', 'storiesService', function ($scope, $modalInstance, storiesService) {
     $scope.close = function () {
         $modalInstance.dismiss();
     };
 
+    /**
+     * Adds a story with the given name to the database.
+     * @param storyname The story's name.
+     */
     $scope.addStory = function (storyname) {
         storiesService.stories.save({name: storyname}, function (data) {
             if (data.err !== null) {
@@ -194,6 +218,10 @@ aStory.controller('storypopupController', ['$scope', '$modal', '$modalInstance',
         $modalInstance.close();
     };
 
+    /**
+     * Saves the story with a new name.
+     * @param storyname The new name for the story.
+     */
     $scope.saveStory = function (storyname) {
         storiesService.stories.update({_id: story._id}, {name: storyname}, function () {
             currentStoryService.currentstory.name = storyname;
@@ -203,6 +231,9 @@ aStory.controller('storypopupController', ['$scope', '$modal', '$modalInstance',
         });
     };
 
+    /**
+     * Shows a confirm popup and then deletes the story from the database if the user agrees.
+     */
     $scope.deleteStory = function () {
         var modalInstance = $modal.open({
             templateUrl: '../partials/confirmdeletepopup.html',
@@ -253,6 +284,9 @@ aStory.controller('overviewController', ['$scope', '$modal', 'storiesService', '
         });
     }
 
+    /**
+     * Shows the popup to create a new story.
+     */
     $scope.showCreateStoryPopup = function () {
         var modalInstance = $modal.open({
             templateUrl: '../partials/createstorypopup.html',
@@ -268,6 +302,10 @@ aStory.controller('overviewController', ['$scope', '$modal', 'storiesService', '
         });
     };
 
+    /**
+     * Shows the popup to edit a story.
+     * @param index The index of the story you want to edit.
+     */
     $scope.showStoryPopup = function (index) {
         currentStoryService.currentstory = $scope.stories[index];
         var modalInstance = $modal.open({
@@ -284,6 +322,10 @@ aStory.controller('overviewController', ['$scope', '$modal', 'storiesService', '
         });
     };
 
+    /**
+     * Opens a story in the editor.
+     * @param index The index of the story you want to open.
+     */
     $scope.openStory = function (index) {
         currentStoryService.currentstory = $scope.stories[index];
         $location.path('/editor');
@@ -295,19 +337,16 @@ aStory.controller('scenariopopupController', ['$scope', '$modalInstance', 'story
         $modalInstance.close();
     };
 
+    /**
+     * Adds a new scenario to the current story in the database.
+     * @param scenarioname  The scenario's name.
+     */
     $scope.addScenario = function (scenarioname) {
         scenariosService.scenarios.save({storyid: story._id}, {name: scenarioname}, function () {
             $modalInstance.close(true);
         }, function () {
             window.alert("Error while adding scenario, please try again.");
         });
-       /* scenarios.push({
-            title: name,
-            linkfrom: [],
-            linkto: [],
-            scenes: []
-        });
-        $modalInstance.close();*/
     };
 
 }]);

@@ -2,7 +2,6 @@
 
 aStory.factory('accountService', ['$resource', '$http', function ($resource) {
     "use strict";
-
     var actions = {
             'get': {method: 'GET'},
             'save': {method: 'POST'},
