@@ -182,7 +182,9 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         } else {
             imagepath = event.dataTransfer.getData("imagepath");
             sceneService.scene.update({sceneid: $scope.currentscene._id}, {background: imagepath}, function (data) {
-                editor.style.backgroundImage = "url('../" + data.doc.background + "')";
+                if(editor !== null) {
+                    editor.style.backgroundImage = "url('../" + data.doc.background + "')";
+                }
                 $scope.currentscene.background = imagepath;
                 $scope.redrawCanvas();
             }, function (err) {

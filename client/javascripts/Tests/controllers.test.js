@@ -172,6 +172,73 @@ describe('Astory controllers', function () {
 
         });
 
+
+        it("Updates the canvas background both locally and on the server", function () {
+            $httpBackend.flush();
+            var fakeevent = {
+                preventDefault: function () {
+                    return 0;
+                },
+                dataTransfer : {
+                    getData: function () {
+                        return "images/Assets/Achtergrond1A.png";
+                    }
+                },
+                pageX: 500,
+                pageY: 200
+            };
+
+            scope.currentscene = {
+                _id : "52cef1734d4148fa45000005"
+            };
+
+            $httpBackend.expectPUT('/scene/52cef1734d4148fa45000005').respond(
+                {
+                    "meta": {
+                        "action": "update",
+                        "timestamp": "2014-01-10T20:08:24.446Z",
+                        "filename": "/home/niels/Project Cria/Astory/server/app/controllers/astory.js"
+                    },
+                    "doc": {
+                        "__v": 0,
+                        "_id": "52cef1734d4148fa45000005",
+                        "creator": "52c5955b5acd84772b000001",
+                        "scenario": "52cef1624d4148fa45000003",
+                        "image": "sceneexample.png",
+                        "date": "2014-01-09T18:54:09.505Z",
+                        "assets": [
+                            {
+                                "imagepath": "http://localhost:8500/images/Assets/Rendier.png",
+                                "assetoption": {
+                                    "scenarioid": "52cef2798909bd6146000001",
+                                    "type": "Scenario",
+                                    "name": "asf"
+                                },
+                                "height": 500,
+                                "width": 486,
+                                "y": 109,
+                                "x": 345
+                            },
+                            {
+                                "imagepath": "http://localhost:8500/images/Assets/Appel.png",
+                                "assetoption": {
+                                },
+                                "height": 500,
+                                "width": 486,
+                                "y": 109,
+                                "x": 345
+                            }
+                        ],
+                        "background": "images/Assets/Achtergrond1A.png"
+                    },
+                    "err": null
+                }
+            );
+            scope.dropAsset(fakeevent);
+            $httpBackend.flush();
+            expect(scope.currentscene.background).toBe("images/Assets/Achtergrond1A.png");
+        });
+
         it("Has no linkto and linkfrom blocks on load", function () {
             $httpBackend.flush();
             expect(scope.currentscenario.linkto.length).toBe(0);
@@ -327,6 +394,39 @@ describe('Astory controllers', function () {
 
         });
 
+        it("Adds alerts and removes them automatically", function () {
+            scope.addAlert("success", "Test");
+            expect(scope.alerts.length).toBe(1);
+            setTimeout(function () {
+                expect(scope.alerts.length).toBe(0);
+            }, 3000);
+        });
+
+        it("Can close alerts", function () {
+            scope.addAlert("success", "Test");
+            expect(scope.alerts.length).toBe(1);
+            scope.closeAlert();
+            expect(scope.alerts.length).toBe(0);
+        });
+
+        it("Saves an asset's next-scene action", function () {
+            scope.selectedAsset = {
+                "imagepath": "http://localhost:8500/images/Assets/Rendier.png",
+                "assetoption": {},
+                "height": 500,
+                "width": 486,
+                "y": 109,
+                "x": 345
+            };
+
+
+
+            //scope.addNextSceneAction();
+        });
+
+        it("Saves an asset's previous-scene action", function () {
+
+        });
 
     });
 
@@ -424,11 +524,6 @@ describe('Astory controllers', function () {
             $httpBackend.flush();
             expect(loggedinservice.loggedin).toBeFalsy();
         });
-
-        it("test", function () {
-
-        });
-
 
     });
 

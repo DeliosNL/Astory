@@ -11,7 +11,7 @@ module.exports = function(config){
             'lib/angular-resource.min.js',
             'lib/ui-bootstrap-custom-0.7.0.min.js',
             'lib/ui-bootstrap-custom-tpls-0.7.0.min.js',
-            'lib/ui-bootstrap-tpls-0.9.0',
+            'lib/ui-bootstrap-tpls-0.9.0.js',
             'lib/angular-flash.js',
             'lib/angular-ui.min.js',
             'lib/angular-mocks.js',
