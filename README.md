@@ -47,7 +47,7 @@ mongoimport --db astory --collection scenes --file scenes.json
 
 Testing
 --------
-For instructions on client-side and server-side testing, see the seperate README files in the "Server" directory and the "client/Tests" directory.
+For instructions on client-side and server-side testing, see the seperate README files in the "Server" directory and the "client/javascripts/Tests" directory.
 
 Supervisor
 ----------
