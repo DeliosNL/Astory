@@ -749,11 +749,6 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
                     "image": "Spaceshuttle.png"
                 },
                 {
-                    "name": "Tijdelijk",
-                    "description": "Testobject",
-                    "image": "tijdelijk.PNG"
-                },
-                {
                     "name": "Appel",
                     "description": "Appel",
                     "image": "Appel.png"
