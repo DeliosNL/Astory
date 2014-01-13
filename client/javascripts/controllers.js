@@ -35,7 +35,7 @@ aStory.controller('registerController', ['$scope', 'accountService', '$location'
     $scope.months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
     $scope.years = [];
-    for (j = new Date().getFullYear(); i >= 1900; i--) {
+    for (j = new Date().getFullYear(); j >= 1900; j--) {
         $scope.years.push(j);
     }
 
