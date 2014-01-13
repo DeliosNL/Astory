@@ -166,7 +166,7 @@ describe('AStory', function(){
         });
     });
 
-    it("Doesn't let you retrieve a single scene if you're not logged in", function(done) {
+    it("Lets you retrieve a single scene even if you're not logged in", function(done) {
         request("http://localhost:8500/scene/52d3a5ff54cb430610000006", function(error, response, body){
             expect(body).not.toBe("Unauthorized");
             var bodyjson = JSON.parse(body);
@@ -187,7 +187,6 @@ describe('AStory', function(){
             done();
         });
     });
-
 
 });
 
