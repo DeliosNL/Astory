@@ -12,11 +12,9 @@ Clone the repository with
 git clone https://github.com/DeliosNL/Astory.git
 ```
 
-
 Configuration
 ----------
 Open```server/config/config.js```,  change the database and port
-
 
 Example
 ```javascript
@@ -31,9 +29,22 @@ module.exports = {
     }
 };
 ```
-Import data
------------
-This is optional, this step is only necessary if you want to run the provided unit tests and POSTMAN requests. See the seperate README's in the server and client/Tests map.
+Import Data
+===========
+This step is necessary for testing, if testing is not necessary this step can be skipped.
+1. Replace ```astory``` with the name of your database.
+2. Import the data (per collection or in one step)
+3. Done
+
+
+Import seed per collection
+```
+mongoimport --db astory --collection users --file users.json
+mongoimport --db astory --collection stories --file stories.json
+mongoimport --db astory --collection scenarios --file scenarios.json
+mongoimport --db astory --collection scenes --file scenes.json
+```
+
 
 supervisor
 ----------
@@ -47,4 +58,6 @@ Use it with
 ```sh
 supervisor --no-restart-on error server/app.js
 ```
+
+
 
