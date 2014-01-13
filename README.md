@@ -45,8 +45,11 @@ mongoimport --db astory --collection scenarios --file scenarios.json
 mongoimport --db astory --collection scenes --file scenes.json
 ```
 
+Testing
+--------
+For instructions on client-side and server-side testing, see the seperate README files in the "Server" directory and the "client/Tests" directory.
 
-supervisor
+Supervisor
 ----------
 Make sure you have supervisor installed - with the global option
 
