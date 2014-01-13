@@ -2,7 +2,7 @@ describe('Astory controllers', function () {
     beforeEach(module('aStory'));
 
     describe('editorController', function () {
-        var scope, $httpBackend, ctrl, scenarioctrl;
+        var scope, $httpBackend, ctrl;
 
         beforeEach(inject(function (_$httpBackend_, $rootScope, $routeParams, $controller) {
             $httpBackend = _$httpBackend_;
@@ -79,7 +79,6 @@ describe('Astory controllers', function () {
             $httpBackend.expectGET('/scenes/52cef1624d4148fa45000003').respond(scenesresponse);
             $httpBackend.expectGET('/scenes/52cef1624d4148fa45000003').respond(scenesresponse);
             ctrl = $controller('editorController', {$scope: scope});
-            scenarioctrl = $controller('scenariopopupController');
         }));
 
         it("has a current story", function () {
@@ -338,14 +337,16 @@ describe('Astory controllers', function () {
 
     });
 
-    describe('loginController', function () {
+    describe('loginController', function ($controller) {
+        /*var scope, ctrl, $httpBackend;
         it("Doesn't show the attempt as failed right away", function () {
-            var scope;
-            beforeEach(inject(function ($rootScope) {
+            beforeEach(inject(function (_$httpBackend_, $rootScope, $routeParams, $controller) {
+                $httpBackend = _$httpBackend_;
                 scope = $rootScope.$new();
+                ctrl = $controller('loginController', {$scope: scope});
             }));
             expect(scope.failedloginattempt).toBe(false);
-        });
+        });*/
     });
 
     describe('headerController', function () {
