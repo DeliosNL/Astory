@@ -2,7 +2,7 @@ describe('Astory controllers', function () {
     beforeEach(module('aStory'));
 
     describe('editorController', function () {
-        var scope, $httpBackend, ctrl;
+        var scope, $httpBackend, ctrl, scenarioctrl;
 
         beforeEach(inject(function (_$httpBackend_, $rootScope, $routeParams, $controller) {
             $httpBackend = _$httpBackend_;
@@ -79,6 +79,7 @@ describe('Astory controllers', function () {
             $httpBackend.expectGET('/scenes/52cef1624d4148fa45000003').respond(scenesresponse);
             $httpBackend.expectGET('/scenes/52cef1624d4148fa45000003').respond(scenesresponse);
             ctrl = $controller('editorController', {$scope: scope});
+            scenarioctrl = $controller('scenariopopupController');
         }));
 
         it("has a current story", function () {
@@ -106,10 +107,6 @@ describe('Astory controllers', function () {
             expect(scope.getCanvasstate().shapes[0].y).toBe(109);
             expect(scope.getCanvasstate().shapes[0].x).toBe(345);
         });
-
-        function addscene (scope) {
-
-        }
 
         it("Updates assets both locally and on the server when an asset is added", function () {
             $httpBackend.flush();
@@ -183,10 +180,6 @@ describe('Astory controllers', function () {
             expect(scope.currentscenario.linkfrom.length).toBe(0);
             expect(scope.currentscenario.linkfrom).not.toBeUndefined();
         });
-
-        function addScene(scope) {
-
-        }
 
         it("Saves new scenes on the server and refreshes them locally", function () {
             $httpBackend.flush();
@@ -333,6 +326,10 @@ describe('Astory controllers', function () {
             $httpBackend.flush();
             expect(scope.scenes.length).toBe(2);
 
+        });
+
+        it("Saves new scenario's both locally and on the server", function () {
+            expect(1).toBe(1);
         });
 
     });

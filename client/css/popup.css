@@ -137,6 +137,11 @@ button.bottomrightbutton {
     right: -5px;
 }
 
+button.bottomrightbutton:disabled {
+    background-color: #f37a73;
+    cursor: default;
+}
+
 button.bottomleftbutton {
     position: absolute;
     bottom: 13px;

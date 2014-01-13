@@ -5,8 +5,10 @@
     </div>
     <div id="popupwrapper">
         <h1>Name your scenario</h1>
-        <input class="popupinput" type="text" placeholder="Enter a scenario name" data-ng-model="newscenarioname">
+        <form role="form" name="scenarioform">
+            <input class="popupinput" type="text" placeholder="Enter a scenario name" data-ng-model="newscenarioname" required>
+        </form>
         <p class="bottomleftredtext" data-ng-click="close()">Cancel</p>
-        <button class="bottomrightbutton" data-ng-click="addScenario(newscenarioname);">Create</button>
+        <button class="bottomrightbutton" data-ng-disabled="scenarioform.$invalid" data-ng-click="addScenario(newscenarioname);">Create</button>
     </div>
 </div>
