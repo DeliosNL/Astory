@@ -354,3 +354,6 @@ aStory.controller('scenariopopupController', ['$scope', '$modalInstance', 'story
 aStory.controller('accountController', ['$scope', 'loggedinService', function ($scope, loggedinService) {
     $scope.accountinfo = loggedinService.accountinfo;
 }]);
+
+aStory.controller('previewController', ['$scope', function ($scope) {
+}]);

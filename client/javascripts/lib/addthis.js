@@ -1,5 +1,13 @@
 /* (c) 2008-2013 AddThis, Inc */
 var addthis_conf = {ver: 300};
+var addthis_config = {
+    data_track_clickback: false
+};
+var addthis_share =
+{
+    url: 'www.astory.com/johndoe/thejourney/preview',
+    title: "Check out the amazing story I've made! "
+};
 if (!((window._atc || {}).ver)) {
     var _atd = "www.addthis.com/", _atr = window.addthis_cdn || "//s7.addthis.com/", _euc = encodeURIComponent, _duc = decodeURIComponent, _atc = {dbg: 0, rrev: 125525, dr: 0, ver: 250, loc: 0, enote: "", cwait: 500, bamp: 0.25, camp: 1, csmp: 0.0001, damp: 1, famp: 1, pamp: 0.1, tamp: 1, plmp: 1, vamp: 1, cscs: 1, ohmp: 0, ltj: 1, xamp: 1, abf: !!window.addthis_do_ab, qs: 0, cdn: 0, rsrcs: {bookmark: _atr + "static/r07/bookmark041.html", atimg: _atr + "static/r07/atimg041.html", countercss: _atr + "static/r07/counter013.css", counterIE67css: _atr + "static/r07/counterIE67004.css", counter: _atr + "static/r07/counter017.js", core: _atr + "static/r07/core114.js", wombat: _atr + "static/r07/bar026.js", wombatcss: _atr + "static/r07/bar012.css", qbarcss: _atr + "bannerQuirks.css", fltcss: _atr + "static/r07/floating010.css", barcss: _atr + "static/r07/banner006.css", barjs: _atr + "static/r07/banner004.js", contentcss: _atr + "static/r07/content008.css", contentjs: _atr + "static/r07/content022.js", dynamicjs: _atr + "dynamic.js", dynamiccss: _atr + "dynamic.css", layersjs: _atr + "static/r07/layers030.js", layerscss: _atr + "static/r07/layers028.css", layersiecss: _atr + "static/r07/layersIE6007.css", layersdroidcss: _atr + "static/r07/layersdroid004.css", warning: _atr + "static/r07/warning000.html", ssojs: _atr + "static/r07/ssi005.js", ssocss: _atr + "static/r07/ssi004.css", authjs: _atr + "static/r07/auth016.js", peekaboocss: _atr + "static/r07/peekaboo002.css", overlayjs: _atr + "static/r07/overlay005.js", widget32css: _atr + "static/r07/widgetbig058.css", widget20css: _atr + "static/r07/widgetmed008.css", widgetcss: _atr + "static/r07/widget118.css", widgetIE67css: _atr + "static/r07/widgetIE67006.css", widgetpng: "//s7.addthis.com/static/r07/widget058.gif", embed: _atr + "static/r07/embed010.js", embedcss: _atr + "static/r07/embed004.css", lightbox: _atr + "static/r07/lightbox000.js", lightboxcss: _atr + "static/r07/lightbox000.css", link: _atr + "static/r07/link005.html", pinit: _atr + "static/r07/pinit016.html", linkedin: _atr + "static/r07/linkedin021.html", fbshare: _atr + "static/r07/fbshare004.html", tweet: _atr + "static/r07/tweet027.html", menujs: _atr + "static/r07/menu161.js", sh: _atr + "static/r07/sh142.html"}};
 }
