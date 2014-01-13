@@ -109,7 +109,7 @@ exports.listScenarios = function (req, res) {
     "use strict";
     var conditions, fields, sort, temp;
 
-    conditions = {creator: req.user._id, story: req.params.storyid};
+    conditions = {story: req.params.storyid};
     fields = {};
     sort = {};
 
@@ -130,7 +130,7 @@ exports.listScenes = function (req, res) {
     "use strict";
     var conditions, fields, sort, temp;
 
-    conditions = {creator: req.user._id, scenario: req.params.scenarioid};
+    conditions = {scenario: req.params.scenarioid};
     fields = {};
     sort = {date: 1};
 
@@ -488,7 +488,7 @@ exports.updateScene = function (req, res){
 
 exports.detailStory = function(req, res) {
     "use strict";
-    var conditions = {creator: req.user._id, _id: req.params._id}, retObj;
+    var conditions = {_id: req.params._id}, retObj;
 
     Story
         .findOne(conditions)
@@ -504,7 +504,7 @@ exports.detailStory = function(req, res) {
 
 exports.detailScenario = function (req, res) {
     "use strict";
-    var conditions = {creator: req.user._id, _id: req.params.scenarioid}, retObj;
+    var conditions = {_id: req.params.scenarioid}, retObj;
 
     Scenario
         .findOne(conditions)
@@ -520,7 +520,7 @@ exports.detailScenario = function (req, res) {
 
 exports.detailScene = function (req, res) {
     "use strict";
-    var conditions = {creator: req.user._id, _id: req.params.sceneid}, retObj;
+    var conditions = {_id: req.params.sceneid}, retObj;
 
     Scene
         .findOne(conditions)
