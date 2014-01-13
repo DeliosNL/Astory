@@ -33,7 +33,7 @@ Import Data
 ===========
 This step is necessary for testing, if testing is not necessary this step can be skipped.
 1. Replace ```astory``` with the name of your database.
-2. Import the data (per collection or in one step)
+2. Import the data (per collection)
 3. Done
 
 
