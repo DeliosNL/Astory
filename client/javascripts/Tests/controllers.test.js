@@ -327,26 +327,109 @@ describe('Astory controllers', function () {
 
         });
 
-        it("Saves new scenario's both locally and on the server", function () {
-            expect(1).toBe(1);
-        });
 
     });
 
     describe('registerController', function () {
+        var scope, ctrl, $httpBackend;
+
+        beforeEach(inject(function (_$httpBackend_, $rootScope, $routeParams, $controller, loggedinService) {
+            $httpBackend = _$httpBackend_;
+            scope = $rootScope.$new();
+            ctrl = $controller('registerController', {$scope: scope});
+            scope.birthdatemonth = 5;
+            scope.birthdateday = 15;
+            scope.birthdateyear = 1990;
+            scope.username = "testaccount";
+            scope.password = "test";
+            scope.email = "test@test.nl";
+
+        }));
+
+        it("Starts out with an invalid birthday", function () {
+            expect(scope.birthdateinvalid).toBeTruthy();
+        });
+
+        it("Has birthdate fields", function () {
+            expect(scope.days.length).toBe(31);
+            expect(scope.months.length).toBe(12);
+            expect(scope.years.length).toBeGreaterThan(50);
+        });
+
+        it("Knows when you use an already registered username", function () {
+            expect(scope.usedusername).toBeFalsy();
+            $httpBackend.expectPOST('/users').respond(
+                {
+                    validationerror: "Username already exists"
+                }
+            );
+            scope.register();
+            $httpBackend.flush();
+            expect(scope.usedusername).toBeTruthy();
+        });
+
+        it("Knows when you use an already registered e-mail", function () {
+            expect(scope.usedemail).toBeFalsy();
+            $httpBackend.expectPOST('/users').respond(
+                {
+                    validationerror: "Email already exists"
+                }
+            );
+            scope.register();
+            $httpBackend.flush();
+            expect(scope.usedemail).toBeTruthy();
+        });
 
     });
 
     describe('loginController', function ($controller) {
-        /*var scope, ctrl, $httpBackend;
+        var scope, ctrl, $httpBackend, loggedinservice;
+
+        beforeEach(inject(function (_$httpBackend_, $rootScope, $routeParams, $controller, loggedinService) {
+            $httpBackend = _$httpBackend_;
+            scope = $rootScope.$new();
+            ctrl = $controller('loginController', {$scope: scope});
+            loggedinservice = loggedinService;
+        }));
+
         it("Doesn't show the attempt as failed right away", function () {
-            beforeEach(inject(function (_$httpBackend_, $rootScope, $routeParams, $controller) {
-                $httpBackend = _$httpBackend_;
-                scope = $rootScope.$new();
-                ctrl = $controller('loginController', {$scope: scope});
-            }));
             expect(scope.failedloginattempt).toBe(false);
-        });*/
+        });
+
+        it("Knows you're not logged in yet", function () {
+            expect(scope.failedloginattempt).toBe(false);
+        });
+
+        it("Sets your logged-in status when successfully logged in", function () {
+            expect(loggedinservice.loggedin).toBeFalsy();
+            $httpBackend.expectPOST('/login').respond(
+                {
+                    "username": "testaccount",
+                    "email": "test@test.nl",
+                    "passwordhash": "����\u001b��\u0001`֡s6� ��26V\"\b��&.���sX$�U�&\u0015k�J�fyR���z�IU\u000f�$�N�\u000b\u0005Q�2�\u0002��\u0019��\u0017������%\u0004���X����'�(ÚyG@[D3jI�g���!�\u0001�}�`\u0015�.�̅\\O�\u0005�\f����4",
+                    "salt": "/a/yHs5jyZrdSE0yDvjrqK1pSWyJeYOoihv0ZJE6vHT5rl3RZ3ETsN31qCsib2LNq5NYsxfeOy1AXo/AdwoHq8AU0sJ2zS9TqgIp0trYZaIgal4J/Wt7GezdffuU50vlBs0Aaukyt/cWXJH8+Znf7RaBd/Pz9FZHEq/BKL7Y/zI=",
+                    "_id": "52d3a5d954cb430610000002",
+                    "__v": 0,
+                    "birthdate": "1994-05-10T22:00:00.000Z"
+                }
+            );
+            scope.login();
+            $httpBackend.flush();
+            expect(loggedinservice.loggedin).toBeTruthy();
+        });
+
+        it("Doesn't set your logged-in status when your login attempt fails", function () {
+            $httpBackend.expectPOST('/login').respond(401);
+            scope.login();
+            $httpBackend.flush();
+            expect(loggedinservice.loggedin).toBeFalsy();
+        });
+
+        it("test", function () {
+
+        });
+
+
     });
 
     describe('headerController', function () {
