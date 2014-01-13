@@ -337,4 +337,21 @@ describe('Astory controllers', function () {
 
     });
 
+    describe('registerController', function () {
+
+    });
+
+    describe('loginController', function () {
+        it("Doesn't show the attempt as failed right away", function () {
+            var scope;
+            beforeEach(inject(function ($rootScope) {
+                scope = $rootScope.$new();
+            }));
+            expect(scope.failedloginattempt).toBe(false);
+        });
+    });
+
+    describe('headerController', function () {
+
+    });
 });
