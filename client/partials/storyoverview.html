@@ -11,7 +11,7 @@
 
 <div class="story" data-ng-repeat="story in stories">
     <div class="storyimage"><img src="images/sceneexample.png" alt="{{story.name}}"/></div>
-    <div class="storyname"><p>{{story.name}}</p></div>
+    <div class="storyname"><p class="storynameparagraph">{{story.name}}</p></div>
     <div class="storydate"><p>{{story.date}}</p></div>
     <div class="storysettings" data-ng-click="showStoryPopup($index);"><p>SETTINGS</p></div>
     <a href="#/preview"><div class="viewbutton"><p>PREVIEW</p></div></a>

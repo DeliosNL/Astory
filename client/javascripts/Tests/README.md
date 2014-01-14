@@ -16,9 +16,9 @@ mongoimport --db astory --collection scenarios --file scenarios.json
 mongoimport --db astory --collection scenes --file scenes.json
 ```
 
-Testing
+Unit testing
 --------
-Client side testing uses Karma, assure karma is installed. If karma is not installed, install it with the following command:
+Client side unit testing uses Karma, assure karma is installed. If karma is not installed, install it with the following command:
 ```
 sudo apt-get install karma
 ```
@@ -27,3 +27,22 @@ After installing karma, run the unit tests with the following command:
 karma start javascripts/Tests/karma.config.js
 ```
 
+
+E2E testing
+-------------
+Start of by making sure karma-ng-scenario is installed, install it by using the following command:
+```
+sudo npm install karma-ng-scenario -g
+```
+Edit the karma-e2e.conf.js file, change the "proxies" setting to match your chosen port number
+```
+proxies : {
+    '/': 'http://localhost:*YOUR PORT HERE*/'
+}
+```
+Finally, run the e2e tests with the following command:
+```
+karma start karma-e2e.conf.js
+
+```
+-------------

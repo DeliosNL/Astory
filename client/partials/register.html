@@ -6,11 +6,11 @@
         <form role="form" name="registerform">
             <div class="form-group">
                 <label for="usernameinput" class="inline" id="usernameLabel">Username</label><p class="validationmessage" data-ng-show="usedusername">Username is already in use</p>
-                <input type="text" class="form-control" data-ng-model="username" id="usernameinput" required>
+                <input type="text" class="form-control" name="username" data-ng-model="username" id="usernameinput" required>
             </div>
             <div class="form-group">
                 <label for="passwordinput" class="passwordlabel">Password</label>
-                <input type="password" pattern=".{6,}" data-ng-minlength="6" class="form-control" data-ng-model="password" id="passwordinput" required>
+                <input type="password" pattern=".{6,}" data-ng-minlength="6"  name="password" class="form-control" data-ng-model="password" id="passwordinput" required>
             </div>
             <div class="form-group">
                 <label for="emailinput" class="inline" id="emaillabel">E-mail address</label><p class="validationmessage" data-ng-show="usedemail">E-mail is already in use</p>
@@ -21,13 +21,13 @@
                 <div class="selectwrapperday">
                     <select class="day" id="birthdatedayinput" data-type="number" data-ng-model = "birthdateday" name="birthdateday" data-ng-change="checkBirthdateValidity()" required>
                         <option value="" selected disabled>Day</option>
-                        <option data-ng-repeat="day in days" value="{{day}}">{{day}}</option>
+                        <option class="dayoption" data-ng-repeat="day in days" value="{{day}}">{{day}}</option>
                     </select>
                 </div>
                 <div class="selectwrappermonth">
                     <select class="month" id="birthdatemonthinput" data-ng-model = "birthdatemonth" data-ng-change="checkBirthdateValidity()" required>
                         <option value="" selected disabled>Month</option>
-                        <option data-ng-repeat="i in [1,2,3,4,5,6,7,8,9,10,11,12]" value= "{{i}}">{{months[i - 1]}}</option>
+                        <option class="monthoption" data-ng-repeat="i in [1,2,3,4,5,6,7,8,9,10,11,12]" value= "{{i}}">{{months[i - 1]}}</option>
                     </select>
                 </div>
                 <div class="selectwrapperyear">
