@@ -9,38 +9,21 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
     hash = require('../../Utils/hash');
 
-exports.list = function (req, res) {
-    /*var conditions, fields, options;
-     console.log('LIST:' + req.params);
-
-     conditions = {};
-
-
-     if (req.params.isSold !== undefined) {
-     conditions['isSold'] = req.params.isSold;
-     } else if (req.params.hasBids !== undefined) {
-     conditions['$where'] = "this.bids.length > 0";
-     }
-     fields = {};
-     sort = {'make' : 1};
-
-     Auto
-     .find(conditions, fields, options)
-     .sort(sort)
-     .exec(function (err, doc) {
-     var retObj = {
-     meta: {"action": "list", 'timestamp': new Date(), filename: __filename},
-     doc: doc,
-     err: err
-     };
-     return res.send(retObj);
-     }) */
-};
-
+/**
+ * Function for checking whether the user is logged in (Serialize or not). Sends the user's information
+ * if this is true, otherwise sends '0'.
+ * @param req Request object, used to identify the user making the request.
+ * @param res Response object used to send the response
+ */
 exports.loggedin = function (req, res) {
     res.send(req.isAuthenticated() ? req.user : '0');
 };
 
+/**
+ * Creates a new user in the database. The user's password is encrypted with it's own salt.
+ * @param req Request object, use to retrieve the new document's info.
+ * @param res Response object used to send the response
+ */
 exports.register = function (req, res) {
     hash(req.body.password, function (err, salt, hash) {
         if (err) throw err;
@@ -66,6 +49,13 @@ exports.register = function (req, res) {
 
 };
 
+/**
+ * Authentication function called when a user tries to login.
+ * Makes a hash of the received password and compares it with the user's hashed password.
+ * @param username Username of the user trying to log in.
+ * @param password Password to be hashed and checked.
+ * @param done
+ */
 exports.isValidUserPassword = function (username, password, done) {
     User.findOne({username: username}, function (err, user) {
         // if(err) throw err;
@@ -83,6 +73,11 @@ exports.isValidUserPassword = function (username, password, done) {
     });
 };
 
+/**
+ * List all a user's stories. The serialized user's _id is the condition for finding the stories.
+ * @param req Request object, used for retrieving the serialized user's _id
+ * @param res Response object used to send the response
+ */
 exports.listStories = function (req, res) {
     "use strict";
     var conditions, fields, sort, temp;
@@ -105,6 +100,12 @@ exports.listStories = function (req, res) {
         });
 };
 
+/**
+ * Lists all a story's scenarios, found on basis of a story's _id. The user making the request does not have to be
+ * the scenarios' owner. The scenarios can be retrieved for viewing rather than editing.
+ * @param req Request object, used to retrieve the story-id to retrieve scenario's from.
+ * @param res Response object used to send the response
+ */
 exports.listScenarios = function (req, res) {
     "use strict";
     var conditions, fields, sort, temp;
@@ -126,6 +127,12 @@ exports.listScenarios = function (req, res) {
         });
 };
 
+/**
+ * Lists all a scenario's scenes, found on basis of a scenario's _id. The user making the request does not have to be
+ * the scenes' owner. The scenes can be retrieved for viewing rather than editing.
+ * @param req Request object, used to retrieve the scenarioid for the query's conditions
+ * @param res Response object used to send the response
+ */
 exports.listScenes = function (req, res) {
     "use strict";
     var conditions, fields, sort, temp;
@@ -147,6 +154,11 @@ exports.listScenes = function (req, res) {
         });
 };
 
+/**
+ * Adds a story to the database, the creator of the story will be the user who sent the request.
+ * @param req Request object used for retrieving the user's _id
+ * @param res Response object used to send the response
+ */
 exports.addStory = function (req, res) {
     "use strict";
     var doc = new Story(
@@ -171,6 +183,12 @@ exports.addStory = function (req, res) {
     });
 };
 
+/**
+ * Adds a scenario to a specified story, story is found on basis of it's _id property.
+ * The user sending the request needs to the creator of the story in order for the query to work.
+ * @param req Request object containing the storyid, the user's id  and the new scenario's name for the query's conditions.
+ * @param res Response object used to send the response
+ */
 exports.addScenario = function (req, res) {
     "use strict";
     var conditions, fields;
@@ -222,6 +240,12 @@ exports.addScenario = function (req, res) {
         });
 };
 
+/**
+ * Adds a scene to the specfied scenario. Scenario to add the scene to is determined by the given _id of the scenario.
+ * The user needs to be the creator of the scenario in order for the request to work.
+ * @param req Request object containing info about the user making the request and the _id of the scenario to add a scene to.
+ * @param res Response object used to send the response
+ */
 exports.addScene = function (req, res){
     "use strict";
     var conditions, fields;
@@ -274,6 +298,12 @@ exports.addScene = function (req, res){
         });
 };
 
+/**
+ * Deletes a story and all related scenario's and scenes. The user making the request needs to be the creator
+ * of the story in order for the request to work.
+ * @param req Request object containing the _id of the story to delete and the user's _id.
+ * @param res Response object used to send the response
+ */
 exports.deleteStory = function (req, res) {
     "use strict";
     var conditions;
@@ -293,6 +323,10 @@ exports.deleteStory = function (req, res) {
         });
 };
 
+/**
+ * Deletes all the scenario's from a specified story
+ * @param storyid _id property of the story
+ */
 function deleteScenarios(storyid){
     var conditions = {story : storyid};
 
@@ -311,6 +345,10 @@ function deleteScenarios(storyid){
         });
 }
 
+/**
+ * Deletes all of a scenario's scenes.
+ * @param scenarioid _id of the scenario.
+ */
 function deleteScenes(scenarioid) {
     var conditions = {scenario : scenarioid};
     Scene
@@ -320,6 +358,13 @@ function deleteScenes(scenarioid) {
         });
 }
 
+/**
+ * Delete's a single scenario and all related scenes.
+ * The scenario to delete is found on basis of _id, the user making the request needs to be the scenario's owner in
+ * order for the request to work.
+ * @param req Request object containing the user's _id and the scenario's _id.
+ * @param res Response object used to send the response
+ */
 exports.deleteScenario = function(req, res) {
     "use strict";
     var conditions, storyconditions;
@@ -363,6 +408,12 @@ exports.deleteScenario = function(req, res) {
 
 };
 
+/**
+ * Deletes a single scene. The scene to be deleted is found on basis of it's _id, the user making the request needs
+ * to be the scene's owner in order to delete it.
+ * @param req Request object containing the user's _id and the scene's _id.
+ * @param res Response object used to send the response
+ */
 exports.deleteScene = function(req, res) {
     "use strict";
     var conditions;
@@ -404,7 +455,12 @@ exports.deleteScene = function(req, res) {
 
 };
 
-
+/**
+ * Updates a story. Possible fields to update are the name and the order of the scenario's.
+ * The user needs to be the creator of the story in order for the request to work.
+ * @param req Request object containing the user's _id, the story's _id and the new data.
+ * @param res Response object used to send the response
+ */
 exports.updateStory = function (req, res) {
     "use strict";
     var conditions = {creator: req.user._id, _id: req.params._id}, update, options, retObj;
@@ -433,6 +489,13 @@ exports.updateStory = function (req, res) {
         });
 };
 
+/**
+ * Updates a single scenario, the scenario to be updated is found on basis of it's _id. Possible fields to update are
+ * the name and the order of the scenes within the scenario. The user needs to be the scenario's creator in order for
+ * the request to work.
+ * @param req Request object containing the user's _id, the scenario's _id and the new data.
+ * @param res Response object used to send the response
+ */
 exports.updateScenario = function (req, res) {
     "use strict";
     var conditions = {creator: req.user._id, _id: req.params.scenarioid}, update, options, retObj;
@@ -458,6 +521,13 @@ exports.updateScenario = function (req, res) {
         });
 };
 
+/**
+ * Updates a single scene, the scene to be updated is found on basis of it's _id. Possible fields to update are the
+ * array of assets and the scene's background-url. The user making the request needs to be the scene's owner in order
+ * for the request to work.
+ * @param req Request object containing the user's _id, the scene's _id and the new data.
+ * @param res Response object used to send the response
+ */
 exports.updateScene = function (req, res){
     "use strict";
     var conditions = {creator: req.user._id, _id: req.params.sceneid}, update, options, retObj;
@@ -486,6 +556,12 @@ exports.updateScene = function (req, res){
         });
 };
 
+/**
+ * Return a single story, the user making the request does NOT need to be the owner of the story in order to make this
+ * request. (Used for viewing a story rather than editing it.).
+ * @param req Request object containing the story's _id for the query's conditions.
+ * @param res Response object used to send the response
+ */
 exports.detailStory = function(req, res) {
     "use strict";
     var conditions = {_id: req.params._id}, retObj;
@@ -502,6 +578,11 @@ exports.detailStory = function(req, res) {
         })
 };
 
+/**
+ * Returns a single scenario, the user does not need to be the owner of the scenario in order for this request to work.
+ * @param req Request object containing the scenario's _id for the query's conditions.
+ * @param res Response object used to send the response
+ */
 exports.detailScenario = function (req, res) {
     "use strict";
     var conditions = {_id: req.params.scenarioid}, retObj;
@@ -518,6 +599,11 @@ exports.detailScenario = function (req, res) {
         })
 };
 
+/**
+ * Lists a single scene, the user does not need to be the owner of the scene in order for this request to work.
+ * @param req Request object containing the scene's _id for the query's conditions.
+ * @param res Response object used to send the response
+ */
 exports.detailScene = function (req, res) {
     "use strict";
     var conditions = {_id: req.params.sceneid}, retObj;
