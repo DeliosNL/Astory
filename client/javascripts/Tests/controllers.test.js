@@ -3,6 +3,39 @@ describe('Astory controllers', function () {
 
     describe('editorController', function () {
         var scope, $httpBackend, ctrl;
+        var scenesresponse = {
+            "meta": {
+                "action": "list",
+                "timestamp": "2014-01-10T19:14:40.574Z",
+                "filename": "/home/niels/Project Cria/Astory/server/app/controllers/astory.js"
+            },
+            "doc": [
+                {
+                    "__v": 0,
+                    "_id": "52cef1734d4148fa45000005",
+                    "assets": [
+                        {
+                            "imagepath": "http://localhost:8500/images/Assets/Rendier.png",
+                            "assetoption": {
+                                "scenarioid": "52cef2798909bd6146000001",
+                                "type": "Scenario",
+                                "name": "asf"
+                            },
+                            "height": 500,
+                            "width": 486,
+                            "y": 109,
+                            "x": 345
+                        }
+                    ],
+                    "background": "images/Assets/Achtergrond3.png",
+                    "creator": "52c5955b5acd84772b000001",
+                    "date": "2014-01-09T18:54:09.505Z",
+                    "image": "sceneexample.png",
+                    "scenario": "52cef1624d4148fa45000003"
+                }
+            ],
+            "err": null
+        };
 
         beforeEach(inject(function (_$httpBackend_, $rootScope, $routeParams, $controller) {
             $httpBackend = _$httpBackend_;
@@ -43,39 +76,6 @@ describe('Astory controllers', function () {
                     err: null
                 }
             );
-            var scenesresponse = {
-                "meta": {
-                    "action": "list",
-                    "timestamp": "2014-01-10T19:14:40.574Z",
-                    "filename": "/home/niels/Project Cria/Astory/server/app/controllers/astory.js"
-                },
-                "doc": [
-                    {
-                        "__v": 0,
-                        "_id": "52cef1734d4148fa45000005",
-                        "assets": [
-                            {
-                                "imagepath": "http://localhost:8500/images/Assets/Rendier.png",
-                                "assetoption": {
-                                    "scenarioid": "52cef2798909bd6146000001",
-                                    "type": "Scenario",
-                                    "name": "asf"
-                                },
-                                "height": 500,
-                                "width": 486,
-                                "y": 109,
-                                "x": 345
-                            }
-                        ],
-                        "background": "images/Assets/Achtergrond3.png",
-                        "creator": "52c5955b5acd84772b000001",
-                        "date": "2014-01-09T18:54:09.505Z",
-                        "image": "sceneexample.png",
-                        "scenario": "52cef1624d4148fa45000003"
-                    }
-                ],
-                "err": null
-            };
             $httpBackend.expectGET('/scenes/52cef1624d4148fa45000003').respond(scenesresponse);
             $httpBackend.expectGET('/scenes/52cef1624d4148fa45000003').respond(scenesresponse);
             ctrl = $controller('editorController', {$scope: scope});
@@ -410,22 +410,381 @@ describe('Astory controllers', function () {
         });
 
         it("Saves an asset's next-scene action", function () {
+            $httpBackend.flush();
             scope.selectedAsset = {
                 "imagepath": "http://localhost:8500/images/Assets/Rendier.png",
-                "assetoption": {},
                 "height": 500,
                 "width": 486,
                 "y": 109,
                 "x": 345
             };
+            $httpBackend.expectPUT('/scene/52cef1734d4148fa45000005').respond(
+                {
+                    "meta": {
+                        "action": "detail",
+                        "timestamp": "2014-01-14T13:40:10.086Z",
+                        "filename": "/home/niels/Project Cria/Astory/server/app/controllers/astory.js"
+                    },
+                    "doc": {
+                        "__v": 0,
+                        "_id": "52d3a5f954cb430610000005",
+                        "creator": "52d3a5d954cb430610000002",
+                        "scenario": "52d3a5f954cb430610000004",
+                        "image": "sceneexample.png",
+                        "date": "2014-01-13T08:36:20.960Z",
+                        "assets": [
+                            {
+                                "imagepath": "http://localhost:8500/images/Assets/6_huis.png",
+                                "height": 477,
+                                "width": 307,
+                                "y": 264,
+                                "x": 559
+                            }
+                        ],
+                        "background": "images/Assets/Achtergrond1A.png"
+                    },
+                    "err": null
+                }
+            );
+            scope.addNextSceneAction();
+            $httpBackend.flush();
+            expect(scope.selectedAsset.assetoption).not.toBeNull();
+            expect(scope.selectedAsset.assetoption).not.toBeUndefined();
+            expect(scope.selectedAsset.assetoption.name).toBe("Next");
+            expect(scope.selectedAsset.assetoption.type).toBe("Scene");
 
-
-
-            //scope.addNextSceneAction();
         });
 
         it("Saves an asset's previous-scene action", function () {
+            $httpBackend.flush();
+            scope.selectedAsset = {
+                "imagepath": "http://localhost:8500/images/Assets/Rendier.png",
+                "height": 500,
+                "width": 486,
+                "y": 109,
+                "x": 345
+            };
+            $httpBackend.expectPUT('/scene/52cef1734d4148fa45000005').respond(
+                {
+                    "meta": {
+                        "action": "detail",
+                        "timestamp": "2014-01-14T13:40:10.086Z",
+                        "filename": "/home/niels/Project Cria/Astory/server/app/controllers/astory.js"
+                    },
+                    "doc": {
+                        "__v": 0,
+                        "_id": "52d3a5f954cb430610000005",
+                        "creator": "52d3a5d954cb430610000002",
+                        "scenario": "52d3a5f954cb430610000004",
+                        "image": "sceneexample.png",
+                        "date": "2014-01-13T08:36:20.960Z",
+                        "assets": [
+                            {
+                                "imagepath": "http://localhost:8500/images/Assets/6_huis.png",
+                                "height": 477,
+                                "width": 307,
+                                "y": 264,
+                                "x": 559
+                            }
+                        ],
+                        "background": "images/Assets/Achtergrond1A.png"
+                    },
+                    "err": null
+                }
+            );
+            scope.addPreviousSceneAction();
+            $httpBackend.flush();
+            expect(scope.selectedAsset.assetoption).not.toBeNull();
+            expect(scope.selectedAsset.assetoption).not.toBeUndefined();
+            expect(scope.selectedAsset.assetoption.name).toBe("Previous");
+            expect(scope.selectedAsset.assetoption.type).toBe("Scene");
+        });
 
+        it("Refreshes scenario links when adding a linktoscenario option to an asset", function () {
+            $httpBackend.flush();
+            scope.selectedAsset = {
+                "imagepath": "http://localhost:8500/images/Assets/Rendier.png",
+                "height": 500,
+                "width": 486,
+                "y": 109,
+                "x": 345
+            };
+            expect(scope.currentscenario.linkto.length).toBe(0);
+            expect(scope.currentscenario.linkto).not.toBeUndefined();
+            expect(scope.currentscenario.linkfrom.length).toBe(0);
+            expect(scope.currentscenario.linkfrom).not.toBeUndefined();
+            $httpBackend.expectPUT('/scene/52cef1734d4148fa45000005').respond(
+                {
+                    "meta": {
+                        "action": "update",
+                        "timestamp": "2014-01-10T20:08:24.446Z",
+                        "filename": "/home/niels/Project Cria/Astory/server/app/controllers/astory.js"
+                    },
+                    "doc": {
+                        "__v": 0,
+                        "_id": "52cef1734d4148fa45000005",
+                        "creator": "52c5955b5acd84772b000001",
+                        "scenario": "52cef1624d4148fa45000003",
+                        "image": "sceneexample.png",
+                        "date": "2014-01-09T18:54:09.505Z",
+                        "assets": [
+                            {
+                                "imagepath": "http://localhost:8500/images/Assets/Rendier.png",
+                                "assetoption": {
+                                    "scenarioid": "52cef1624d4148fa45000003",
+                                    "type": "Scenario",
+                                    "name": "asf"
+                                },
+                                "height": 500,
+                                "width": 486,
+                                "y": 109,
+                                "x": 345
+                            },
+                            {
+                                "imagepath": "http://localhost:8500/images/Assets/Appel.png",
+                                "assetoption": {},
+                                "height": 500,
+                                "width": 486,
+                                "y": 109,
+                                "x": 345
+                            }
+                        ],
+                        "background": "images/Assets/Achtergrond1A.png"
+                    },
+                    "err": null
+                }
+            );
+            $httpBackend.expectGET("/scenes/52cef1624d4148fa45000003").respond(
+                {
+                    "doc": [
+                        {
+                            "__v": 0,
+                            "_id": "52cef1734d4148fa45000005",
+                            "creator": "52c5955b5acd84772b000001",
+                            "scenario": "52cef1624d4148fa45000003",
+                            "image": "sceneexample.png",
+                            "date": "2014-01-09T18:54:09.505Z",
+                            "assets": [
+                                {
+                                    "imagepath": "http://localhost:8500/images/Assets/Rendier.png",
+                                    "assetoption": {
+                                        "scenarioid": "52cef1624d4148fa45000003",
+                                        "type": "Scenario",
+                                        "name": "asf"
+                                    },
+                                    "height": 500,
+                                    "width": 486,
+                                    "y": 109,
+                                    "x": 345
+                                },
+                                {
+                                    "imagepath": "http://localhost:8500/images/Assets/Appel.png",
+                                    "assetoption": {},
+                                    "height": 500,
+                                    "width": 486,
+                                    "y": 109,
+                                    "x": 345
+                                }
+                            ],
+                            "background": "images/Assets/Achtergrond1A.png"
+                        }
+                    ]
+                }
+            );
+            scope.addScenarioEvent(0);
+            $httpBackend.flush();
+            expect(scope.currentscenario.linkto.length).toBeGreaterThan(0);
+            expect(scope.currentscenario.linkfrom.length).toBeGreaterThan(0);
+        });
+
+
+        it("Refreshes scenario links when removing a scenario-link option", function () {
+            $httpBackend.flush();
+            scope.selectedAsset = {
+                "imagepath": "http://localhost:8500/images/Assets/Rendier.png",
+                "height": 500,
+                "width": 486,
+                "y": 109,
+                "x": 345
+            };
+            expect(scope.currentscenario.linkto.length).toBe(0);
+            expect(scope.currentscenario.linkto).not.toBeUndefined();
+            expect(scope.currentscenario.linkfrom.length).toBe(0);
+            expect(scope.currentscenario.linkfrom).not.toBeUndefined();
+            $httpBackend.expectPUT('/scene/52cef1734d4148fa45000005').respond(
+                {
+                    "meta": {
+                        "action": "update",
+                        "timestamp": "2014-01-10T20:08:24.446Z",
+                        "filename": "/home/niels/Project Cria/Astory/server/app/controllers/astory.js"
+                    },
+                    "doc": {
+                        "__v": 0,
+                        "_id": "52cef1734d4148fa45000005",
+                        "creator": "52c5955b5acd84772b000001",
+                        "scenario": "52cef1624d4148fa45000003",
+                        "image": "sceneexample.png",
+                        "date": "2014-01-09T18:54:09.505Z",
+                        "assets": [
+                            {
+                                "imagepath": "http://localhost:8500/images/Assets/Rendier.png",
+                                "assetoption": {
+                                    "scenarioid": "52cef1624d4148fa45000003",
+                                    "type": "Scenario",
+                                    "name": "asf"
+                                },
+                                "height": 500,
+                                "width": 486,
+                                "y": 109,
+                                "x": 345
+                            },
+                            {
+                                "imagepath": "http://localhost:8500/images/Assets/Appel.png",
+                                "assetoption": {},
+                                "height": 500,
+                                "width": 486,
+                                "y": 109,
+                                "x": 345
+                            }
+                        ],
+                        "background": "images/Assets/Achtergrond1A.png"
+                    },
+                    "err": null
+                }
+            );
+            $httpBackend.expectGET("/scenes/52cef1624d4148fa45000003").respond(
+                {
+                    "doc": [
+                        {
+                            "__v": 0,
+                            "_id": "52cef1734d4148fa45000005",
+                            "creator": "52c5955b5acd84772b000001",
+                            "scenario": "52cef1624d4148fa45000003",
+                            "image": "sceneexample.png",
+                            "date": "2014-01-09T18:54:09.505Z",
+                            "assets": [
+                                {
+                                    "imagepath": "http://localhost:8500/images/Assets/Rendier.png",
+                                    "assetoption": {
+                                        "scenarioid": "52cef1624d4148fa45000003",
+                                        "type": "Scenario",
+                                        "name": "asf"
+                                    },
+                                    "height": 500,
+                                    "width": 486,
+                                    "y": 109,
+                                    "x": 345
+                                },
+                                {
+                                    "imagepath": "http://localhost:8500/images/Assets/Appel.png",
+                                    "assetoption": {},
+                                    "height": 500,
+                                    "width": 486,
+                                    "y": 109,
+                                    "x": 345
+                                }
+                            ],
+                            "background": "images/Assets/Achtergrond1A.png"
+                        }
+                    ]
+                }
+            );
+            scope.addScenarioEvent(0);
+            $httpBackend.flush();
+            expect(scope.currentscenario.linkto.length).toBeGreaterThan(0);
+            expect(scope.currentscenario.linkfrom.length).toBeGreaterThan(0);
+
+            scope.selectedAsset = {
+                "imagepath": "http://localhost:8500/images/Assets/Rendier.png",
+                "assetoption": {
+                    "scenarioid": "52cef2798909bd6146000001",
+                    "type": "Scenario",
+                    "name": "asf"
+                },
+                "height": 500,
+                "width": 486,
+                "y": 109,
+                "x": 345
+            };
+            $httpBackend.expectPUT('/scene/52cef1734d4148fa45000005').respond(
+                {
+                    "meta": {
+                        "action": "detail",
+                        "timestamp": "2014-01-14T13:40:10.086Z",
+                        "filename": "/home/niels/Project Cria/Astory/server/app/controllers/astory.js"
+                    },
+                    "doc": {
+                        "__v": 0,
+                        "_id": "52d3a5f954cb430610000005",
+                        "creator": "52d3a5d954cb430610000002",
+                        "scenario": "52d3a5f954cb430610000004",
+                        "image": "sceneexample.png",
+                        "date": "2014-01-13T08:36:20.960Z",
+                        "assets": [
+                            {
+                                "imagepath": "http://localhost:8500/images/Assets/6_huis.png",
+                                "height": 477,
+                                "width": 307,
+                                "y": 264,
+                                "x": 559
+                            }
+                        ],
+                        "background": "images/Assets/Achtergrond1A.png"
+                    },
+                    "err": null
+                }
+            );
+            var newscenesresponse = scenesresponse;
+            scenesresponse.doc[0].assetoption = null;
+            $httpBackend.expectGET('/scenes/52cef1624d4148fa45000003').respond(newscenesresponse);
+            scope.addNextSceneAction();
+            $httpBackend.flush();
+            expect(scope.currentscenario.linkto.length).toBe(0);
+            expect(scope.currentscenario.linkfrom.length).toBe(0);
+        });
+
+        it("Knows when you've dragged a scene", function () {
+            expect(scope.scenedragged).toBeFalsy();
+            scope.onSceneMouseDown({
+                pageX : 10
+            });
+            scope.onSceneMouseUp({
+                pageX: 500
+            });
+            expect(scope.scenedragged).toBeTruthy();
+        });
+
+        it("Knows when you've clicked a scene instead of dragging it", function () {
+            expect(scope.scenedragged).toBeFalsy();
+            scope.onSceneMouseDown({
+                pageX : 10
+            });
+            scope.onSceneMouseUp({
+                pageX: 10
+            });
+            expect(scope.scenedragged).toBeFalsy();
+        });
+
+        it("knows when you've dragged a scenario", function () {
+            expect(scope.scenariodragged).toBeFalsy();
+            scope.onScenarioMouseDown({
+                pageY : 10
+            });
+            scope.onScenarioMouseUp({
+                pageY: 500
+            });
+            expect(scope.scenariodragged).toBeTruthy();
+        });
+
+        it("knows when you've clicked a scenario instead of dragging it", function () {
+            expect(scope.scenariodragged).toBeFalsy();
+            scope.onScenarioMouseDown({
+                pageY : 10
+            });
+            scope.onScenarioMouseUp({
+                pageY: 10
+            });
+            expect(scope.scenariodragged).toBeFalsy();
         });
 
     });
@@ -527,7 +886,4 @@ describe('Astory controllers', function () {
 
     });
 
-    describe('headerController', function () {
-
-    });
 });

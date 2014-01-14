@@ -32,9 +32,10 @@ aStory.controller('editScenarioController', ['$scope', 'scenario', '$modalInstan
  * This is the controller for the /edit page. It contains all the functions necessary to make a story with scenes, scenarios, assets etc.
  */
 aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$location', 'currentStoryService', 'scenariosService', 'scenesService', 'sceneService', 'scenarioService', function ($scope, $modal, storiesService, $location, currentStoryService, scenariosService, scenesService, sceneService, scenarioService) {
-    var lastscenedragx, scenedragged = false, lastscenariodragy, scenariodragged = false, savingscene = false, canvasstate, refreshScenarios,
+    var lastscenedragx, lastscenariodragy, savingscene = false, canvasstate, refreshScenarios,
         editor = document.getElementById('editor');
-
+    $scope.scenedragged = false;
+    $scope.scenariodragged = false
     /**
      * Prevents the default behavior of the dragover event of the canvas. Without this prevention it would be impossible to drop a asset on the canvas.
      * @param event HTML 5 dragover event
@@ -349,6 +350,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
             name: "Next",
             type: "Scene"
         };
+
         $scope.addAlert("success", "Link to next scene has been added.");
         if (!hadScenarioAction) {
             updateServerAssets();
@@ -410,7 +412,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
      * @param Mousedown event containing the mouse's coordinates
      */
     $scope.onSceneMouseDown = function (event) {
-        scenedragged = false;
+        $scope.scenedragged = false;
         lastscenedragx = event.pageX;
     };
 
@@ -421,7 +423,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
      */
     $scope.onSceneMouseUp = function (event) {
         if (event.pageX < lastscenedragx - 5 || event.pageX > lastscenedragx + 5) {
-            scenedragged = true;
+            $scope.scenedragged = true;
         }
     };
 
@@ -431,7 +433,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
      * @param Mousedown event containing the mouse's coordinates
      */
     $scope.onScenarioMouseDown = function (event) {
-        scenariodragged = false;
+        $scope.scenariodragged = false;
         lastscenariodragy = event.pageY;
     };
 
@@ -442,7 +444,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
      */
     $scope.onScenarioMouseUp = function (event) {
         if (event.pageY > lastscenariodragy + 5 || event.pageY < lastscenariodragy - 5) {
-            scenariodragged = true;
+            $scope.scenariodragged = true;
         }
     };
 
@@ -470,7 +472,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
      * @param index Index of the scene in the $scope.scenes[] array.
      */
     $scope.loadScene = function (index) {
-        if (!scenedragged) {
+        if (!$scope.scenedragged) {
             console.log("Loading scene: " + index);
             canvasstate.loadScene($scope.scenes[index]);
             if (editor !== null && editor !== undefined) {
@@ -478,7 +480,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
             }
             $scope.currentSceneindex = index + 1;
         } else {
-            scenedragged = false;
+            $scope.scenedragged = false;
         }
 
     };
@@ -600,7 +602,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
             $scope.currentscenario = $scope.scenarios[index];
             loadScenes(true);
         } else {
-            scenariodragged = false;
+            $scope.scenariodragged = false;
         }
     };
 
