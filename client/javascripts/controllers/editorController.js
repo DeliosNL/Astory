@@ -35,7 +35,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
     var lastscenedragx, lastscenariodragy, savingscene = false, canvasstate, refreshScenarios,
         editor = document.getElementById('editor');
     $scope.scenedragged = false;
-    $scope.scenariodragged = false
+    $scope.scenariodragged = false;
     /**
      * Prevents the default behavior of the dragover event of the canvas. Without this prevention it would be impossible to drop a asset on the canvas.
      * @param event HTML 5 dragover event
@@ -183,7 +183,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         } else {
             imagepath = event.dataTransfer.getData("imagepath");
             sceneService.scene.update({sceneid: $scope.currentscene._id}, {background: imagepath}, function (data) {
-                if(editor !== null) {
+                if (editor !== null) {
                     editor.style.backgroundImage = "url('../" + data.doc.background + "')";
                 }
                 $scope.currentscene.background = imagepath;
@@ -598,7 +598,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
      * @param index Index of the scenario to open in the $scope.scenarios[] array.
      */
     $scope.openScenario = function (index) {
-        if (!scenariodragged) {
+        if (!$scope.scenariodragged) {
             $scope.currentscenario = $scope.scenarios[index];
             loadScenes(true);
         } else {
