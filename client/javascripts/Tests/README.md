@@ -34,7 +34,7 @@ Start of by making sure karma-ng-scenario is installed, install it by using the 
 ```
 sudo npm install karma-ng-scenario -g
 ```
-Edit the karma-e2e.conf.js file, change the "proxies" setting to match your chosen port number
+If you chose your own port number, edit the karma-e2e.conf.js file by changing the "proxies" setting to match your chosen port number
 ```
 proxies : {
     '/': 'http://localhost:*YOUR PORT HERE*/'
