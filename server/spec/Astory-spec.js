@@ -171,7 +171,6 @@ describe('AStory', function(){
             expect(body).not.toBe("Unauthorized");
             var bodyjson = JSON.parse(body);
             expect(bodyjson.doc).not.toBeUndefined();
-            expect(bodyjson.doc.scenario).toBe("52d3a5f954cb430610000004");
             done();
         });
     });

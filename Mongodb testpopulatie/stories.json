@@ -1,0 +1,2 @@
+{ "__v" : 0, "_id" : { "$oid" : "52d3a5f654cb430610000003" }, "creator" : "52d3a5d954cb430610000002", "date" : "Mon Jan 13 2014", "image" : "sceneexample.png", "name" : "testupdate", "scenarioorder" : [ "52d3b017ab10073617000004", "52d3a5f954cb430610000004" ] }
+{ "__v" : 0, "_id" : { "$oid" : "52d3aedaab10073617000001" }, "creator" : "52d3a5d954cb430610000002", "date" : "Mon Jan 13 2014", "image" : "sceneexample.png", "name" : "Teststory2", "scenarioorder" : [ "52d3aedbab10073617000002" ] }

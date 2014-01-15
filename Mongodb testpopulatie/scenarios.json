@@ -1,0 +1,2 @@
+{ "__v" : 0, "_id" : { "$oid" : "52d3a5f954cb430610000004" }, "creator" : "52d3a5d954cb430610000002", "linkfrom" : [], "linkto" : [], "name" : "My first scenario", "sceneorder" : [ "52d3a5f954cb430610000005", "52d3a5ff54cb430610000006", "52d3a60054cb430610000007" ], "story" : "52d3a5f654cb430610000003" }
+{ "__v" : 0, "_id" : { "$oid" : "52d3b017ab10073617000004" }, "creator" : "52d3a5d954cb430610000002", "linkfrom" : [], "linkto" : [], "name" : "Second scenario", "sceneorder" : [ "52d3b018ab10073617000005", "52d3b019ab10073617000006" ], "story" : "52d3a5f654cb430610000003" }
