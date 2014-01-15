@@ -20,15 +20,22 @@ Testing
 --------
 Server-side testing uses Jasmine-Node to run the server-side tests. If Jasmine-Node has not been installed yet, install it with the following command:
 ```
-sudo apt-get install Jasmine-Node
+sudo npm install jasmine-node -g
 ```
 
 In order to run the tests the "request" package needs to be install, install this globally with the following command:
 
 ```
-npm install request -g
+sudo npm install request -g
 ```
 After installing request, run the tests with the following command:
 ```
 jasmine-node spec/
+```
+
+POSTMAN Api
+------------
+In order to test all the routes in POSTMAN rest client, import the following collection
+```
+https://www.getpostman.com/collections/41ace1b4171bb15a6a20
 ```

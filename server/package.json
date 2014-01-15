@@ -9,6 +9,8 @@
         "express": "*",
         "ejs": "*",
         "stylus": "*",
-        "mongoose": "*"
+        "mongoose": "*",
+        "passport" : "*",
+        "passport-local" : "*"
     }
 }
