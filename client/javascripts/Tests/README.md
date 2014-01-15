@@ -20,7 +20,7 @@ Unit testing
 --------
 Client side unit testing uses Karma, assure karma is installed. If karma is not installed, install it with the following command:
 ```
-sudo apt-get install karma
+npm install karma -g
 ```
 After installing karma, run the unit tests with the following command:
 ```
