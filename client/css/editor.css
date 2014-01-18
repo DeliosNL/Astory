@@ -773,6 +773,22 @@ p#deleteassetbutton:hover{
     white-space: nowrap;
 }
 
+#textassettextarea {
+    font-family: "Calibri";
+    font-size: 20px;
+    color: #333000;
+    border: 2px solid #CC0000;
+    border-radius: 0;
+    position: absolute;
+    z-index: 100;
+    top: 281px;
+    left: 500px;
+    padding: 0;
+    margin: 0;
+    font-weight: normal;
+    line-height: 25px;
+}
+
 /* EINDE SCÈNEBALK */
 
 /*

@@ -69,6 +69,15 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         return false;
     }
 
+    function updateTextAsset() {
+        var newtextHTML = document.getElementById('textassettextarea').innerHTML;
+        var newtext = htmlToText(newtextHTML);
+        alert(newtext);
+        $scope.selectedAsset.text = newtext;
+        $scope.showtextassetedit = false;
+        updateServerAssets();
+    }
+
     /**
      * This function generates a new array with all the current scene's assets, this array only includes the necessary information to store in the database.
      * After generating the array the current scene's asset-array is overwritten on the server for future reference.
@@ -80,15 +89,27 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
             var newshapes = [], i, shape, newshape;
             for (i = 0; i < canvasstate.shapes.length; i++) {
                 shape = canvasstate.shapes[i];
-                newshape = {
-                    x: shape.x,
-                    y: shape.y,
-                    width: shape.w,
-                    height: shape.h,
-                    assetoption: shape.assetoption,
-                    imagepath: shape.imgNew.src
-                };
-                newshapes.push(newshape);
+                if (shape instanceof Asset) {
+                    newshape = {
+                        x: shape.x,
+                        y: shape.y,
+                        width: shape.w,
+                        height: shape.h,
+                        assetoption: shape.assetoption,
+                        imagepath: shape.imgNew.src
+                    };
+                    newshapes.push(newshape);
+                } else if (shape instanceof TextAsset) {
+                    newshape = {
+                        x: shape.x,
+                        y: shape.y,
+                        width: shape.w,
+                        lineheight: shape.lineheight,
+                        assetoption: shape.assetoption,
+                        text: shape.text
+                    };
+                    newshapes.push(newshape);
+                }
             }
             sceneService.scene.update({sceneid: $scope.currentscene._id}, {assets: newshapes}, function (data) {
                 $scope.currentscene.assets = data.doc.assets;
@@ -155,6 +176,140 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
 
     }
 
+
+
+    function TextAsset(x, y, width, state, text, assetoption) {
+        this.x = x;
+        this.y = y;
+        this.state = state;
+        this.text = text;
+        this.w = width;
+        this.lineheight = 25;
+        this.assetoption = assetoption;
+        //alert(state.ctx.measureText(text).width);
+    }
+
+    TextAsset.prototype.getHeight = function () {
+        var lines = this.text.split("\n"), i, n, words, line, testLine, metrics, testWidth, y = this.y,
+            linecount = lines.length;
+        for (i = 0; i < lines.length; i++) {
+            words = lines[i].split(' ');
+            line = '';
+
+            for (n = 0; n < words.length; n++) {
+                testLine = line + words[n] + ' ';
+                metrics = this.state.ctx.measureText(testLine);
+                testWidth = metrics.width;
+                if (testWidth > this.w && n > 0) {
+                    line = words[n] + ' ';
+                    linecount++;
+                    y += this.lineHeight;
+                } else {
+                    line = testLine;
+                }
+            }
+            y += this.lineHeight;
+        }
+        return (linecount * this.lineheight);
+    };
+
+    TextAsset.prototype.draw = function (ctx) {
+        var half, cur, i;
+        if (this.state.selection === this && !$scope.showtextassetedit) {
+            ctx.strokeStyle = this.state.selectionColor;
+            ctx.lineWidth = this.state.selectionWidth;
+            ctx.strokeRect(this.x, this.y, this.w, this.getHeight());
+
+            for (i = 0; i < 8; i++) {
+                this.state.selectionHandles[i].x = 99999;
+                this.state.selectionHandles[i].y = 99999;
+            }
+
+            half = this.state.selectionboxsize / 2;
+            this.state.selectionHandles[3].x = this.x - half;
+            this.state.selectionHandles[3].y = this.y + this.getHeight() / 2 - half;
+
+            //middle right
+            this.state.selectionHandles[4].x = this.x + this.w - half;
+            this.state.selectionHandles[4].y = this.y + this.getHeight() / 2 - half;
+
+            cur = this.state.selectionHandles[3];
+            ctx.fillRect(cur.x, cur.y, this.state.selectionboxsize, this.state.selectionboxsize);
+            cur = this.state.selectionHandles[4];
+            ctx.fillRect(cur.x, cur.y, this.state.selectionboxsize, this.state.selectionboxsize);
+        }
+
+        if (!$scope.showtextassetedit){
+            this.wrapText(ctx, this.text, this.x, this.y, this.w, this.lineheight);
+        } else if (this.state.selection !== this) {
+            this.wrapText(ctx, this.text, this.x, this.y, this.w, this.lineheight);
+        }
+    };
+
+    TextAsset.prototype.wrapText = function wrapText(context, text, x, y, maxWidth, lineHeight) {
+        var lines = text.split("\n"), i, n, words, line, testLine, metrics, testWidth;
+        y += this.lineheight;
+        for (i = 0; i < lines.length; i++) {
+
+            words = lines[i].split(' ');
+            line = '';
+
+            for (n = 0; n < words.length; n++) {
+                testLine = line + words[n] + ' ';
+                metrics = context.measureText(testLine);
+                testWidth = metrics.width;
+                if (testWidth > maxWidth && n > 0) {
+                    context.fillText(line, x, y);
+                    line = words[n] + ' ';
+                    y += lineHeight;
+                } else {
+                    line = testLine;
+                }
+            }
+
+            context.fillText(line, x, y);
+            y += lineHeight;
+        }
+    };
+
+    /**
+     * This function determines whhether the mouse is hovering a drawn asset.
+     * @param mx mouse's x position
+     * @param my mouse's y position
+     * @returns {boolean} True if the mouse is above the asset, otherwise false
+     */
+    TextAsset.prototype.contains = function (mx, my) {
+        // All we have to do is make sure the Mouse X,Y fall in the area between
+        // the shape's X and (X + Height) and its Y and (Y + Height)
+        return (this.x <= mx) && (this.x + this.w >= mx) &&
+            (this.y <= my) && (this.y + this.getHeight() >= my);
+    };
+
+    /**
+     * Checks the imagepath to see if the given image belongs to the asset category "Text"
+     * @param imagepath imagepath to check
+     * @returns {boolean} True if the imagepath belongs to the "Text" category, false otherwise.
+     */
+    function isTextAsset(imagepath) {
+        var textassets, i;
+        for (i = 0; i < $scope.assetgroups.length; i++) {
+            if ($scope.assetgroups[i].name === "Text") {
+                textassets = $scope.assetgroups[i].assets;
+                break;
+            }
+        }
+
+        if (textassets !== null) {
+            for (i = 0; i < textassets.length; i++) {
+                if ("images/Assets/" + textassets[i].image === imagepath) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
     /**
      * Drop an asset on the canvas. This function makes distinction between backgrounds and normal assets.
      * If the dropped asset is a normal asset, the asset gets added to the CanvasState's assets[] array and drawn on the canvas.
@@ -170,17 +325,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
             assety,
             imagepath;
 
-        if (!isBackgroundAsset(event.dataTransfer.getData("imagepath"))) {
-            if (assetmenu !== null && editorbar !== null) {
-                assetx = event.pageX - parseInt(window.getComputedStyle(assetmenu, null).width, 10) - parseInt(window.getComputedStyle(assetmenu, null).paddingLeft, 10) - parseInt(window.getComputedStyle(assetmenu, null).paddingRight, 10);
-                assety = event.pageY - parseInt(window.getComputedStyle(editorbar, null).height, 10) - parseInt(window.getComputedStyle(navbar, null).height, 10);
-            } else {
-                assetx = event.pageX;
-                assety = event.pageY;
-            }
-            canvasstate.addShape(new Asset(assetx, assety, event.dataTransfer.getData("imagepath"), canvasstate));
-            updateServerAssets();
-        } else {
+        if (isBackgroundAsset(event.dataTransfer.getData("imagepath"))) {
             imagepath = event.dataTransfer.getData("imagepath");
             sceneService.scene.update({sceneid: $scope.currentscene._id}, {background: imagepath}, function (data) {
                 if (editor !== null) {
@@ -192,6 +337,25 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
                 window.alert("Failed to update background, please try again.");
                 console.log("Error while updating background: " + err);
             });
+        } else if (isTextAsset(event.dataTransfer.getData("imagepath"))) {
+            if (assetmenu !== null && editorbar !== null) {
+                assetx = event.pageX - parseInt(window.getComputedStyle(assetmenu, null).width, 10) - parseInt(window.getComputedStyle(assetmenu, null).paddingLeft, 10) - parseInt(window.getComputedStyle(assetmenu, null).paddingRight, 10);
+                assety = event.pageY - parseInt(window.getComputedStyle(editorbar, null).height, 10) - parseInt(window.getComputedStyle(navbar, null).height, 10);
+            } else {
+                assetx = event.pageX;
+                assety = event.pageY;
+            }
+            canvasstate.addShape(new TextAsset(assetx, assety, 200, canvasstate, "Double click to change this text..", null));
+        } else {
+            if (assetmenu !== null && editorbar !== null) {
+                assetx = event.pageX - parseInt(window.getComputedStyle(assetmenu, null).width, 10) - parseInt(window.getComputedStyle(assetmenu, null).paddingLeft, 10) - parseInt(window.getComputedStyle(assetmenu, null).paddingRight, 10);
+                assety = event.pageY - parseInt(window.getComputedStyle(editorbar, null).height, 10) - parseInt(window.getComputedStyle(navbar, null).height, 10);
+            } else {
+                assetx = event.pageX;
+                assety = event.pageY;
+            }
+            canvasstate.addShape(new Asset(assetx, assety, event.dataTransfer.getData("imagepath"), canvasstate));
+            updateServerAssets();
         }
 
     };
@@ -639,6 +803,14 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         }
     };
 
+    $scope.onTextAssetKeyUp = function (key) {
+        if (key === 27) {
+            $scope.showtextassetedit = false;
+            updateTextAsset();
+            $scope.redrawCanvas();
+        }
+    };
+
     /**
      * Redraws all the assets on the canvas and if necessary the assetproperties menu gets re-positioned.
      */
@@ -806,6 +978,16 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
                     "name": "Zon",
                     "description": "Zon",
                     "image": "Zon.png"
+                }
+            ]
+        },
+        {
+            name: "Text",
+            assets : [
+                {
+                    "name": "Text",
+                    "description": "Editable text",
+                    "image": "texticon.png"
                 }
             ]
         },
@@ -1194,8 +1376,8 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         ctx.drawImage(this.imgNew, locx, locy, this.w, this.h);
     };
 
-    /**
-     * This function determines whether the mouse is hovering a drawn asset.
+    /**r
+     * This function determines whhether the mouse is hovering a drawn asset.
      * @param mx mouse's x position
      * @param my mouse's y position
      * @returns {boolean} True if the mouse is above the asset, otherwise false
@@ -1217,6 +1399,8 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         // **** First some setup! ****
         this.canvas = canvas;
         this.ctx = canvas.getContext('2d');
+        this.ctx.font = '20px Calibri';
+        this.ctx.fillStyle = '#333';
         // This complicates things a little but but fixes mouse co-ordinate problems
         // when there's a border or padding. See getMouse for more detail
         var html, assetmenu, myState, i;
@@ -1302,6 +1486,9 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
 
         // Up, down, and move are for dragging
         canvas.addEventListener('mousedown', function (e) {
+            if ($scope.showtextassetedit) {
+                updateTextAsset();
+            }
 
             var mouse = myState.getMouse(e),
                 mx = mouse.x,
@@ -1488,8 +1675,47 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
 
 
         canvas.addEventListener('dblclick', function (e) {
-            console.log(e);
-      //      var mouse = myState.getMouse(e);
+            var mouse = myState.getMouse(e),
+                mx = mouse.x,
+                my = mouse.y,
+                shapes = myState.shapes,
+                l = shapes.length,
+                index,
+                mySel,
+                selectasset;
+
+            for (index = l - 1; index >= 0; index--) {
+                mySel = shapes[index];
+                if (shapes[index].contains(mx, my)) {
+                    if (shapes[index] instanceof TextAsset) {
+                        $scope.safeApply(function () {
+                            var edittext = document.getElementById("textassettextarea"),
+                                selection = myState.selection,
+                                xoffset,
+                                yoffset;
+
+
+                            if (selection !== null) {
+                                xoffset = myState.assetpropertiesxoffset;
+                                yoffset = myState.assetpropertiesyoffset;
+
+                                edittext.style.left = selection.x + xoffset - 2 + "px";
+                                edittext.style.top = selection.y + yoffset + 2 + "px";
+                                edittext.style.width = selection.w + "px";
+                                edittext.style.minheight = selection.getHeight() + "px";
+                                var newtext = selection.text;
+                                newtext = newtext.replace(/\n/g, '<br />');
+                                edittext.innerHTML = newtext;
+                                $scope.showtextassetedit = true;
+                                $scope.showassetproperties = false;
+                                myState.valid = false;
+                            }
+
+                        });
+                    }
+                    return;
+                }
+            }
         }, true);
 
         // **** Options! ****
@@ -1518,7 +1744,11 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
             assets = scene.assets;
             if (assets !== undefined && assets !== null) {
                 for (i = 0; i < assets.length; i++) {
-                    canvasstate.addShape(new Asset(assets[i].x, assets[i].y, assets[i].imagepath, canvasstate, assets[i].width, assets[i].height, assets[i].assetoption));
+                    if(assets[i].text === undefined || assets[i].text === null){
+                        canvasstate.addShape(new Asset(assets[i].x, assets[i].y, assets[i].imagepath, canvasstate, assets[i].width, assets[i].height, assets[i].assetoption));
+                    } else {
+                        canvasstate.addShape(new TextAsset(assets[i].x, assets[i].y, assets[i].width, canvasstate, assets[i].text, assets[i].assetoption));
+                    }
                 }
             }
         } else {
@@ -1765,5 +1995,6 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
     $scope.getCanvasstate = function () {
         return canvasstate;
     };
+
 
 }]);
