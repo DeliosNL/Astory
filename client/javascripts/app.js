@@ -93,9 +93,13 @@ aStory.config(['$routeProvider', function ($routeProvider) {
             controller: 'accountController',
             resolve: { loggedin: checkLoggedin }
         })
+        .when('/view/:storyid', {
+            templateUrl: 'partials/preview.html',
+            controller: 'playerController'
+        })
         .when('/preview', {
             templateUrl: 'partials/preview.html',
-            controller: 'previewController',
+            controller: 'playerController',
             resolve: { loggedin: checkLoggedin }
         })
         .otherwise({

@@ -9,12 +9,12 @@ var addthis_share =
 };
 </script>
 <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-52b419580afdf306#async=1"></script>
-<canvas id="preview">
+<canvas id="preview" width="1600" height="900">
     No HTML 5 support found! Please update your browser.
 </canvas>
 <div id="previewbar">
     <div id="leftside">
-        <a href="javascript:history.back()">
+        <a href="javascript:history.back()" data-ng-show="ispreview">
             <div id="backbutton">
                 <img id="back" src="images/arrowleft.png" alt="<"/>
 
@@ -28,7 +28,7 @@ var addthis_share =
         <p id="linktitle">LINK TO THIS STORY</p>
     </div>
     <div id="rightside">
-        <p id="link">www.astory.com/johndoe/thejourney/preview</p>
+        <p id="link">http:/www.astory.com/#/view/{{currentstory._id}}</p>
 
         <div id="shareicons">
             <div addthis-toolbox class="addthis_toolbox addthis_default_style addthis_32x32_style">

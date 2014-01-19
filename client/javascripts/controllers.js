@@ -107,7 +107,7 @@ aStory.controller('headerController', ['$scope', '$rootScope', '$location', 'log
     var i;
 
     $rootScope.$on("$routeChangeStart", function () {
-        if ($location.path() === '/login' || $location.path() === '/register' || $location.path() === '/preview') {
+        if ($location.path() === '/login' || $location.path() === '/register' || $location.path() === '/preview' || $location.path().indexOf("/view/") !== -1) {
             $scope.loginpage = true;
         } else {
             $scope.loginpage = false;
@@ -330,6 +330,12 @@ aStory.controller('overviewController', ['$scope', '$modal', 'storiesService', '
         currentStoryService.currentstory = $scope.stories[index];
         $location.path('/editor');
     };
+
+    $scope.previewStory = function (index) {
+        currentStoryService.currentstory = $scope.stories[index];
+        $location.path('/preview');
+    };
+
 }]);
 
 aStory.controller('scenariopopupController', ['$scope', '$modalInstance', 'story', 'scenariosService', function ($scope, $modalInstance, story, scenariosService) {
@@ -353,7 +359,4 @@ aStory.controller('scenariopopupController', ['$scope', '$modalInstance', 'story
 
 aStory.controller('accountController', ['$scope', 'loggedinService', function ($scope, loggedinService) {
     $scope.accountinfo = loggedinService.accountinfo;
-}]);
-
-aStory.controller('previewController', ['$scope', function ($scope) {
 }]);

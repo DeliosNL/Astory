@@ -72,7 +72,6 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
     function updateTextAsset() {
         var newtextHTML = document.getElementById('textassettextarea').innerHTML;
         var newtext = htmlToText(newtextHTML);
-        alert(newtext);
         $scope.selectedAsset.text = newtext;
         $scope.showtextassetedit = false;
         updateServerAssets();
@@ -186,6 +185,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         this.w = width;
         this.lineheight = 25;
         this.assetoption = assetoption;
+
         //alert(state.ctx.measureText(text).width);
     }
 
@@ -1423,7 +1423,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
             this.assetpropertiesyoffset = parseInt(window.getComputedStyle(document.getElementById('navbar')).height, 0) + parseInt(window.getComputedStyle(document.getElementById('editorbar')).height, 0);
         }
         this.assetpropertiesmenuwidth = 260;
-        this.assetpropertiesmenuheight = 345;
+        this.assetpropertiesmenuheight = 335;
         this.assetpropertiesmenu = document.getElementById('assetmenuwrapper');
         this.valid = false; // when set to false, the canvas will redraw everything
         this.shapes = [];  // the collection of things to be drawn
@@ -1434,9 +1434,9 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
         this.selection = null;
         this.dragoffx = 0; // See mousedown and mousemove events for explanation
         this.dragoffy = 0;
-
+        this.xratio = canvas.width / parseInt(window.getComputedStyle(document.getElementById("editor"), null).width);
+        this.yratio = canvas.height / parseInt(window.getComputedStyle(document.getElementById("editor"), null).height);
         myState = this;
-
         this.selectionHandles = [];
         for (i = 0; i < 8; i += 1) {
             this.selectionHandles.push(new SelectionBox(0, 0, this));
@@ -1458,16 +1458,13 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
                 assetpropertiesxoffset = myState.assetpropertiesxoffset;
                 assetpropertiesyoffset = myState.assetpropertiesyoffset;
                 assetpropertiesmenu = myState.assetpropertiesmenu;
-                canvaswidth = parseInt(window.getComputedStyle(this.canvas, null).width, 10);
+                canvaswidth = myState.canvas.width;
 
                 //X offset
-
-
-                //Past rechts
-                if (selection.x + selection.w < (canvaswidth - this.assetpropertiesmenuwidth)) {
-                    assetpropertiesmenu.style.left = selection.x + assetpropertiesxoffset + selection.w + 2 + "px";
-                } else if (selection.x + selection.w > canvaswidth - this.assetpropertiesmenuwidth && selection.x > this.assetpropertiesmenuwidth) { //Past niet rechts maar heeft nog wel ruimte links
-                    assetpropertiesmenu.style.left = assetpropertiesxoffset + selection.x - this.assetpropertiesmenuwidth - 2 + "px";
+                if (((selection.x + selection.w) / this.xratio) < parseInt(window.getComputedStyle(this.canvas,null).width) - this.assetpropertiesmenuwidth) {  //Past rechts
+                    assetpropertiesmenu.style.left = (selection.x / this.xratio) + assetpropertiesxoffset + (selection.w / this.xratio) + 2 + "px";
+                } else if (((selection.x + selection.w) / this.xratio) > parseInt(window.getComputedStyle(this.canvas,null).width) - this.assetpropertiesmenuwidth && (selection.x / this.xratio) > this.assetpropertiesmenuwidth) { //Past niet rechts maar heeft nog wel ruimte links
+                    assetpropertiesmenu.style.left = assetpropertiesxoffset + (selection.x / this.xratio) - this.assetpropertiesmenuwidth - 2 + "px";
                 } else { //Past niet links, past niet rechts
                     assetpropertiesmenu.style.left = assetpropertiesxoffset + "px";
                 }
@@ -1475,13 +1472,25 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
                 //Y offset
                 if (selection.y < 0) {
                     assetpropertiesmenu.style.top = assetpropertiesyoffset + "px";
-                } else if (selection.y > parseInt(window.getComputedStyle(this.canvas, null).height, 10) - this.assetpropertiesmenuheight) {
+                } else if ((selection.y / this.yratio) > parseInt(window.getComputedStyle(this.canvas, null).height, 10) - this.assetpropertiesmenuheight) { //Gedeelte zou de scenes overlappen
                     assetpropertiesmenu.style.top = assetpropertiesyoffset + parseInt(window.getComputedStyle(this.canvas, null).height, 10) - this.assetpropertiesmenuheight + "px";
                 } else {
-                    assetpropertiesmenu.style.top = selection.y + assetpropertiesyoffset + "px";
+                    assetpropertiesmenu.style.top = (selection.y / this.yratio) + assetpropertiesyoffset + "px";
                 }
             }
 
+        };
+
+        CanvasState.prototype.positionEditText = function (selection) {
+            var edittext = document.getElementById("textassettextarea"),
+            xoffset = myState.assetpropertiesxoffset,
+            yoffset = myState.assetpropertiesyoffset;
+            edittext.style.fontSize = Math.round(20 / ((myState.xratio + myState.yratio) / 2)) + "px";
+            edittext.style.lineHeight = Math.round(25 / ((myState.xratio + myState.yratio) / 2)) + "px";
+            edittext.style.left = (selection.x / myState.xratio) + xoffset - 2 + "px";
+            edittext.style.top = (selection.y / myState.yratio) + yoffset + 2 + "px";
+            edittext.style.width = (selection.w / myState.xratio) + "px";
+            edittext.style.minheight = (selection.getHeight() / myState.yratio)  + "px";
         };
 
         // Up, down, and move are for dragging
@@ -1491,8 +1500,8 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
             }
 
             var mouse = myState.getMouse(e),
-                mx = mouse.x,
-                my = mouse.y,
+                mx = mouse.x * myState.xratio,
+                my = mouse.y * myState.yratio,
                 shapes = myState.shapes,
                 l = shapes.length,
                 index,
@@ -1540,8 +1549,8 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
 
         canvas.addEventListener('mousemove', function (e) {
             var mouse = myState.getMouse(e),
-                mx = mouse.x,
-                my = mouse.y,
+                mx = mouse.x * myState.xratio,
+                my = mouse.y * myState.yratio,
                 oldx,
                 oldy,
                 moveindex,
@@ -1676,8 +1685,8 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
 
         canvas.addEventListener('dblclick', function (e) {
             var mouse = myState.getMouse(e),
-                mx = mouse.x,
-                my = mouse.y,
+                mx = mouse.x * myState.xratio,
+                my = mouse.y * myState.yratio,
                 shapes = myState.shapes,
                 l = shapes.length,
                 index,
@@ -1696,13 +1705,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
 
 
                             if (selection !== null) {
-                                xoffset = myState.assetpropertiesxoffset;
-                                yoffset = myState.assetpropertiesyoffset;
-
-                                edittext.style.left = selection.x + xoffset - 2 + "px";
-                                edittext.style.top = selection.y + yoffset + 2 + "px";
-                                edittext.style.width = selection.w + "px";
-                                edittext.style.minheight = selection.getHeight() + "px";
+                                myState.positionEditText(selection);
                                 var newtext = selection.text;
                                 newtext = newtext.replace(/\n/g, '<br />');
                                 edittext.innerHTML = newtext;
@@ -1783,7 +1786,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
      * Clears the entire canvas. Constantly used when redrawing.
      */
     CanvasState.prototype.clear = function () {
-        this.ctx.clearRect(0, 0, parseInt(window.getComputedStyle(this.canvas, null).width, 10), parseInt(window.getComputedStyle(this.canvas, null).height, 10));
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     };
 
     /**
@@ -1807,7 +1810,7 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
                 shape = shapes[i];
                 outofcanvas = false;
                 // We can skip the drawing of elements that have moved off the screen:
-                if (shape.x > parseInt(window.getComputedStyle(this.canvas, null).width, 10) || shape.y > parseInt(window.getComputedStyle(this.canvas, null).height, 10) ||
+                if (shape.x > this.canvas.width || shape.y > this.canvas.height ||
                         shape.x + shape.w < 0 || shape.y + shape.h < 0) {
                     outofcanvas = true;
                 }
@@ -1856,9 +1859,12 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
     window.addEventListener('resize', function () {
         var canvas = document.getElementById('editor');
         if (canvas !== null && canvas !== undefined) {
-            canvas.setAttribute('width',  parseInt(window.getComputedStyle(canvas, null).width, 10).toString());
-            canvas.setAttribute('height', parseInt(window.getComputedStyle(canvas, null).height, 10).toString());
+          //  canvas.setAttribute('width',  parseInt(window.getComputedStyle(canvas, null).width, 10).toString());
+           // canvas.setAttribute('height', parseInt(window.getComputedStyle(canvas, null).height, 10).toString());
+            canvasstate.xratio = canvas.width / parseInt(window.getComputedStyle(document.getElementById("editor"), null).width);
+            canvasstate.yratio = canvas.height / parseInt(window.getComputedStyle(document.getElementById("editor"), null).height);
             canvasstate.valid = false;
+            canvasstate.positionAssetPropertiesMenu();
             canvasstate.draw();
         }
     });
@@ -1870,8 +1876,8 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
     function initCanvas() {
         var canvas = document.getElementById(('editor')), testcanvas;
         if (canvas !== null) {
-            canvas.setAttribute('width',  parseInt(window.getComputedStyle(canvas, null).width, 10).toString());
-            canvas.setAttribute('height', parseInt(window.getComputedStyle(canvas, null).height, 10).toString());
+            //canvas.setAttribute('width',  parseInt(window.getComputedStyle(canvas, null).width, 10).toString());
+            //canvas.setAttribute('height', parseInt(window.getComputedStyle(canvas, null).height, 10).toString());
         }
         if (canvas === null) {
             testcanvas = document.createElement('canvas');

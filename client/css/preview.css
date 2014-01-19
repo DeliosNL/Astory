@@ -1,7 +1,7 @@
 #preview {
     height: calc(100%);
     width: 100%;
-    background-image: url(../images/previewbackground.png);
+    /*background-image: url(../images/previewbackground.png); */
     background-size: 100% 100%;
 }
 
@@ -21,7 +21,7 @@ p#link, p#linktitle {
 }
 
 #leftside {
-    width: calc(100% - 600px);
+    width: calc(100% - 700px);
     height: 100%;
     float: left;
     background-color: #252525;
@@ -79,7 +79,7 @@ p#linktitle {
 }
 
 #rightside {
-    width: 600px;
+    width: 700px;
     float: left;
     background-color: #353535;
 }

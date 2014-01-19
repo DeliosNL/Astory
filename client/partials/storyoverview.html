@@ -14,6 +14,6 @@
     <div class="storyname"><p class="storynameparagraph">{{story.name}}</p></div>
     <div class="storydate"><p>{{story.date}}</p></div>
     <div class="storysettings" data-ng-click="showStoryPopup($index);"><p>SETTINGS</p></div>
-    <a href="#/preview"><div class="viewbutton"><p>PREVIEW</p></div></a>
+    <div class="viewbutton" data-ng-click="previewStory($index);"><p>PREVIEW</p></div>
     <div class="editbutton" data-ng-click="openStory($index);"><p>OPEN</p></div>
 </div>

@@ -25,11 +25,11 @@ function htmlToText(html, extensions) {
         text = extensions['tagreplacement'](text);
 
     var doubleNewlineTags = ['p', 'h[1-6]', 'dl', 'dt', 'dd', 'ol', 'ul',
-        'dir', 'address', 'blockquote', 'center', 'div', 'hr', 'pre', 'form',
+        'dir', 'address', 'blockquote', 'center', 'hr', 'pre', 'form',
         'textarea', 'table'];
 
     var singleNewlineTags = ['li', 'del', 'ins', 'fieldset', 'legend',
-        'tr', 'th', 'caption', 'thead', 'tbody', 'tfoot'];
+        'tr', 'th', 'caption', 'thead', 'tbody', 'div', 'tfoot'];
 
     for (i = 0; i < doubleNewlineTags.length; i++) {
         var r = RegExp('</?\\s*' + doubleNewlineTags[i] + '[^>]*>', 'ig');
