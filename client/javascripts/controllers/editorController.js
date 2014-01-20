@@ -1485,8 +1485,8 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
             var edittext = document.getElementById("textassettextarea"),
             xoffset = myState.assetpropertiesxoffset,
             yoffset = myState.assetpropertiesyoffset;
-            edittext.style.fontSize = Math.round(20 / ((myState.xratio + myState.yratio) / 2)) + "px";
-            edittext.style.lineHeight = Math.round(25 / ((myState.xratio + myState.yratio) / 2)) + "px";
+            edittext.style.fontSize = 20 / myState.xratio + "px";
+            edittext.style.lineHeight = 25 / ((myState.xratio + myState.yratio) / 2) + "px";
             edittext.style.left = (selection.x / myState.xratio) + xoffset - 2 + "px";
             edittext.style.top = (selection.y / myState.yratio) + yoffset + 2 + "px";
             edittext.style.width = (selection.w / myState.xratio) + "px";
@@ -1863,6 +1863,9 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
            // canvas.setAttribute('height', parseInt(window.getComputedStyle(canvas, null).height, 10).toString());
             canvasstate.xratio = canvas.width / parseInt(window.getComputedStyle(document.getElementById("editor"), null).width);
             canvasstate.yratio = canvas.height / parseInt(window.getComputedStyle(document.getElementById("editor"), null).height);
+            if ($scope.showtextassetedit) {
+                canvasstate.positionEditText($scope.selectedAsset);
+            }
             canvasstate.valid = false;
             canvasstate.positionAssetPropertiesMenu();
             canvasstate.draw();

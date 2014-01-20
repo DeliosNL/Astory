@@ -61,7 +61,6 @@ aStory.controller('playerController', ['$scope', '$location', '$routeParams', 'c
         if (player !== null && player !== undefined) {
             player.style.backgroundImage = "url('../" + $scope.scenes[index].background + "')";
         }
-        $scope.currentSceneindex = index + 1;
     }
 
     function openFirstScene() {
@@ -292,7 +291,81 @@ aStory.controller('playerController', ['$scope', '$location', '$routeParams', 'c
         }, false);
 
         canvas.addEventListener('mousedown', function (e) {
-            //TODO Assets klikken
+            var mouse = myState.getMouse(e),
+                mx = mouse.x * myState.xratio,
+                my = mouse.y * myState.yratio,
+                mySel,
+                shapes = myState.shapes,
+                l = shapes.length,
+                index;
+
+            for (index = l - 1; index >= 0; index--) {
+                mySel = shapes[index];
+                if (shapes[index].contains(mx, my)) {
+                    if(shapes[index].assetoption !== null && shapes[index].assetoption !== undefined) {
+                        if(shapes[index].assetoption.type === "Scene" || shapes[index].assetoption.type === "Scenario") {
+                            if(shapes[index].assetoption.type === "Scene") {
+                                var currentsceneindex;
+                                for(var i = 0; i < $scope.currentscenario.sceneorder.length; i++ ) {
+                                    if($scope.currentscenario.sceneorder[i] === $scope.currentscene._id) {
+                                        //alert(i);
+                                        currentsceneindex = i;
+                                        break;
+                                    }
+                                }
+
+                                if(shapes[index].assetoption.name === "Next") {
+                                    if($scope.currentscenario.sceneorder[currentsceneindex + 1] !== null && $scope.currentscenario.sceneorder[currentsceneindex + 1] !== undefined) {
+                                        for(var i = 0; i < $scope.scenes.length; i++) {
+                                            if($scope.scenes[i]._id === $scope.currentscenario.sceneorder[currentsceneindex + 1]) {
+                                                loadScene(i);
+                                                break;
+                                            }
+                                        }
+                                    } else {
+                                        alert("Next scene does not exist");
+                                    }
+                                } else if (shapes[index].assetoption.name === "Previous") {
+                                    if($scope.currentscenario.sceneorder[currentsceneindex - 1] !== null && $scope.currentscenario.sceneorder[currentsceneindex - 1] !== undefined) {
+                                        for(var i = 0; i < $scope.scenes.length; i++) {
+                                            if($scope.scenes[i]._id === $scope.currentscenario.sceneorder[currentsceneindex - 1]) {
+                                                loadScene(i);
+                                                break;
+                                            }
+                                        }
+                                    } else {
+                                        alert("Previous scene does not exist");
+                                    }
+                                }
+
+                            } else if (shapes[index].assetoption.type === "Scenario") {
+                                for(var i = 0; i < $scope.currentstory.scenarioorder.length; i++) {
+                                    if($scope.currentstory.scenarioorder[i] === shapes[index].assetoption.scenarioid) {
+                                        //Scenario bestaat binnen het verhaal, laad hem
+                                        openScenario($scope.currentstory.scenarioorder[i], function () {
+                                            loadScenarioScenes($scope.currentscenario._id, function () {
+                                                //Eerste scenario + bijbehorende scenes zijn succesvol opgehaald. Zet de eerste scene in beeld
+                                                for (var i = 0; i < $scope.scenes.length; i++ ) {
+                                                    if($scope.scenes[i]._id === $scope.currentscenario.sceneorder[0]){
+                                                        $scope.currentscene = $scope.scenes[i];
+                                                        loadScene(i);
+                                                        break;
+                                                    }
+                                                }
+                                            });
+                                        });
+                                        break;
+                                    }
+                                    if(i === $scope.currentstory.scenarioorder.length - 1) {
+                                        alert("Scenario doesn't exist within this story");
+                                    }
+                                }
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
         }, true);
 
         canvas.addEventListener('mousemove', function (e) {
@@ -308,8 +381,16 @@ aStory.controller('playerController', ['$scope', '$location', '$routeParams', 'c
             for (index = l - 1; index >= 0; index--) {
                 mySel = shapes[index];
                 if (shapes[index].contains(mx, my)) {
-                    this.style.cursor = "pointer";
-                    break;
+                    if(shapes[index].assetoption !== null && shapes[index].assetoption !== undefined) {
+                        if(shapes[index].assetoption.type === "Scene" || shapes[index].assetoption.type === "Scenario") {
+                            this.style.cursor = "pointer";
+                            break;
+                        } else {
+                            this.style.cursor = "default";
+                        }
+                    } else {
+                        this.style.cursor = "default";
+                    }
                 }
                 if(index === 0) {
                     this.style.cursor = "default";
