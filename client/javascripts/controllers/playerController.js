@@ -236,6 +236,15 @@ aStory.controller('playerController', ['$scope', '$location', '$routeParams', 'c
                 canvasstate.draw();
             }
         }
+
+        if(this.assetoption !== null && this.assetoption !== undefined) {
+            if(this.assetoption.type === "Scenario") {
+                if($scope.currentstory.scenarioorder.indexOf(this.assetoption.scenarioid) === -1) {
+                    this.assetoption = null;
+                }
+            }
+        }
+
         this.imgNew.onload = onImageLoad;
 
     }
