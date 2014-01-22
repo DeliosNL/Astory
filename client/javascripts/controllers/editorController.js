@@ -992,6 +992,31 @@ aStory.controller('editorController', ['$scope', '$modal', 'storiesService', '$l
             ]
         },
         {
+            name: "Text bubbles",
+            assets: [
+                {
+                    "name": "Text bubble 1",
+                    "description": "Text bubble 1",
+                    "image": "tekstwolk1.png"
+                },
+                {
+                    "name": "Text bubble 2",
+                    "description": "Text bubble 2",
+                    "image": "Tekstwolk2.png"
+                },
+                {
+                    "name": "Text bubble 3",
+                    "description": "Text bubble 3",
+                    "image": "tekstwolk3.png"
+                },
+                {
+                    "name": "Text bubble 4",
+                    "description": "Text bubble 4",
+                    "image": "tekstwolk4.png"
+                }
+            ]
+        },
+        {
             name: "Backgrounds",
             assets: [
                 {
