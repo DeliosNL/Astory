@@ -1,6 +1,6 @@
 Description
 ===========
-This is the repository of the "Astory" project for the CRIA (Create a Rich Internet Application coruse). Astory is a rich internet application which allows it's users to create their own story and share it with others. 
+This is the repository of the "Astory" project for the Create a Rich Internet Application (CRIA) course. Astory is a rich internet application which allows its users to create their own story and share it with others. 
 
 Setup
 =====
